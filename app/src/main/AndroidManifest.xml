@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".listOfChildren"
+            android:exported="true"
+            android:label="@string/title_activity_list_of_children"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
