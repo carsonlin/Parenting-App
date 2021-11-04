@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".listOfChildren">
+    tools:context=".addOrDeleteChild">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -19,23 +19,5 @@
             app:popupTheme="@style/Theme.ChlorineFinalProject.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_list_of_children" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ListView
-        android:id="@+id/childListView"
-        android:layout_width="407dp"
-        android:layout_height="688dp"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="center" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

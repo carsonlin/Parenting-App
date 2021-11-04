@@ -12,7 +12,7 @@ public class configureChildren {
         listOfChildren = new ArrayList<>();
     }
     //singleton support
-    public configureChildren getInstance(){
+    public static configureChildren getInstance(){
         if(instance == null){
             instance = new configureChildren();
         }
@@ -33,5 +33,13 @@ public class configureChildren {
         if(index > 0 && index < listOfChildren.size()){
             listOfChildren.set(index, childName);
         }
+    }
+
+    public String getChild(int index){
+        return listOfChildren.get(index);
+    }
+
+    public int getListSize(){
+        return listOfChildren.size();
     }
 }

@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_add_or_delete_child.xml" value="0.26268115942028986" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_list_of_children.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_list_of_children2.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/childlist.xml" value="0.28306159420289856" />
+        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_add_or_delete_child.xml" value="0.26268115942028986" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_list_of_children.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/fragment_first.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/fragment_second.xml" value="0.26268115942028986" />
         <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_listofchildren.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29128205128205126" />
       </map>
