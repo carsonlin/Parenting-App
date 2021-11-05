@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class gameManager {
 
+
     private ArrayList<game> games = new ArrayList<game>();
 
     private ArrayList<child> children = new ArrayList<child>();
