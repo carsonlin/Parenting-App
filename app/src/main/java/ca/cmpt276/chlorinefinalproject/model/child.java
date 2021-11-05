@@ -17,7 +17,6 @@ public class child {
 
     // Settters and Getter s
 
-
     public String getName() {
         return name;
     }

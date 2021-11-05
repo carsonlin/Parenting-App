@@ -21,10 +21,6 @@ public class game {
 
         time = LocalDateTime.now();
 
-
-
-        //System.out.println(dtf.format(now));
-
     }
 
     // Setters and Getters

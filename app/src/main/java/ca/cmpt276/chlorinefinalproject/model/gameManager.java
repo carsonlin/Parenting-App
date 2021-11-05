@@ -23,16 +23,20 @@ public class gameManager {
 
     private ArrayList<child> children = new ArrayList<child>();
 
+    // load configure children
     public gameManager(ArrayList<child> children) {
         this.children = children;
     }
 
+    // add game to memeory
     public void addGame(game game){ games.add(game); }
 
+    // check if there any games previoulsy played
     public boolean isEmptygames(){
         return games.isEmpty();
     }
 
+    // get the next child who is going to pick for the next game
     private child nextchild(){
 
 
