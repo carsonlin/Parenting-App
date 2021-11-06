@@ -11,9 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
-            android:name=".addOrDeleteChild"
+            android:name=".editOrDeleteChild"
             android:exported="true"
-            android:label="@string/title_activity_add_or_delete_child"
+            android:label="@string/title_activity_edit_or_delete_child"
+            android:parentActivityName=".listOfChildren"
             android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
         <activity
             android:name=".listOfChildren"

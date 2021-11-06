@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-//Java class to support adding, editing, and deleting children (singleton implementation)
+//Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
 public class configureChildren {
     private ArrayList<String> listOfChildren;
     private static configureChildren instance = null;
@@ -25,12 +25,12 @@ public class configureChildren {
         }
     }
     public void deleteChild(int index){
-        if(index > 0 && index < listOfChildren.size()){
+        if(index >= 0 && index < listOfChildren.size()){
             listOfChildren.remove(index);
         }
     }
     public void editChild(int index,String childName){
-        if(index > 0 && index < listOfChildren.size()){
+        if(index >= 0 && index < listOfChildren.size()){
             listOfChildren.set(index, childName);
         }
     }

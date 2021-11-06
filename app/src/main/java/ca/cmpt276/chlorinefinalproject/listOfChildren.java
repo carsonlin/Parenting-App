@@ -23,15 +23,14 @@ import java.util.ArrayList;
 import Model.configureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
+//activity uses configureChildren class to save and retrieve from shared preferences
 public class listOfChildren extends AppCompatActivity {
-    private AppBarConfiguration appBarConfiguration;
     private ActivityListOfChildrenBinding binding;
 
     private configureChildren children;
 
     public static Intent getListOfChildrenIntent(Context c){
-        Intent intent = new Intent(c, listOfChildren.class);
-        return intent;
+        return  new Intent(c, listOfChildren.class);
     }
 
     @Override
@@ -48,12 +47,9 @@ public class listOfChildren extends AppCompatActivity {
 
     private void populateListView() {
         ArrayList<String> childrenListView = new ArrayList<>();
-//        for(int i = 0; i < children.getListSize(); i++){
-//            childrenListView.add(children.getChild(i));
-//        }
-        childrenListView.add("1");
-        childrenListView.add("2");
-        childrenListView.add("3");
+        for(int i = 0; i < children.getListSize(); i++){
+            childrenListView.add(children.getChild(i));
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.listitems,
                 childrenListView);
@@ -64,7 +60,7 @@ public class listOfChildren extends AppCompatActivity {
     private void registerClickCallback(){
         ListView list = (ListView) findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = addOrDeleteChild.getAddOrDeleteChildIntent(listOfChildren.this, position);
+            Intent i = editOrDeleteChild.getAddOrDeleteChildIntent(listOfChildren.this, "edit", position);
             startActivity(i);
         });
     }
@@ -86,11 +82,18 @@ public class listOfChildren extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.addChild:
                 Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
+                Intent i = editOrDeleteChild.getAddOrDeleteChildIntent(listOfChildren.this, "add", -1);
+                startActivity(i);
                 return true;
             case R.id.home:
                 finish();
                 return true;
         }
         return false;
+    }
+
+    protected void onResume(){
+        super.onResume();
+        populateListView();
     }
 }
