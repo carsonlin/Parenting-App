@@ -3,23 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_add_or_delete_child.xml" value="0.26268115942028986" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_edit_or_delete_child.xml" value="0.26268115942028986" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_list_of_children.xml" value="0.2957427536231884" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_list_of_children2.xml" value="0.28940217391304346" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/childlist.xml" value="0.28306159420289856" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_add_or_delete_child.xml" value="0.26268115942028986" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_list_of_children.xml" value="0.28940217391304346" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/fragment_first.xml" value="0.28940217391304346" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/layout/fragment_second.xml" value="0.26268115942028986" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_editordeletechild.xml" value="0.290625" />
-        <entry key="..\:/Users/carson/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_listofchildren.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29128205128205126" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

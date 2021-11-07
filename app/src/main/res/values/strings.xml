@@ -13,4 +13,8 @@
     <string name="child_name">Child Name:</string>
     <string name="delete_child">Delete Child</string>
     <string name="save_changes">Save Changes</string>
+    <string name="practical_parent">Practical Parent</string>
+    <string name="coin_flip">Coin Flip</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="configure_children">Configure Children</string>
 </resources>
