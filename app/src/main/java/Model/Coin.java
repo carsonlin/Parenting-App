@@ -61,10 +61,10 @@ public class Coin {
                 flip += 1;
                 if ((flip % 2) == 1) {
                     if (head) {
-                        Glide.with(context).load(R.drawable.loony_tail).into(coin);
+                        Glide.with(context).load(R.drawable.loonie_tail).into(coin);
                     }
                     else {
-                        Glide.with(context).load(R.drawable.head_loony).into(coin);
+                        Glide.with(context).load(R.drawable.loonie_head).into(coin);
                     }
                     head = !head;
                 }
