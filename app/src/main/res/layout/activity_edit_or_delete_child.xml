@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".editOrDeleteChild">
+    tools:context=".EditOrDeleteChild">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -33,12 +33,13 @@
             android:ems="10"
             android:gravity="center"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:text="@string/name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/childName"

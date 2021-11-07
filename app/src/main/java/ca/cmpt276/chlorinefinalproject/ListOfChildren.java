@@ -14,24 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import androidx.navigation.ui.AppBarConfiguration;
-
-
 import java.util.ArrayList;
 
-import Model.configureChildren;
+import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
-//activity uses configureChildren class to save and retrieve from shared preferences
-public class listOfChildren extends AppCompatActivity {
+// Activity uses ConfigureChildren class to save and retrieve from shared preferences
+public class ListOfChildren extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
 
-    private configureChildren children;
-
-    public static Intent getListOfChildrenIntent(Context c){
-        return  new Intent(c, listOfChildren.class);
-    }
+    private ConfigureChildren children;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +31,7 @@ public class listOfChildren extends AppCompatActivity {
         binding = ActivityListOfChildrenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        children = configureChildren.getInstance();
+        children = ConfigureChildren.getInstance();
         setUpActionBar();
         populateListView();
         registerClickCallback();
@@ -47,28 +39,30 @@ public class listOfChildren extends AppCompatActivity {
 
     private void populateListView() {
         ArrayList<String> childrenListView = new ArrayList<>();
+
         for(int i = 0; i < children.getListSize(); i++){
             childrenListView.add(children.getChild(i));
         }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.listitems,
                 childrenListView);
-        ListView list = (ListView) findViewById(R.id.childListView);
+        ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }
 
     private void registerClickCallback(){
-        ListView list = (ListView) findViewById(R.id.childListView);
+        ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = editOrDeleteChild.getAddOrDeleteChildIntent(listOfChildren.this, "edit", position);
+            Intent i = EditOrDeleteChild.getAddOrDeleteChildIntent(ListOfChildren.this, "edit", position);
             startActivity(i);
         });
     }
 
-    //up button currently attached to main activity, change to menu activity when completed
     private void setUpActionBar(){
         setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
+        assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -79,15 +73,15 @@ public class listOfChildren extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        switch(item.getItemId()){
-            case R.id.addChild:
-                Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
-                Intent i = editOrDeleteChild.getAddOrDeleteChildIntent(listOfChildren.this, "add", -1);
-                startActivity(i);
-                return true;
-            case R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == R.id.addChild){
+            Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
+            Intent i = EditOrDeleteChild.getAddOrDeleteChildIntent(ListOfChildren.this, "add", -1);
+            startActivity(i);
+            return true;
+        }
+        else if (item.getItemId() == R.id.home){
+            finish();
+            return true;
         }
         return false;
     }

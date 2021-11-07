@@ -15,20 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
 
 
-import Model.configureChildren;
+import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
-//activity used to edit, delete, or add children.
-public class editOrDeleteChild extends AppCompatActivity {
+// Activity used to edit, delete, or add children.
+public class EditOrDeleteChild extends AppCompatActivity {
     private ActivityEditOrDeleteChildBinding binding;
 
-    private static String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
+    private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
     private String activityName;
     private int position;
-    private configureChildren children = configureChildren.getInstance();
+    private ConfigureChildren children;
 
     public static Intent getAddOrDeleteChildIntent(Context c,String activity, int position){
-        Intent intent = new Intent(c, editOrDeleteChild.class);
+        Intent intent = new Intent(c, EditOrDeleteChild.class);
         intent.putExtra(EXTRA_MESSAGE_ACTIVITY, activity);
         intent.putExtra("list position", position);
         return intent;
@@ -38,8 +38,9 @@ public class editOrDeleteChild extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEditOrDeleteChildBinding.inflate(getLayoutInflater());
-
         setContentView(binding.getRoot());
+
+        children = ConfigureChildren.getInstance();
         setUpUI();
         setUpActionBar();
         deleteButtonPressed();
@@ -47,23 +48,26 @@ public class editOrDeleteChild extends AppCompatActivity {
     }
 
     private void setUpUI(){
-        Intent i = getIntent();
-        position = i.getIntExtra("list position", 0);
-        EditText ET = findViewById(R.id.editChildName);
-        activityName = i.getStringExtra(EXTRA_MESSAGE_ACTIVITY);
+        Intent intent = getIntent();
+        position = intent.getIntExtra("list position", 0);
+        EditText editText = findViewById(R.id.editChildName);
+        activityName = intent.getStringExtra(EXTRA_MESSAGE_ACTIVITY);
+
         if(activityName.equals("add")){
             Button button = findViewById(R.id.deleteButton);
             button.setVisibility(View.GONE);
-            ET.setText("");
+            editText.setText("");
         }
+
         if(activityName.equals("edit")){
-            ET.setText(children.getChild(position));
+            editText.setText(children.getChild(position));
         }
     }
 
     private void setUpActionBar(){
         setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
+        assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
         if(activityName.equals("add")){
             ab.setTitle("Add a Child");
@@ -72,37 +76,29 @@ public class editOrDeleteChild extends AppCompatActivity {
 
     private void deleteButtonPressed(){
         Button button = findViewById(R.id.deleteButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                children.deleteChild(position);
-                finish();
-            }
+        button.setOnClickListener(view -> {
+            children.deleteChild(position);
+            finish();
         });
     }
 
     private void saveButtonPressed(){
         Button button = findViewById(R.id.saveButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText ET = findViewById(R.id.editChildName);
-                String text = ET.getText().toString();
-                if(text.length() <= 0){
-                    Toast.makeText(editOrDeleteChild.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(activityName.equals("add")){
-                    children.addChild(text);
-                    finish();
-                }
-                if(activityName.equals("edit")){
-                    children.editChild(position, text);
-                    finish();
-                }
+        button.setOnClickListener(view -> {
+            EditText ET = findViewById(R.id.editChildName);
+            String text = ET.getText().toString();
+            if(text.length() <= 0){
+                Toast.makeText(EditOrDeleteChild.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(activityName.equals("add")){
+                children.addChild(text);
+                finish();
+            }
+            if(activityName.equals("edit")){
+                children.editChild(position, text);
+                finish();
             }
         });
     }
-
-
 }

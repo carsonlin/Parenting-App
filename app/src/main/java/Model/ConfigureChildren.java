@@ -2,19 +2,19 @@ package Model;
 
 import java.util.ArrayList;
 
-//Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
-public class configureChildren {
-    private ArrayList<String> listOfChildren;
-    private static configureChildren instance = null;
+// Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
+public class ConfigureChildren {
+    private final ArrayList<String> listOfChildren;
+    private static ConfigureChildren instance = null;
 
-
-    private configureChildren(){
+    private ConfigureChildren(){
         listOfChildren = new ArrayList<>();
     }
+
     //singleton support
-    public static configureChildren getInstance(){
+    public static ConfigureChildren getInstance(){
         if(instance == null){
-            instance = new configureChildren();
+            instance = new ConfigureChildren();
         }
         return instance;
     }

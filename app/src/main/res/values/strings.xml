@@ -17,4 +17,5 @@
     <string name="coin_flip">Coin Flip</string>
     <string name="timeout_timer">Timeout Timer</string>
     <string name="configure_children">Configure Children</string>
+    <string name="name">Name</string>
 </resources>

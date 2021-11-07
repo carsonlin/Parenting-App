@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //setupButton(R.id.coinFlipButton, {name of coin flipping class}.class);
-        //setupButton(R.id.timerButton, {name of timer class}.class);
-        setupButton(R.id.childrenConfigButton, listOfChildren.class);
+        // setupButton(R.id.timerButton, {name of coin flipping class}.class);
+        setupButton(R.id.childrenConfigButton, ListOfChildren.class);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
