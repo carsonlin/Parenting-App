@@ -1,25 +1,29 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import Model.Coin;
-
 public class MainActivity extends AppCompatActivity {
-
-    ImageView cardFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        cardFace = findViewById(R.id.main_activity_card_face);
+        setupButton(R.id.coinFlipButton, CoinFlipActivity.class);
+        setupButton(R.id.timerButton, TimerActivity.class);
+        setupButton(R.id.childrenConfigButton, ListOfChildren.class);
+    }
 
-        Coin coin = new Coin(MainActivity.this, cardFace);
+    public void setupButton(int buttonId, Class<?> classToStart){
+        Button button = findViewById(buttonId);
 
-        cardFace.setOnClickListener(view -> System.out.println("head? " + coin.flip().isHead()));
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, classToStart);
+            startActivity(intent);
+        });
     }
 }

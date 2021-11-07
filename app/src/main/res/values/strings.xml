@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">ChlorineFinalProject</string>
+    <string name="title_activity_list_of_children">List Of Children</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_edit_or_delete_child">Edit Or Delete Child</string>
+    <string name="child_name">Child Name:</string>
+    <string name="delete_child">Delete Child</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="practical_parent">Practical Parent</string>
+    <string name="coin_flip">Coin Flip</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="configure_children">Configure Children</string>
+    <string name="timer_textview">"%1$d : %2$02d"</string>
+    <string name="timer_start_button_text">Start</string>
+    <string name="timer_pause_button_text">Pause</string>
+    <string name="timer_resume_button_text">Resume</string>
+    <string name="timer_reset_button_text">Reset</string>
+    <string name="timer_radio_button_text">"%1d Minutes"</string>
+    <string name="name">Name</string>
+    <string name="timer_custom_radio_text">Custom</string>
+    <string name="edit_or_delete_child">Edit Or Delete Child</string>
+    <string name="add_child">Add Child</string>
+    <string name="loonie">Loonie</string>
 </resources>

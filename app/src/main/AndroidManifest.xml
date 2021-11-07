@@ -11,6 +11,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".CoinFlipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".TimerActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EditOrDeleteChild"
+            android:exported="true"
+            android:label="@string/title_activity_edit_or_delete_child"
+            android:parentActivityName=".ListOfChildren"
+            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
+        <activity
+            android:name=".ListOfChildren"
+            android:exported="true"
+            android:label="@string/title_activity_list_of_children"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
