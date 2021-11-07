@@ -1,44 +1,34 @@
-package ca.cmpt276.chlorinefinalproject.model;
+package Model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class game {
-
-    private child picked;
-
-    private coin coin;
-
+public class Game {
+    private Child picked;
+    private Coin coin;
     private LocalDateTime time;
 
-    public game(child picked,coin coin) {
-
+    public Game(Child picked, Coin coin) {
         this.picked = picked;
-
         this.coin = coin;
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
         time = LocalDateTime.now();
 
     }
 
-    // Setters and Getters
-
-
-    public child getPicked() {
+    public Child getPicked() {
         return picked;
     }
 
-    public void setPicked(child picked) {
+    public void setPicked(Child picked) {
         this.picked = picked;
     }
 
-    public ca.cmpt276.chlorinefinalproject.model.coin getCoin() {
+    public Coin getCoin() {
         return coin;
     }
 
-    public void setCoin(ca.cmpt276.chlorinefinalproject.model.coin coin) {
+    public void setCoin(Coin coin) {
         this.coin = coin;
     }
 
@@ -49,6 +39,4 @@ public class game {
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
-
-
 }

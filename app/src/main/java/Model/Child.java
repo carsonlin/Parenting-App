@@ -1,21 +1,17 @@
-package ca.cmpt276.chlorinefinalproject.model;
+package Model;
 
-public class child {
-
+public class Child {
     private String name;
-
     private boolean heads;
 
-    public child(String name) {
+    public Child(String name) {
         this.name = name;
     }
 
-    public child(String name, boolean heads) {
+    public Child(String name, boolean heads) {
         this.name = name;
         this.heads = heads;
     }
-
-    // Settters and Getter s
 
     public String getName() {
         return name;

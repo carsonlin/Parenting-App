@@ -1,25 +1,21 @@
-package ca.cmpt276.chlorinefinalproject.model;
+package Model;
 
-public class flipoutcome {
-
-    private  boolean head;
-
+public class FlipOutcome {
+    private boolean isHead;
     private float animationTime;
 
-    public flipoutcome(boolean head, float animationTime) {
-        this.head = head;
+    public FlipOutcome(boolean isHead, float animationTime) {
+        this.isHead = isHead;
         this.animationTime = animationTime;
     }
 
-
     public boolean isHead() {
-        return head;
+        return isHead;
     }
 
-    public void setHead(boolean head) {
-        this.head = head;
+    public void setHead(boolean isHead) {
+        this.isHead = isHead;
     }
-
 
     public float getAnimationTime() {
         return animationTime;

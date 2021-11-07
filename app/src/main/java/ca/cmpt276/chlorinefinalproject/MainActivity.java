@@ -1,12 +1,11 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
-import ca.cmpt276.chlorinefinalproject.model.coin;
+import androidx.appcompat.app.AppCompatActivity;
+
+import Model.Coin;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,18 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
         cardFace = findViewById(R.id.main_activity_card_face);
 
-        coin coin = new coin(MainActivity.this,cardFace);
+        Coin coin = new Coin(MainActivity.this, cardFace);
 
-        cardFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                System.out.println("head? "+coin.flip().isHead());
-
-            }
-        });
-
-
-
+        cardFace.setOnClickListener(view -> System.out.println("head? " + coin.flip().isHead()));
     }
 }
