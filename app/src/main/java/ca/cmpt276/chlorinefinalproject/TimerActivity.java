@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -33,6 +31,7 @@ public class TimerActivity extends AppCompatActivity {
 
         setUpTimerButtons();
         setUpDurationRadioButtons();
+        setComponentVisibility(false);
     }
 
     private void setUpDurationRadioButtons() {
@@ -61,7 +60,7 @@ public class TimerActivity extends AppCompatActivity {
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
             startTimer(timerDurationInMillis);
-            startBtn.setVisibility(View.INVISIBLE);
+            setComponentVisibility(true);
         });
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
@@ -122,12 +121,27 @@ public class TimerActivity extends AppCompatActivity {
         isTimerPaused = false;
 
         // Reset button text and visibility
-        start.setVisibility(View.VISIBLE);
+        setComponentVisibility(false);
         pause.setText("Pause");
     }
 
     private long convertMinutesToMillis(int numMinutes){
         return numMinutes * (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+    }
+
+    private void setComponentVisibility(boolean isTimerRunning) {
+        // Timer is currently running, display pause and reset buttons
+        if (isTimerRunning){
+            findViewById(R.id.timer_duration_radiogroup).setVisibility(View.INVISIBLE);
+            findViewById(R.id.timer_start_button).setVisibility(View.INVISIBLE);
+            findViewById(R.id.timer_button_group).setVisibility(View.VISIBLE);
+        }
+        // Timer is not running, display duration inputs and start button
+        else{
+            findViewById(R.id.timer_duration_radiogroup).setVisibility(View.VISIBLE);
+            findViewById(R.id.timer_start_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.timer_button_group).setVisibility(View.INVISIBLE);
+        }
     }
 
     public static Intent makeIntent(Context context){
