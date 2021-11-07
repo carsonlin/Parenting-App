@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ChlorineFinalProject</string>
+    <string name="practical_parent">Practical Parent</string>
+    <string name="coin_flip">Coin Flip</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="configure_children">Configure Children</string>
 </resources>
