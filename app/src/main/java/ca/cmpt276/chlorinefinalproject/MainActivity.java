@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         //setupButton(R.id.coinFlipButton, {name of coin flipping class}.class);
         //setupButton(R.id.timerButton, {name of timer class}.class);
-        //setupButton(R.id.childrenConfigButton, {name of add children class}.class);
+        setupButton(R.id.childrenConfigButton, listOfChildren.class);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
