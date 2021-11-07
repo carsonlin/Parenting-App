@@ -75,14 +75,14 @@ public class coin {
     /*
      *
      * flips image
-     * at every 90 mulitple images are alternated
+     * at every 90 multiple images are alternated
      *
      * */
     public void flipanimation() {
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
 
-        // arbitary 100, was a sweet spot
+        // arbitrary 100, was a sweet spot
         animation.setDuration(100);
 
         animation.addListener(new AnimatorListenerAdapter() {
