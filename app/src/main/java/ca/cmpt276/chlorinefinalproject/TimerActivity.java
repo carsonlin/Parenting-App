@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -30,14 +33,41 @@ public class TimerActivity extends AppCompatActivity {
         timerText.setText(getString(R.string.timer_textview, 0, 0));
 
         setUpTimerButtons();
-        setUpDurationRadioButtons();
+        setUpInputRadioButtons();
+        setUpCustomInput();
         setComponentVisibility(false);
     }
 
-    private void setUpDurationRadioButtons() {
+    private void setUpCustomInput() {
+        // Text watcher for the custom input edit text
+        EditText editText = findViewById(R.id.timer_custom_input);
+
+        // Grab EditText data on change
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                try{
+                    int customDuration = Integer.parseInt(editText.getText().toString());
+                    timerDurationInMillis = convertMinutesToMillis(customDuration);
+                }
+                catch (NumberFormatException ignored){ }
+            }
+        });
+    }
+
+    private void setUpInputRadioButtons() {
         RadioGroup group = findViewById(R.id.timer_duration_radiogroup);
         int[] durations = getResources().getIntArray(R.array.timer_durations);
 
+        // Create buttons from array of durations
         for (int minutes : durations) {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timer_radio_button_text, minutes));
@@ -47,12 +77,28 @@ public class TimerActivity extends AppCompatActivity {
             group.addView(btn);
         }
 
-        // Add custom duration input radio button
+        // Create custom input radio button
         RadioButton customBtn = new RadioButton(this);
         customBtn.setText("Custom");
+        group.addView(customBtn);
 
-        customBtn.setOnClickListener(view -> {
-            // Set EditText visibility here
+        // Set radio group listener for visibility of custom input edit text
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                EditText editText = findViewById(R.id.timer_custom_input);
+                if (checkedId == customBtn.getId()){
+                    editText.setVisibility(View.VISIBLE);
+                    try{
+                        int customDuration = Integer.parseInt(editText.getText().toString());
+                        timerDurationInMillis = convertMinutesToMillis(customDuration);
+                    }
+                    catch (NumberFormatException ignored){ }
+                }
+                else{
+                    editText.setVisibility(View.INVISIBLE);
+                }
+            }
         });
     }
 
@@ -132,13 +178,13 @@ public class TimerActivity extends AppCompatActivity {
     private void setComponentVisibility(boolean isTimerRunning) {
         // Timer is currently running, display pause and reset buttons
         if (isTimerRunning){
-            findViewById(R.id.timer_duration_radiogroup).setVisibility(View.INVISIBLE);
+            findViewById(R.id.timer_duration_inputs).setVisibility(View.INVISIBLE);
             findViewById(R.id.timer_start_button).setVisibility(View.INVISIBLE);
             findViewById(R.id.timer_button_group).setVisibility(View.VISIBLE);
         }
         // Timer is not running, display duration inputs and start button
         else{
-            findViewById(R.id.timer_duration_radiogroup).setVisibility(View.VISIBLE);
+            findViewById(R.id.timer_duration_inputs).setVisibility(View.VISIBLE);
             findViewById(R.id.timer_start_button).setVisibility(View.VISIBLE);
             findViewById(R.id.timer_button_group).setVisibility(View.INVISIBLE);
         }
