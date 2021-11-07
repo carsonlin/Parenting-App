@@ -79,25 +79,26 @@ public class TimerActivity extends AppCompatActivity {
 
         // Create custom input radio button
         RadioButton customBtn = new RadioButton(this);
-        customBtn.setText("Custom");
+        customBtn.setText(R.string.timer_custom_radio_text);
+        customBtn.setOnClickListener(view -> {
+            EditText editText = findViewById(R.id.timer_custom_input);
+            editText.setText("");
+        });
         group.addView(customBtn);
 
         // Set radio group listener for visibility of custom input edit text
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                EditText editText = findViewById(R.id.timer_custom_input);
-                if (checkedId == customBtn.getId()){
-                    editText.setVisibility(View.VISIBLE);
-                    try{
-                        int customDuration = Integer.parseInt(editText.getText().toString());
-                        timerDurationInMillis = convertMinutesToMillis(customDuration);
-                    }
-                    catch (NumberFormatException ignored){ }
+        group.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            EditText editText = findViewById(R.id.timer_custom_input);
+            if (checkedId == customBtn.getId()){
+                editText.setVisibility(View.VISIBLE);
+                try{
+                    int customDuration = Integer.parseInt(editText.getText().toString());
+                    timerDurationInMillis = convertMinutesToMillis(customDuration);
                 }
-                else{
-                    editText.setVisibility(View.INVISIBLE);
-                }
+                catch (NumberFormatException ignored){ }
+            }
+            else{
+                editText.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -114,11 +115,11 @@ public class TimerActivity extends AppCompatActivity {
             if (timer != null){
                 if (isTimerPaused){
                     resumeTimer();
-                    pauseBtn.setText("Pause");
+                    pauseBtn.setText(R.string.timer_pause_button_text);
                 }
                 else{
                     pauseTimer();
-                    pauseBtn.setText("Resume");
+                    pauseBtn.setText(R.string.timer_resume_button_text);
                 }
             }
         });
@@ -168,7 +169,7 @@ public class TimerActivity extends AppCompatActivity {
 
         // Reset button text and visibility
         setComponentVisibility(false);
-        pause.setText("Pause");
+        pause.setText(R.string.timer_pause_button_text);
     }
 
     private long convertMinutesToMillis(int numMinutes){

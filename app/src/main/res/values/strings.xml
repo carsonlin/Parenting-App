@@ -20,7 +20,9 @@
     <string name="timer_textview">"%1$d : %2$02d"</string>
     <string name="timer_start_button_text">Start</string>
     <string name="timer_pause_button_text">Pause</string>
+    <string name="timer_resume_button_text">Resume</string>
     <string name="timer_reset_button_text">Reset</string>
     <string name="timer_radio_button_text">"%1d Minutes"</string>
     <string name="name">Name</string>
+    <string name="timer_custom_radio_text">Custom</string>
 </resources>
