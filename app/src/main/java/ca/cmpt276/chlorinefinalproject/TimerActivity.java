@@ -190,8 +190,4 @@ public class TimerActivity extends AppCompatActivity {
             findViewById(R.id.timer_button_group).setVisibility(View.INVISIBLE);
         }
     }
-
-    public static Intent makeIntent(Context context){
-        return new Intent(context, TimerActivity.class);
-    }
 }
