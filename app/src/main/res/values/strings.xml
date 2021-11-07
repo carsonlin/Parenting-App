@@ -4,4 +4,5 @@
     <string name="timer_start_button_text">Start</string>
     <string name="timer_pause_button_text">Pause</string>
     <string name="timer_reset_button_text">Reset</string>
+    <string name="timer_radio_button_text">"%1d Minutes"</string>
 </resources>

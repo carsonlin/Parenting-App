@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
@@ -26,11 +29,32 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         timerText = findViewById(R.id.timer_text_view);
-        setUpTimerButtons();
+        timerText.setText(getString(R.string.timer_textview, 0, 0));
 
-        // TODO : Handle custom duration inputs
-        timerDurationInMillis = convertMinutesToMillis(1);
-//        timerTotalDurationInMillis = 20000;
+        setUpTimerButtons();
+        setUpDurationRadioButtons();
+    }
+
+    private void setUpDurationRadioButtons() {
+        RadioGroup group = findViewById(R.id.timer_duration_radiogroup);
+        int[] durations = getResources().getIntArray(R.array.timer_durations);
+
+        for (int minutes : durations) {
+            RadioButton btn = new RadioButton(this);
+            btn.setText(getString(R.string.timer_radio_button_text, minutes));
+
+            btn.setOnClickListener(view -> timerDurationInMillis = convertMinutesToMillis(minutes));
+
+            group.addView(btn);
+        }
+
+        // Add custom duration input radio button
+        RadioButton customBtn = new RadioButton(this);
+        customBtn.setText("Custom");
+
+        customBtn.setOnClickListener(view -> {
+            // Set EditText visibility here
+        });
     }
 
     private void setUpTimerButtons() {
