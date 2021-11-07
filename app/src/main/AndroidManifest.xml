@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".TimerActivity"
+            android:exported="true" />
+        <activity
             android:name=".EditOrDeleteChild"
             android:exported="true"
             android:label="@string/title_activity_edit_or_delete_child"
