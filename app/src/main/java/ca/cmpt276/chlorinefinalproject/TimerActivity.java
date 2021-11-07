@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
+    public static final int NUM_MILLIS_IN_SECOND = 1000;
+    public static final int NUM_SECONDS_IN_MINUTE = 60;
     private CountDownTimer timer;
     private TextView timerText;
     private boolean isTimerPaused;
-    private long timerTotalDurationInMillis;
+    private long timerDurationInMillis;
     private long timeLeftInMillis;
 
     @Override
@@ -26,14 +29,14 @@ public class TimerActivity extends AppCompatActivity {
         setUpTimerButtons();
 
         // TODO : Handle custom duration inputs
-        timerTotalDurationInMillis = convertMinutesToMillis(1);
+        timerDurationInMillis = convertMinutesToMillis(1);
+//        timerTotalDurationInMillis = 20000;
     }
 
     private void setUpTimerButtons() {
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
-            startTimer(timerTotalDurationInMillis);
-            // Make button invisible -> can only start once
+            startTimer(timerDurationInMillis);
             startBtn.setVisibility(View.INVISIBLE);
         });
 
@@ -56,12 +59,15 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void startTimer(long durationInMillis){
-        timer = new CountDownTimer(durationInMillis, 1000) {
+        timer = new CountDownTimer(durationInMillis, NUM_MILLIS_IN_SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
-                // Remember the time left
+                // Remember the time left after each tick
                 timeLeftInMillis = millisUntilFinished;
-                timerText.setText(String.valueOf(millisUntilFinished / 1000));
+                // Update timer textview
+                long minutes = millisUntilFinished / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+                long seconds = (millisUntilFinished / NUM_MILLIS_IN_SECOND) - minutes * NUM_SECONDS_IN_MINUTE;
+                timerText.setText(getString(R.string.timer_textview, minutes, seconds));
             }
 
             @Override
@@ -84,10 +90,11 @@ public class TimerActivity extends AppCompatActivity {
         isTimerPaused = false;
     }
 
+    // TODO Clean this function up
     private void resetTimer(Button start, Button pause){
         // Reset timer
         timer.cancel();
-        timerText.setText("0");
+        timerText.setText(getString(R.string.timer_textview, 0, 0));
         isTimerPaused = false;
 
         // Reset button text and visibility
@@ -96,8 +103,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private long convertMinutesToMillis(int numMinutes){
-        // 60000 milliseconds in a minute
-        return numMinutes * 60000L;
+        return numMinutes * (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
     }
 
     public static Intent makeIntent(Context context){
