@@ -16,8 +16,12 @@ import java.util.ArrayList;
 *
 * */
 
-public class gameManager {
+/*
+ shared preferences not implemented
+ needs implementation
+ */
 
+public class gameManager {
 
     private ArrayList<game> games = new ArrayList<game>();
 
