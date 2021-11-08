@@ -35,6 +35,10 @@ public class ConfigureChildren {
         }
     }
 
+    public void clearChildren(){
+        listOfChildren.clear();
+    }
+
     public String getChild(int index){
         return listOfChildren.get(index);
     }
