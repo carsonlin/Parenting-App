@@ -2,25 +2,31 @@ package ca.cmpt276.chlorinefinalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TimerActivity extends AppCompatActivity {
     public static final int NUM_MILLIS_IN_SECOND = 1000;
     public static final int NUM_SECONDS_IN_MINUTE = 60;
+    public static final String REMAINING_TIME = "remainingTime";
+    public static final String INTENT_FILTER = "time";
     private CountDownTimer timer;
     private TextView timerText;
-    private boolean isTimerPaused;
+    private boolean isTimerPaused = false;
     private long timerDurationInMillis;
     private long timeLeftInMillis;
 
@@ -35,14 +41,74 @@ public class TimerActivity extends AppCompatActivity {
         setUpTimerButtons();
         setUpInputRadioButtons();
         setUpCustomInput();
-        setComponentVisibility(false);
+        setComponentVisibility(TimerService.isRunning());
+
+        IntentFilter filter = new IntentFilter(INTENT_FILTER);
+        this.registerReceiver(br, filter);
+
+    }
+
+    BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            timeLeftInMillis = intent.getLongExtra(REMAINING_TIME, 0);
+            long minutes = timeLeftInMillis / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+            long seconds = (timeLeftInMillis / NUM_MILLIS_IN_SECOND) - minutes * NUM_SECONDS_IN_MINUTE;
+            timerText.setText(getString(R.string.timer_textview, minutes, seconds));
+        }
+    };
+
+    public void startTimerService(long timeInMs){
+        Intent serviceIntent = new Intent(this, TimerService.class);
+        serviceIntent.putExtra(REMAINING_TIME, timeInMs);
+        startService(serviceIntent);
+        isTimerPaused = false;
+    }
+
+    public void stopTimerService(){
+        Intent serviceIntent = new Intent(this, TimerService.class);
+        stopService(serviceIntent);
+        isTimerPaused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(INTENT_FILTER);
+        this.registerReceiver(br, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(br);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(br);
+        }
+        catch (IllegalArgumentException e){
+            // already unregistered
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(br);
+        }
+        catch (IllegalArgumentException e){
+            // already unregistered
+        }
     }
 
     private void setUpCustomInput() {
-        // Text watcher for the custom input edit text
         EditText editText = findViewById(R.id.timer_custom_input);
 
-        // Grab EditText data on change
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -71,9 +137,7 @@ public class TimerActivity extends AppCompatActivity {
         for (int minutes : durations) {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timer_radio_button_text, minutes));
-
             btn.setOnClickListener(view -> timerDurationInMillis = convertMinutesToMillis(minutes));
-
             group.addView(btn);
         }
 
@@ -106,68 +170,32 @@ public class TimerActivity extends AppCompatActivity {
     private void setUpTimerButtons() {
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
-            startTimer(timerDurationInMillis);
             setComponentVisibility(true);
+            startTimerService(timerDurationInMillis);
         });
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
         pauseBtn.setOnClickListener(view -> {
-            if (timer != null){
-                if (isTimerPaused){
-                    resumeTimer();
-                    pauseBtn.setText(R.string.timer_pause_button_text);
-                }
-                else{
-                    pauseTimer();
-                    pauseBtn.setText(R.string.timer_resume_button_text);
-                }
+            if (isTimerPaused){
+                startTimerService(timeLeftInMillis);
+                pauseBtn.setText(R.string.timer_pause_button_text);
+            }
+            else{
+                stopTimerService();
+                pauseBtn.setText(R.string.timer_resume_button_text);
             }
         });
 
         Button resetBtn = findViewById(R.id.timer_reset_button);
-        resetBtn.setOnClickListener(view -> resetTimer(startBtn, pauseBtn));
+        resetBtn.setOnClickListener(view -> {
+            resetTimer(startBtn, pauseBtn);
+            stopTimerService();
+        });
     }
 
-    private void startTimer(long durationInMillis){
-        timer = new CountDownTimer(durationInMillis, NUM_MILLIS_IN_SECOND) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // Remember the time left after each tick
-                timeLeftInMillis = millisUntilFinished;
-                // Update timer textview
-                long minutes = millisUntilFinished / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
-                long seconds = (millisUntilFinished / NUM_MILLIS_IN_SECOND) - minutes * NUM_SECONDS_IN_MINUTE;
-                timerText.setText(getString(R.string.timer_textview, minutes, seconds));
-            }
-
-            @Override
-            public void onFinish() {
-                // TODO: Handle timer finish notification and sound here
-            }
-        };
-        timer.start();
-        isTimerPaused = false;
-    }
-
-    private void pauseTimer(){
-        timer.cancel();
-        isTimerPaused = true;
-    }
-
-    private void resumeTimer(){
-        // Resume timer using timeLeftInMillis
-        startTimer(timeLeftInMillis);
-        isTimerPaused = false;
-    }
-
-    // TODO Clean this function up
     private void resetTimer(Button start, Button pause){
-        // Reset timer
-        timer.cancel();
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         isTimerPaused = false;
-
-        // Reset button text and visibility
         setComponentVisibility(false);
         pause.setText(R.string.timer_pause_button_text);
     }
