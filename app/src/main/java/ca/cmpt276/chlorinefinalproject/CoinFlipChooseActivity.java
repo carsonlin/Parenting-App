@@ -12,15 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
 
 public class CoinFlipChooseActivity extends AppCompatActivity {
     private ActivityCoinFlipChooseBinding binding;
-    private GameManager gameManager;
     private RecyclerView recyclerView;
-    private ArrayList<String> children;
+    private ArrayList<String> listOfChildren;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +27,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        gameManager = new GameManager(CoinFlipChooseActivity.this);
-        children = gameManager.getNextChildrenToPick();
+        listOfChildren = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();
         setUpActionBar();
@@ -54,13 +51,12 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     }
 
     public void setAdapters(){
-        RecyclerViewChildrenPick adapter = new RecyclerViewChildrenPick(children,getApplicationContext());
+        RecyclerViewChildrenPick adapter = new RecyclerViewChildrenPick(listOfChildren,getApplicationContext());
 
-        if (children.isEmpty()) {
+        if (listOfChildren.isEmpty()) {
             adapter.goToToss("", "");
             finish();
         }
-
         else {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
