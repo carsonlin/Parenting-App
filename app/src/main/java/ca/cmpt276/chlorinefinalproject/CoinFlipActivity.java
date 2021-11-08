@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,9 +26,12 @@ public class CoinFlipActivity extends AppCompatActivity {
     private ActivityCoinFlipBinding binding;
     private GameManager gameManager;
     private Coin coin;
-    ImageView cardFace;
-    boolean head;
-    String child;
+    private TextView editTextChildPick;
+    private TextView editTextGamecount;
+    private TextView editTextgameHistory;
+    private ImageView cardFace;
+    private boolean head;
+    private String child;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +40,25 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         binding = ActivityCoinFlipBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        cardFace = (ImageView) findViewById(R.id.main_activity_card_face);
+        editTextChildPick = (TextView) findViewById(R.id.editTextChildPick);
+        editTextGamecount = (TextView) findViewById(R.id.textViewgameHistory);
+        editTextgameHistory = (TextView) findViewById(R.id.editTextHistory);
         Intent intent = getIntent();
         child = intent.getStringExtra("child");
-        head = intent.getStringExtra("bet")=="head"?true:false;
+        head = intent.getStringExtra("bet").equals("head")==true?true:false;
         setUpActionBar();
-        cardFace = findViewById(R.id.main_activity_card_face);
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this,coin);
         cardFace.setOnClickListener(view -> coin.flip());
+        editTextGamecount.setText(gameManager.savedGames().size()+" plays");
 
-        System.out.println("saved games: "+gameManager.savedGames().size());
+        editTextgameHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -78,9 +92,11 @@ public class CoinFlipActivity extends AppCompatActivity {
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
         String headtext = this.child + " flip coin";
+        editTextChildPick.setText(this.child+" picked"+(this.head==true?" Heads":" Tails"));
 
         if (this.child.isEmpty()){
             headtext = " flip coin ";
+            editTextChildPick.setText("no child configured");
         }
 
         ab.setTitle(headtext);

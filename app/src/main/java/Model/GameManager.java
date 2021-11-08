@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,8 @@ public class GameManager {
         for (int i = 0; i < this.games.size(); i++) {
             Game game = this.games.get(i);
             childPick child = game.getChild();
-            history += child.getName() + "," + child.isHeads() + "," + game.isHead() + "," + game.getTime().toString() + "%";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            history += child.getName() + "," + child.isHeads() + "," + game.isHead() + "," + game.getTime().format(formatter) + "%";
         }
 
 
