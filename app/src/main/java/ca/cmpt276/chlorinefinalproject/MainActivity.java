@@ -1,6 +1,8 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -13,9 +15,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupButton(R.id.coinFlipButton, CoinFlipActivity.class);
+        setupButton(R.id.coinFlipButton, ListOfChildrenToChoose.class);
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildren.class);
+
+
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){

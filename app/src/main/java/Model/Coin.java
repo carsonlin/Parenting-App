@@ -25,14 +25,41 @@ public class Coin {
     int flip;
     boolean head = true;
     private int stop;
+    private boolean animating;
+    private boolean interacted;
     private final Activity context;
 
     public Coin(Activity context, ImageView coin){
         this.context = context;
         this.coin = coin;
+        this.interacted = false;
     }
 
-    public FlipOutcome flip(){
+    public boolean isAnimating() {
+        return animating;
+    }
+
+    public boolean isHead() {
+        return head;
+    }
+
+    public void setHead(boolean head) {
+        this.head = head;
+    }
+
+    public void setAnimating(boolean animating) {
+        this.animating = animating;
+    }
+
+    public boolean isInteracted() {
+        return interacted;
+    }
+
+    public void setInteracted(boolean interacted) {
+        this.interacted = interacted;
+    }
+
+    public void flip(){
         // generate random stopping point every time Coin is flipped
         generateRandom(LOWER_BOUND, UPPER_BOUND);
 
@@ -40,7 +67,6 @@ public class Coin {
         mp.start();
 
         flipAnimation();
-        return new FlipOutcome(head, (100 * stop));
     }
 
     private void generateRandom(int startOfRange, int endOfRange){
@@ -50,6 +76,8 @@ public class Coin {
 
     // flips image at every 90 multiple images are alternated
     public void flipAnimation() {
+        interacted = true;
+        animating = true;
         ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
         // arbitrary 100, was a sweet spot
         animation.setDuration(100);
@@ -73,6 +101,7 @@ public class Coin {
                     flipAnimation();
                 else {
                     flip = 0;
+                    animating = false;
                     generateRandom(LOWER_BOUND, UPPER_BOUND);
                 }
             }

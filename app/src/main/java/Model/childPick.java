@@ -1,14 +1,14 @@
 package Model;
 
-public class Child {
+public class childPick {
     private String name;
     private boolean heads;
 
-    public Child(String name) {
+    public childPick(String name) {
         this.name = name;
     }
 
-    public Child(String name, boolean heads) {
+    public childPick(String name, boolean heads) {
         this.name = name;
         this.heads = heads;
     }

@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".ListOfChildrenToChoose"
+            android:exported="true" />
+        <activity
             android:name=".CoinFlipActivity"
             android:exported="true" />
         <activity
