@@ -1,5 +1,7 @@
 package Model;
 
+import static ca.cmpt276.chlorinefinalproject.EditOrDeleteChildActivity.getChildrenSharedPreferences;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,23 +29,13 @@ public class GameManager {
 
     public static final String GAME_HISTORY = "gameHistory";
     private final ArrayList<Game> games;
-    private final ConfigureChildren childrenConfig;
     private final ArrayList<String> childrenList;
     private final Activity context;
 
     public GameManager(Activity activity) {
         this.context = activity;
-        this.childrenConfig = ConfigureChildren.getInstance();
         this.games = getSavedGamesFromSharedPreferences();
-        this.childrenList = loadChildren();
-    }
-
-    private ArrayList<String> loadChildren() {
-        ArrayList<String> childrenTemp = new ArrayList<>();
-        for (int i = 0; i < childrenConfig.getListSize(); i++) {
-            childrenTemp.add(childrenConfig.getChild(i));
-        }
-        return childrenTemp;
+        this.childrenList = (ArrayList<String>) getChildrenSharedPreferences(context.getApplicationContext());
     }
 
     public void saveGameToSharedPreference() {
@@ -59,16 +51,20 @@ public class GameManager {
             child name, child if picked head, if the games outcome was head, game time string .(SEPARATOR)
     */
     public String createGameHistoryString() {
-        String history = "";
+        StringBuilder history = new StringBuilder();
 
         for (int i = 0; i < this.games.size(); i++) {
             Game game = this.games.get(i);
             childPick child = game.getChild();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            history += child.getName() + "," + child.isHeads() + "," + game.isHead() + "," + game.getTime().format(formatter) + "%";
+            history.append(child.getName()).append(",")
+                    .append(child.isHeads()).append(",")
+                    .append(game.isHead()).append(",")
+                    .append(game.getTime().format(formatter))
+                    .append("%");
         }
 
-        return history;
+        return history.toString();
     }
 
     public ArrayList<Game> getSavedGamesFromSharedPreferences() {
