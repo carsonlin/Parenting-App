@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Game {
-    private childPick child;
+    private ChildPick child;
     private LocalDateTime time;
     private boolean head;
 
-    public Game(childPick child) {
+    public Game(ChildPick child) {
         this.child = child;
         time = LocalDateTime.now();
     }
@@ -21,11 +21,11 @@ public class Game {
         this.head = head;
     }
 
-    public childPick getChild() {
+    public ChildPick getChild() {
         return child;
     }
 
-    public void setChild(childPick child) {
+    public void setChild(ChildPick child) {
         this.child = child;
     }
 
