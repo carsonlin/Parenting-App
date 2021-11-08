@@ -31,6 +31,8 @@ public class App extends Application {
     private void createNotificationChannelLoud() {
         NotificationChannel timerRingChannel = new NotificationChannel(CHANNEL_ID_RING, TIMER_RING_CHANNEL, NotificationManager.IMPORTANCE_HIGH);
 
+        timerRingChannel.setVibrationPattern(new long[] {500, 1000, 500, 1000, 500, 1000});
+
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
         AudioAttributes audioAttributes = new AudioAttributes.Builder()

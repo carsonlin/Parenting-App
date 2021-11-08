@@ -37,10 +37,8 @@ public class TimerService extends Service {
         Intent notificationIntent = new Intent(this, TimerActivity.class);
         Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         Intent[] intents = {mainIntent, notificationIntent};
-        //Intent[] intents = {notificationIntent, mainIntent};
 
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 3, intents, PendingIntent.FLAG_CANCEL_CURRENT);
 
