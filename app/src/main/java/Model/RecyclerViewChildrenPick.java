@@ -16,43 +16,42 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import ca.cmpt276.chlorinefinalproject.CoinFlipActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
-public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewchildrenPick.MyViewHolder> {
+public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
 
-    private ArrayList<String> children;
-    private Context context;
-    public recyclerViewchildrenPick(ArrayList<String> children,Context context){
+    private final ArrayList<String> children;
+    private final Context context;
+    public RecyclerViewChildrenPick(ArrayList<String> children, Context context){
         this.children = children;
         this.context = context;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView nametext;
-        private Button heads;
-        private Button tails;
-        private LinearLayout choiceHolder;
-        private Boolean expaned = false;
+        private final TextView nameText;
+        private final Button heads;
+        private final Button tails;
+        private final LinearLayout choiceHolder;
+        private Boolean isExpanded = false;
 
         public MyViewHolder(final View view){
             super(view);
-            nametext = (TextView) view.findViewById(R.id.childName);
-            heads = (Button) view.findViewById(R.id.head);
-            tails = (Button) view.findViewById(R.id.tail);
-            choiceHolder = (LinearLayout) view.findViewById(R.id.childrenChoiceslinearLayout);
+            nameText = view.findViewById(R.id.childName);
+            heads = view.findViewById(R.id.head);
+            tails = view.findViewById(R.id.tail);
+            choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
             heads.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    goTotoss(children.get(getAdapterPosition()),"head");
+                    goToToss(children.get(getAdapterPosition()),"head");
                 }
             });
             tails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    goTotoss(children.get(getAdapterPosition()),"head");
+                    goToToss(children.get(getAdapterPosition()),"tail");
                 }
             });
             view.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +59,12 @@ public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewc
                 public void onClick(View v) {
                     int visibility = View.VISIBLE;
                     ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 180));
-                    if (expaned) {
+
+                    if (isExpanded) {
                         anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 90));
                         visibility = View.GONE;
                     }
+
                     anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -72,7 +73,6 @@ public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewc
                             layoutParams.height = val;
                             view.setLayoutParams(layoutParams);
                         }
-
                     });
                     int finalVisibility = visibility;
                     anim.addListener(new AnimatorListenerAdapter()
@@ -80,7 +80,7 @@ public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewc
                         @Override
                         public void onAnimationEnd(Animator animation)
                         {
-                            expaned = !expaned;
+                            isExpanded = !isExpanded;
                             choiceHolder.setVisibility(finalVisibility);
                         }
                     });
@@ -88,28 +88,21 @@ public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewc
                     anim.start();
 
                     System.out.println("clicked : " + getAdapterPosition());
-
-
                 }
             });
-
-
         }
-
-
     }
-
 
     @NonNull
     @Override
-    public recyclerViewchildrenPick.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewChildrenPick.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_children_pick_toss,parent,false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull recyclerViewchildrenPick.MyViewHolder holder, int position) {
-        holder.nametext.setText(children.get(position));
+    public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
+        holder.nameText.setText(children.get(position));
     }
 
     /**
@@ -123,14 +116,12 @@ public class recyclerViewchildrenPick extends RecyclerView.Adapter<recyclerViewc
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
-    public void goTotoss(String child,String bet){
-
+    public void goToToss(String child, String bet){
         Intent intent = new Intent(this.context, CoinFlipActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("child", child);
         intent.putExtra("bet",bet);
         this.context.startActivity(intent);
-
     }
 
     @Override
