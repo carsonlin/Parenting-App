@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -171,6 +172,12 @@ public class TimerActivity extends AppCompatActivity {
         startBtn.setOnClickListener(view -> {
             setComponentVisibility(true);
             startTimerService(timerDurationInMillis);
+
+            SharedPreferences sharedPref = this.getSharedPreferences("OriginalTime", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putLong("OriginalTime", timerDurationInMillis);
+            editor.apply();
+
         });
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
@@ -189,7 +196,17 @@ public class TimerActivity extends AppCompatActivity {
         Button resetBtn = findViewById(R.id.timer_reset_button);
         resetBtn.setOnClickListener(view -> {
             resetTimer();
-            stopTimerService();
+
+            SharedPreferences sharedPref = this.getSharedPreferences("OriginalTime", MODE_PRIVATE);
+            long originalTimeMs = sharedPref.getLong("OriginalTime", 0);
+
+            timerDurationInMillis = originalTimeMs;
+
+            long minutes = getMinutesFromMillis(originalTimeMs);
+            long seconds = (originalTimeMs / NUM_MILLIS_IN_SECOND) - minutes * NUM_SECONDS_IN_MINUTE;
+            timerText.setText(getString(R.string.timer_textview, minutes, seconds));
+
+
         });
     }
 
@@ -204,6 +221,14 @@ public class TimerActivity extends AppCompatActivity {
 
     private long convertMinutesToMillis(int numMinutes){
         return numMinutes * (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+    }
+
+    private int getMinutesFromMillis(long ms){
+        return (int) ms / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+    }
+
+    private int getSecondsFromMillis(long ms){
+        return (int) (ms / NUM_MILLIS_IN_SECOND) - (getMinutesFromMillis(ms) * NUM_SECONDS_IN_MINUTE);
     }
 
     private void setComponentVisibility(boolean isTimerRunning) {
