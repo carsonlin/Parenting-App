@@ -3,17 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_edit_or_delete_child.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_list_of_children.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_main.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_timer.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_edit_or_delete_child.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/content_list_of_children.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/list_items.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/layout/listitems.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_editordeletechild.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/Jack/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_listofchildren.xml" value="0.4041666666666667" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.29128205128205126" />
       </map>
     </option>
   </component>
