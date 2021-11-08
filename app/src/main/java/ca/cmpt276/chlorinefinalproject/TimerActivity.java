@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -131,10 +132,15 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setUpTimerButtons() {
+        View layout = findViewById(R.id.timer_layout);
+
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
             startTimer(timerDurationInMillis);
             setComponentVisibility(true);
+
+            layout.setBackgroundResource(R.drawable.sleeping_dog);
+
         });
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
@@ -152,7 +158,12 @@ public class TimerActivity extends AppCompatActivity {
         });
 
         Button resetBtn = findViewById(R.id.timer_reset_button);
-        resetBtn.setOnClickListener(view -> resetTimer(startBtn, pauseBtn));
+        resetBtn.setOnClickListener(view -> {
+            resetTimer(startBtn, pauseBtn);
+
+            layout.setBackgroundResource(0);
+
+        });
     }
 
     private void startTimer(long durationInMillis){
