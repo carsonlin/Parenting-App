@@ -1,6 +1,6 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +15,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
@@ -31,6 +33,8 @@ public class ListOfChildren extends AppCompatActivity {
         binding = ActivityListOfChildrenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
         children = ConfigureChildren.getInstance();
         setUpActionBar();
         populateListView();
@@ -38,15 +42,19 @@ public class ListOfChildren extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ArrayList<String> childrenListView = new ArrayList<>();
-
-        for(int i = 0; i < children.getListSize(); i++){
-            childrenListView.add(children.getChild(i));
+        String childListString = EditOrDeleteChild.getChildrenSharedPreferences(this);
+        List<String> childList = new ArrayList<>(Arrays.asList(childListString.split(",")));
+        if(childList.get(0).equals("") && (childList.size() == 1)){
+            childList.remove(0);
         }
-
+        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
+        children.clearChildren();
+        for(int i = 0; i < childList.size(); i++){
+            children.addChild(childList.get(i));
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.listitems,
-                childrenListView);
+                childList);
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }

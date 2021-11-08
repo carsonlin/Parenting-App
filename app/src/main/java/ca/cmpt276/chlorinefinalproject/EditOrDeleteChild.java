@@ -2,6 +2,7 @@ package ca.cmpt276.chlorinefinalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,8 @@ public class EditOrDeleteChild extends AppCompatActivity {
     private ActivityEditOrDeleteChildBinding binding;
 
     private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
+    private static final String CHILD_LIST = "childList";
+    private static final String PREFERENCES = "appPrefs";
     private String activityName;
     private int position;
     private ConfigureChildren children;
@@ -39,6 +42,9 @@ public class EditOrDeleteChild extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEditOrDeleteChildBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+//        SharedPreferences settings = this.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+//        settings.edit().clear().commit();
 
         children = ConfigureChildren.getInstance();
         setUpUI();
@@ -78,6 +84,7 @@ public class EditOrDeleteChild extends AppCompatActivity {
         Button button = findViewById(R.id.deleteButton);
         button.setOnClickListener(view -> {
             children.deleteChild(position);
+            saveChildrenSharedPreferences();
             finish();
         });
     }
@@ -93,12 +100,32 @@ public class EditOrDeleteChild extends AppCompatActivity {
             }
             if(activityName.equals("add")){
                 children.addChild(text);
+                saveChildrenSharedPreferences();
                 finish();
             }
             if(activityName.equals("edit")){
                 children.editChild(position, text);
+                saveChildrenSharedPreferences();
                 finish();
             }
         });
+    }
+
+    public void saveChildrenSharedPreferences(){
+        SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(CHILD_LIST).apply();
+        String childListString = "";
+        for(int i = 0; i < children.getListSize(); i++){
+            childListString = childListString + children.getChild(i) + ",";
+        }
+        editor.putString(CHILD_LIST, childListString);
+        editor.apply();
+    }
+
+    public static String getChildrenSharedPreferences(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        String childListString = "";
+        return prefs.getString(CHILD_LIST, childListString);
     }
 }
