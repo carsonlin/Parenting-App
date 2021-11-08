@@ -48,7 +48,7 @@
         android:layout_height="40dp"
         android:id="@+id/coinFliptrashHistory"
         android:layout_marginEnd="28dp"
-        android:src=""
+        android:src="@drawable/icons8_trash_50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coinFlipoutcome" />
 
