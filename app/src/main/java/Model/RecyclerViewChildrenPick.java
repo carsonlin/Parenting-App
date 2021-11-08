@@ -31,64 +31,47 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private final TextView nameText;
-        private final Button heads;
-        private final Button tails;
         private final LinearLayout choiceHolder;
         private Boolean isExpanded = false;
 
         public MyViewHolder(final View view){
             super(view);
             nameText = view.findViewById(R.id.childName);
-            heads = view.findViewById(R.id.head);
-            tails = view.findViewById(R.id.tail);
+            Button heads = view.findViewById(R.id.head);
+            Button tails = view.findViewById(R.id.tail);
             choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
-            heads.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    goToToss(children.get(getAdapterPosition()),"head");
-                }
-            });
-            tails.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    goToToss(children.get(getAdapterPosition()),"tail");
-                }
-            });
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int visibility = View.VISIBLE;
-                    ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 180));
 
-                    if (isExpanded) {
-                        anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 90));
-                        visibility = View.GONE;
-                    }
+            heads.setOnClickListener(view1 -> goToToss(children.get(getAdapterPosition()),"head"));
+            tails.setOnClickListener(view12 -> goToToss(children.get(getAdapterPosition()),"tail"));
 
-                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                            int val = (Integer) valueAnimator.getAnimatedValue();
-                            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                            layoutParams.height = val;
-                            view.setLayoutParams(layoutParams);
-                        }
-                    });
-                    int finalVisibility = visibility;
-                    anim.addListener(new AnimatorListenerAdapter()
+            view.setOnClickListener(v -> {
+                int visibility = View.VISIBLE;
+                ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 180));
+
+                if (isExpanded) {
+                    anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 90));
+                    visibility = View.GONE;
+                }
+
+                anim.addUpdateListener(valueAnimator -> {
+                    int val = (Integer) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                    layoutParams.height = val;
+                    view.setLayoutParams(layoutParams);
+                });
+
+                int finalVisibility = visibility;
+
+                anim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
                     {
-                        @Override
-                        public void onAnimationEnd(Animator animation)
-                        {
-                            isExpanded = !isExpanded;
-                            choiceHolder.setVisibility(finalVisibility);
-                        }
-                    });
-                    anim.setDuration(1500);
-                    anim.start();
-
-                    System.out.println("clicked : " + getAdapterPosition());
-                }
+                        isExpanded = !isExpanded;
+                        choiceHolder.setVisibility(finalVisibility);
+                    }
+                });
+                anim.setDuration(1500);
+                anim.start();
             });
         }
     }

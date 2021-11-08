@@ -28,7 +28,8 @@ public class ListOfChildrenToChoose extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_children_to_choose);
         binding = ActivityListOfChildrenToChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        gameManager = new GameManager(ListOfChildrenToChoose.this,null);
+
+        gameManager = new GameManager(ListOfChildrenToChoose.this);
         children = gameManager.getNextChildrenToPick();
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();

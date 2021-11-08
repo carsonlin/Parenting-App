@@ -23,10 +23,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     private GameManager gameManager;
     private Coin coin;
     private TextView editTextChildPick;
-    private TextView editTextGameCount;
-    private TextView editTextGameHistory;
-    private ImageView cardFace;
-    private boolean head;
+    private boolean isHead;
     private String child;
 
     @Override
@@ -37,21 +34,21 @@ public class CoinFlipActivity extends AppCompatActivity {
         binding = ActivityCoinFlipBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        cardFace = findViewById(R.id.main_activity_card_face);
+        ImageView cardFace = findViewById(R.id.main_activity_card_face);
         editTextChildPick = findViewById(R.id.editTextChildPick);
-        editTextGameCount = findViewById(R.id.textViewgameHistory);
-        editTextGameHistory = findViewById(R.id.editTextHistory);
+        TextView editTextGameCount = findViewById(R.id.textViewgameHistory);
+        TextView editTextGameHistory = findViewById(R.id.editTextHistory);
 
         Intent intent = getIntent();
         child = intent.getStringExtra("child");
-        head = intent.getStringExtra("bet").equals("head")==true?true:false;
+        isHead = intent.getStringExtra("bet").equals("head");
 
         setUpActionBar();
 
         coin = new Coin(CoinFlipActivity.this, cardFace);
-        gameManager = new GameManager(CoinFlipActivity.this,coin);
+        gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> coin.flip());
-        editTextGameCount.setText(gameManager.savedGames().size()+" plays");
+        editTextGameCount.setText(gameManager.getSavedGamesFromSharedPreferences().size() + " plays");
 
         editTextGameHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +61,13 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == android.R.id.home){
-            if(!coin.isAnimating()) {
-                childPick childPickInstance = new childPick(child,head);
-                Game game = new Game(childPickInstance,coin);
+
+            if(!coin.isAnimating() && coin.isInteracted()) {
+                childPick childPickInstance = new childPick(child, isHead);
+                Game game = new Game(childPickInstance);
                 game.setHead(coin.isHead());
                 gameManager.addGame(game);
-                gameManager.saveGame();
+                gameManager.saveGameToSharedPreference();
             }
             if (child.isEmpty()){
                 goToMainActivity();
@@ -87,7 +85,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
         String headText = this.child + " flip coin";
-        editTextChildPick.setText(this.child + " picked" + (this.head==true?" Heads":" Tails"));
+        editTextChildPick.setText(this.child + " picked" + (this.isHead ?" Heads":" Tails"));
 
         if (this.child.isEmpty()){
             headText = " flip coin ";

@@ -8,12 +8,9 @@ public class Game {
     private LocalDateTime time;
     private boolean head;
 
-    public Game(childPick child, Coin coin) {
-
+    public Game(childPick child) {
         this.child = child;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         time = LocalDateTime.now();
-
     }
 
     public boolean isHead() {
@@ -43,6 +40,6 @@ public class Game {
     public void setTime(String str){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-
+        setTime(dateTime);
     }
 }

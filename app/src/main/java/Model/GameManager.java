@@ -30,12 +30,11 @@ public class GameManager {
     private final ConfigureChildren childrenConfig;
     private final ArrayList<String> childrenList;
     private final Activity context;
-    private Coin coin;
 
-    public GameManager(Activity activity, Coin coin) {
+    public GameManager(Activity activity) {
         this.context = activity;
         this.childrenConfig = ConfigureChildren.getInstance();
-        this.games = savedGames();
+        this.games = getSavedGamesFromSharedPreferences();
         this.childrenList = loadChildren();
     }
 
@@ -47,7 +46,7 @@ public class GameManager {
         return childrenTemp;
     }
 
-    public void saveGame() {
+    public void saveGameToSharedPreference() {
         System.out.println("saving string "+ createGameHistoryString());
         SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -72,7 +71,7 @@ public class GameManager {
         return history;
     }
 
-    public ArrayList<Game> savedGames() {
+    public ArrayList<Game> getSavedGamesFromSharedPreferences() {
         ArrayList<Game> savedGames = new ArrayList<>();
         SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
         String history = sharedPref.getString(GAME_HISTORY, "");
@@ -87,7 +86,7 @@ public class GameManager {
 
                 String[] gameInstanceStringEncoded = gamesArrayi.split(",");
 
-                Game gameInstance = new Game(null, this.coin);
+                Game gameInstance = new Game(null);
                 childPick child = new childPick("");
                 int i = 0;
 
