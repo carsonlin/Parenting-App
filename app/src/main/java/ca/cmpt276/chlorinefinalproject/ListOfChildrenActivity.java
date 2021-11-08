@@ -1,6 +1,5 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +19,7 @@ import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
 // Activity uses ConfigureChildren class to save and retrieve from shared preferences
-public class ListOfChildren extends AppCompatActivity {
+public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
 
     private ConfigureChildren children;
@@ -54,7 +53,7 @@ public class ListOfChildren extends AppCompatActivity {
     private void registerClickCallback(){
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = EditOrDeleteChild.getAddOrDeleteChildIntent(ListOfChildren.this, "edit", position);
+            Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "edit", position);
             startActivity(i);
         });
     }
@@ -75,7 +74,7 @@ public class ListOfChildren extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
             Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
-            Intent i = EditOrDeleteChild.getAddOrDeleteChildIntent(ListOfChildren.this, "add", -1);
+            Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
             startActivity(i);
             return true;
         }
