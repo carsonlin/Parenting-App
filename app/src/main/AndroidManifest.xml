@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
-            android:name=".CoinFlipChooseActivity"
+            android:name=".ListOfChildrenToChoose"
             android:exported="true" />
         <activity
             android:name=".CoinFlipActivity"
@@ -21,7 +21,7 @@
             android:label="Timeout Timer"
             android:exported="true" />
         <activity
-            android:name=".EditChildActivity"
+            android:name=".EditOrDeleteChildActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_or_delete_child"
             android:parentActivityName=".ListOfChildrenActivity"

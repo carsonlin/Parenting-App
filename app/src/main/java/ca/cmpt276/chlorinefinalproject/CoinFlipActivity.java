@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import Model.Coin;
 import Model.Game;
 import Model.GameManager;
-import Model.ChildPick;
+import Model.childPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipBinding;
 
 public class CoinFlipActivity extends AppCompatActivity {
@@ -63,7 +63,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home){
 
             if(!coin.isAnimating() && coin.isInteracted()) {
-                ChildPick childPickInstance = new ChildPick(child, isHead);
+                childPick childPickInstance = new childPick(child, isHead);
                 Game game = new Game(childPickInstance);
                 game.setHead(coin.isHead());
                 gameManager.addGame(game);
