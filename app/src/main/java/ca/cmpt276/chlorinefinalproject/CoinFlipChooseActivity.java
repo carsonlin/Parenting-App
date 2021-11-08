@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
-import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipBinding;
+import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
 
 public class CoinFlipChooseActivity extends AppCompatActivity {
-    private ActivityCoinFlipBinding binding;
+    private ActivityCoinFlipChooseBinding binding;
     private GameManager gameManager;
     private RecyclerView recyclerView;
     private ArrayList<String> children;
@@ -25,8 +25,8 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_children_to_choose);
-        binding = ActivityCoinFlipBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_coin_flip_choose);
+        binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         gameManager = new GameManager(CoinFlipChooseActivity.this);
