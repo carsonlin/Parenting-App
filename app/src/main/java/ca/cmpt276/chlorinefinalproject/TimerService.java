@@ -15,6 +15,8 @@ import android.os.IBinder;
 
 public class TimerService extends Service {
 
+    private final static long COUNT_DOWN_INTERVAL = 1000;
+
     private CountDownTimer timer;
     public static Boolean isRunning = false;
 
@@ -40,7 +42,7 @@ public class TimerService extends Service {
 
         Intent[] intents = {mainIntent, notificationIntent};
 
-        PendingIntent pendingIntent = PendingIntent.getActivities(this, 3, intents, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivities(this, 3, intents, (PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
 
         Notification notification = new NotificationCompat.Builder(this, channelID)
                 .setContentTitle("Timeout Timer")
@@ -72,7 +74,7 @@ public class TimerService extends Service {
     }
 
     private void startTimer(long durationInMillis){
-        timer = new CountDownTimer(durationInMillis, 1000) {
+        timer = new CountDownTimer(durationInMillis, COUNT_DOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 sendRemainingMs(millisUntilFinished);
