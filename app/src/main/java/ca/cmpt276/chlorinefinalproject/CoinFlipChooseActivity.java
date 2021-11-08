@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
-import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenToChooseBinding;
+import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipBinding;
 
-public class ListOfChildrenToChoose extends AppCompatActivity {
-    private ActivityListOfChildrenToChooseBinding binding;
+public class CoinFlipChooseActivity extends AppCompatActivity {
+    private ActivityCoinFlipBinding binding;
     private GameManager gameManager;
     private RecyclerView recyclerView;
     private ArrayList<String> children;
@@ -26,10 +26,10 @@ public class ListOfChildrenToChoose extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_children_to_choose);
-        binding = ActivityListOfChildrenToChooseBinding.inflate(getLayoutInflater());
+        binding = ActivityCoinFlipBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        gameManager = new GameManager(ListOfChildrenToChoose.this);
+        gameManager = new GameManager(CoinFlipChooseActivity.this);
         children = gameManager.getNextChildrenToPick();
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();

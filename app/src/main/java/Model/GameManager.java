@@ -1,6 +1,6 @@
 package Model;
 
-import static ca.cmpt276.chlorinefinalproject.EditOrDeleteChildActivity.getChildrenSharedPreferences;
+import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,7 +55,7 @@ public class GameManager {
 
         for (int i = 0; i < this.games.size(); i++) {
             Game game = this.games.get(i);
-            childPick child = game.getChild();
+            ChildPick child = game.getChild();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             history.append(child.getName()).append(",")
                     .append(child.isHeads()).append(",")
@@ -83,7 +83,7 @@ public class GameManager {
                 String[] gameInstanceStringEncoded = gamesArrayi.split(",");
 
                 Game gameInstance = new Game(null);
-                childPick child = new childPick("");
+                ChildPick child = new ChildPick("");
                 int i = 0;
 
                 for (String gameInstanceStringDecoded : gameInstanceStringEncoded) {
