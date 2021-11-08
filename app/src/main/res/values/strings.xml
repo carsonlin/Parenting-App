@@ -28,4 +28,5 @@
     <string name="edit_or_delete_child">Edit Or Delete Child</string>
     <string name="add_child">Add Child</string>
     <string name="loonie">Loonie</string>
+    <string name="minutes">minutes</string>
 </resources>
