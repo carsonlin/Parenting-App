@@ -39,7 +39,6 @@ public class GameManager {
     }
 
     public void saveGameToSharedPreference() {
-        System.out.println("saving string "+ createGameHistoryString());
         SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(GAME_HISTORY,this.createGameHistoryString());
@@ -111,6 +110,19 @@ public class GameManager {
 
     public void addGame(Game game) {
         games.add(game);
+    }
+
+    public void removeGamehistory(int index){
+
+        if (index<getSavedGamesFromSharedPreferences().size()){
+
+            this.games.remove(index);
+
+            saveGameToSharedPreference();
+
+
+        }
+
     }
 
     public boolean isEmptyGames() {
