@@ -35,7 +35,14 @@ public class TimerService extends Service {
 
     private void sendNotification(String text, String channelID, int ID) {
         Intent notificationIntent = new Intent(this, TimerActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        Intent[] intents = {mainIntent, notificationIntent};
+        //Intent[] intents = {notificationIntent, mainIntent};
+
+        PendingIntent pendingIntent = PendingIntent.getActivities(this, 3, intents, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, channelID)
                 .setContentTitle("Timeout Timer")
