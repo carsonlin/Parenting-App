@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +11,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,19 +44,21 @@ public class TimerActivity extends AppCompatActivity {
         sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
         timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
 
+        View layout = findViewById(R.id.timer_layout);
+        layout.setBackgroundResource(R.drawable.sleeping_dog);
+
+        setComponentVisibility(true);
+
         if (!TimerService.isRunning()){
             if (timeLeftInMillis != 0){
                 isTimerPaused = true;
-                setComponentVisibility(true);
                 Button pauseBtn = findViewById(R.id.timer_pause_button);
                 pauseBtn.setText(R.string.timer_resume_button_text);
             }
             else{
+                layout.setBackgroundResource(0);
                 setComponentVisibility(false);
             }
-        }
-        else{
-            setComponentVisibility(true);
         }
 
         timerText = findViewById(R.id.timer_text_view);
@@ -147,9 +146,6 @@ public class TimerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
-
-            //probably have to put code here to preserve the timer when leaving the activity
-
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -231,7 +227,6 @@ public class TimerActivity extends AppCompatActivity {
             editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
             editor.apply();
 
-
             layout.setBackgroundResource(R.drawable.sleeping_dog);
 
         });
@@ -240,6 +235,7 @@ public class TimerActivity extends AppCompatActivity {
         pauseBtn.setOnClickListener(view -> {
             if (timeLeftInMillis != 0) {
                 if (isTimerPaused) {
+                    layout.setBackgroundResource(R.drawable.sleeping_dog);
                     startTimerService(timeLeftInMillis);
                     pauseBtn.setText(R.string.timer_pause_button_text);
                 }
@@ -273,9 +269,6 @@ public class TimerActivity extends AppCompatActivity {
         });
     }
 
-
-
-    // TODO Clean this function up
     private void resetTimer(){
         stopTimerService();
         timerText.setText(getString(R.string.timer_textview, 0, 0));
