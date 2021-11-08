@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditOrDeleteChild">
+    tools:context=".EditOrDeleteChildActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -25,22 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/editChildName"
-            android:layout_width="230dp"
-            android:layout_height="69dp"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="textPersonName"
-            android:text="@string/name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor" />
-
         <TextView
             android:id="@+id/childName"
             android:layout_width="173dp"
@@ -56,28 +40,44 @@
 
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="149dp"
+            android:layout_height="49dp"
+            android:background="@drawable/button_background"
             android:text="@string/save_changes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.517"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.612" />
+            app:layout_constraintTop_toBottomOf="@+id/childName"
+            app:layout_constraintVertical_bias="0.29" />
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="149dp"
             android:layout_height="49dp"
             android:text="@string/delete_child"
+            android:background="@drawable/button_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.519"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.677" />
+            app:layout_constraintTop_toBottomOf="@+id/saveButton"
+            app:layout_constraintVertical_bias="0.105" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/editChildName"
+        android:layout_width="230dp"
+        android:layout_height="69dp"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:ems="10"
+        android:gravity="center"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:text="@string/name"
+        android:textSize="24sp"
+        app:layout_anchor="@+id/constraintLayout"
+        app:layout_anchorGravity="center"
+        tools:ignore="LabelFor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
