@@ -1,5 +1,6 @@
 package ca.cmpt276.chlorinefinalproject;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
@@ -36,15 +37,14 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ArrayList<String> childrenListView = new ArrayList<>();
-
-        for(int i = 0; i < children.getListSize(); i++){
-            childrenListView.add(children.getChild(i));
+        List<String> childList = EditOrDeleteChildActivity.getChildrenSharedPreferences(this);
+        children.clearChildren();
+        for(int i = 0; i < childList.size(); i++){
+            children.addChild(childList.get(i));
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.list_items,
-                childrenListView);
+                R.layout.list_items, childList);
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }
