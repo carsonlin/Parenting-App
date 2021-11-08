@@ -44,7 +44,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.listitems,
+                R.layout.list_items,
                 childrenListView);
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);

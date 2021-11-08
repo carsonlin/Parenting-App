@@ -1,13 +1,16 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,10 +35,33 @@ public class TimerActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
 
+        setupToolbar();
+
         setUpTimerButtons();
         setUpInputRadioButtons();
         setUpCustomInput();
         setComponentVisibility(false);
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+
+            //probably have to put code here to preserve the timer when leaving the activity
+
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setUpCustomInput() {
@@ -71,7 +97,7 @@ public class TimerActivity extends AppCompatActivity {
         for (int minutes : durations) {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timer_radio_button_text, minutes));
-
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             btn.setOnClickListener(view -> timerDurationInMillis = convertMinutesToMillis(minutes));
 
             group.addView(btn);
@@ -80,6 +106,7 @@ public class TimerActivity extends AppCompatActivity {
         // Create custom input radio button
         RadioButton customBtn = new RadioButton(this);
         customBtn.setText(R.string.timer_custom_radio_text);
+        customBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         customBtn.setOnClickListener(view -> {
             EditText editText = findViewById(R.id.timer_custom_input);
             editText.setText("");
