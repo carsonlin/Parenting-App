@@ -22,10 +22,10 @@ import ca.cmpt276.chlorinefinalproject.R;
 
 public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
 
-    private final ArrayList<String> children;
+    private final ArrayList<String> listOfChildren;
     private final Context context;
-    public RecyclerViewChildrenPick(ArrayList<String> children, Context context){
-        this.children = children;
+    public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Context context){
+        this.listOfChildren = listOfChildren;
         this.context = context;
     }
 
@@ -37,12 +37,12 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
         public MyViewHolder(final View view){
             super(view);
             nameText = view.findViewById(R.id.childName);
-            Button heads = view.findViewById(R.id.head);
-            Button tails = view.findViewById(R.id.tail);
+            Button headButton = view.findViewById(R.id.head);
+            Button tailsButton = view.findViewById(R.id.tail);
             choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
 
-            heads.setOnClickListener(view1 -> goToToss(children.get(getAdapterPosition()),"head"));
-            tails.setOnClickListener(view12 -> goToToss(children.get(getAdapterPosition()),"tail"));
+            headButton.setOnClickListener(view1 -> goToToss(listOfChildren.get(getAdapterPosition()),"head"));
+            tailsButton.setOnClickListener(view12 -> goToToss(listOfChildren.get(getAdapterPosition()),"tail"));
 
             view.setOnClickListener(v -> {
                 int visibility = View.VISIBLE;
@@ -76,16 +76,12 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
         }
     }
 
-    @NonNull
-    @Override
-    public RecyclerViewChildrenPick.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_children_pick_toss,parent,false);
-        return new MyViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
-        holder.nameText.setText(children.get(position));
+    public void goToToss(String child, String bet){
+        Intent intent = new Intent(this.context, CoinFlipActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("child", child);
+        intent.putExtra("bet", bet);
+        this.context.startActivity(intent);
     }
 
     /**
@@ -99,17 +95,21 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
-    public void goToToss(String child, String bet){
-        Intent intent = new Intent(this.context, CoinFlipActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("child", child);
-        intent.putExtra("bet",bet);
-        this.context.startActivity(intent);
+    @NonNull
+    @Override
+    public RecyclerViewChildrenPick.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_children_pick_toss,parent,false);
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
+        holder.nameText.setText(listOfChildren.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return children.size();
+        return listOfChildren.size();
     }
 }
 
