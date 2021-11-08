@@ -38,7 +38,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        List<String> childList = EditOrDeleteChild.getChildrenSharedPreferences(this);
+        List<String> childList = EditOrDeleteChildActivity.getChildrenSharedPreferences(this);
         children.clearChildren();
         for(int i = 0; i < childList.size(); i++){
             children.addChild(childList.get(i));
