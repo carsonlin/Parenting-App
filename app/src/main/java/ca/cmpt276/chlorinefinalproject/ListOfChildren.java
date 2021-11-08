@@ -1,6 +1,7 @@
 package ca.cmpt276.chlorinefinalproject;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,12 +43,7 @@ public class ListOfChildren extends AppCompatActivity {
     }
 
     private void populateListView() {
-        String childListString = EditOrDeleteChild.getChildrenSharedPreferences(this);
-        List<String> childList = new ArrayList<>(Arrays.asList(childListString.split(",")));
-        if(childList.get(0).equals("") && (childList.size() == 1)){
-            childList.remove(0);
-        }
-        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
+        List<String> childList = EditOrDeleteChild.getChildrenSharedPreferences(this);
         children.clearChildren();
         for(int i = 0; i < childList.size(); i++){
             children.addChild(childList.get(i));

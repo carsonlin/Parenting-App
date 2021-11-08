@@ -13,8 +13,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import androidx.navigation.ui.AppBarConfiguration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
@@ -42,9 +44,6 @@ public class EditOrDeleteChild extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEditOrDeleteChildBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        SharedPreferences settings = this.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-//        settings.edit().clear().commit();
 
         children = ConfigureChildren.getInstance();
         setUpUI();
@@ -115,17 +114,23 @@ public class EditOrDeleteChild extends AppCompatActivity {
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(CHILD_LIST).apply();
-        String childListString = "";
+        StringBuilder childListString = new StringBuilder();
         for(int i = 0; i < children.getListSize(); i++){
-            childListString = childListString + children.getChild(i) + ",";
+            childListString.append(children.getChild(i)).append(",");
         }
-        editor.putString(CHILD_LIST, childListString);
+        editor.putString(CHILD_LIST, childListString.toString());
         editor.apply();
     }
 
-    public static String getChildrenSharedPreferences(Context context){
+    public static List<String> getChildrenSharedPreferences(Context context){
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        String childListString = "";
-        return prefs.getString(CHILD_LIST, childListString);
+        String temp = "";
+        String childListString = prefs.getString(CHILD_LIST, temp);
+        List<String> childList = new ArrayList<>(Arrays.asList(childListString.split(",")));
+        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
+        if(childList.get(0).equals("") && (childList.size() == 1)){
+            childList.remove(0);
+        }
+        return childList;
     }
 }
