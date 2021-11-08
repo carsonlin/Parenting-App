@@ -24,7 +24,6 @@ public class TimerActivity extends AppCompatActivity {
     public static final int NUM_SECONDS_IN_MINUTE = 60;
     public static final String REMAINING_TIME = "remainingTime";
     public static final String INTENT_FILTER = "time";
-    private CountDownTimer timer;
     private TextView timerText;
     private boolean isTimerPaused = false;
     private long timerDurationInMillis;
@@ -176,28 +175,31 @@ public class TimerActivity extends AppCompatActivity {
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
         pauseBtn.setOnClickListener(view -> {
-            if (isTimerPaused){
-                startTimerService(timeLeftInMillis);
-                pauseBtn.setText(R.string.timer_pause_button_text);
-            }
-            else{
-                stopTimerService();
-                pauseBtn.setText(R.string.timer_resume_button_text);
+            if (timeLeftInMillis != 0) {
+                if (isTimerPaused) {
+                    startTimerService(timeLeftInMillis);
+                    pauseBtn.setText(R.string.timer_pause_button_text);
+                } else {
+                    stopTimerService();
+                    pauseBtn.setText(R.string.timer_resume_button_text);
+                }
             }
         });
 
         Button resetBtn = findViewById(R.id.timer_reset_button);
         resetBtn.setOnClickListener(view -> {
-            resetTimer(startBtn, pauseBtn);
+            resetTimer();
             stopTimerService();
         });
     }
 
-    private void resetTimer(Button start, Button pause){
+    private void resetTimer(){
+        stopTimerService();
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         isTimerPaused = false;
         setComponentVisibility(false);
-        pause.setText(R.string.timer_pause_button_text);
+        Button pauseButton = findViewById(R.id.timer_pause_button);
+        pauseButton.setText(R.string.timer_pause_button_text);
     }
 
     private long convertMinutesToMillis(int numMinutes){

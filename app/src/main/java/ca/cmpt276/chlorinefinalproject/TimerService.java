@@ -1,6 +1,7 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import static ca.cmpt276.chlorinefinalproject.App.CHANNEL_ID;
+import static ca.cmpt276.chlorinefinalproject.App.CHANNEL_ID_ACTIVE;
+import static ca.cmpt276.chlorinefinalproject.App.CHANNEL_ID_RING;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -8,13 +9,9 @@ import androidx.core.app.NotificationCompat;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 public class TimerService extends Service {
 
@@ -29,25 +26,25 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long remainingTime = intent.getLongExtra(TimerActivity.REMAINING_TIME, 0);
-        startNotification("Timer currently running.", 1);
+        sendNotification("Timer running!", CHANNEL_ID_ACTIVE, 1);
         startTimer(remainingTime);
         isRunning = true;
 
         return START_NOT_STICKY;
     }
 
-    private void startNotification(String text, int id) {
+    private void sendNotification(String text, String channelID, int ID) {
         Intent notificationIntent = new Intent(this, TimerActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, channelID)
                 .setContentTitle("Timeout Timer")
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_baseline_timer_24)
                 .setContentIntent(pendingIntent)
                 .build();
 
-        startForeground(id, notification);
+        startForeground(ID, notification);
     }
 
     @Override
@@ -78,7 +75,8 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
-                startNotification("Time's up!", 2);
+                sendNotification("Timer is up!", CHANNEL_ID_RING, 2);
+                sendRemainingMs(0);
             }
         };
         timer.start();
