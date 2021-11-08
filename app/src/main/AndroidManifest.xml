@@ -12,6 +12,7 @@
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
             android:name=".TimerActivity"
+            android:label="Timeout Timer"
             android:exported="true" />
         <activity
             android:name=".EditOrDeleteChildActivity"
