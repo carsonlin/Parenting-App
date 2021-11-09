@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +39,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        List<String> childList = EditOrDeleteChildActivity.getChildrenSharedPreferences(this);
+        List<String> childList = EditChildActivity.getChildrenSharedPreferences(this);
         children.clearChildren();
         for(int i = 0; i < childList.size(); i++){
             children.addChild(childList.get(i));
@@ -55,7 +54,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     private void registerClickCallback(){
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "edit", position);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "edit", position);
             startActivity(i);
         });
     }

@@ -17,12 +17,23 @@
             android:name=".TimerService"
             android:exported="false" />
         <activity
-            android:name=".TimerActivity"
-            android:label="Timeout Timer"
-            android:parentActivityName=".MainActivity"
+            android:name=".CoinFlipHistoryActivity"
+            android:label="@string/title_activity_coin_flip_history"
+            android:exported="false" />
+        <activity
+            android:name=".CoinFlipChooseActivity"
+            android:label="@string/title_activity_coin_flip_choose"
             android:exported="true" />
         <activity
-            android:name=".EditOrDeleteChildActivity"
+            android:name=".CoinFlipActivity"
+            android:label="@string/title_activity_coin_flip"
+            android:exported="true" />
+        <activity
+            android:name=".TimerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_timer" />
+        <activity
+            android:name=".EditChildActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_or_delete_child"
             android:parentActivityName=".ListOfChildrenActivity"

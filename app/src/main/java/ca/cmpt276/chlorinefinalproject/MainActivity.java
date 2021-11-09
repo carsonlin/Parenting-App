@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import Model.GameManager;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -13,9 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //setupButton(R.id.coinFlipButton, {name of coin flipping class}.class);
+        setupButton(R.id.coinFlipButton, CoinFlipChooseActivity.class);
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
+
+
+
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){

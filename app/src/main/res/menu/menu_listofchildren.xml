@@ -12,4 +12,5 @@
         android:icon="@drawable/ic_baseline_clear_all_24"
         android:title="@string/clear_children"
         app:showAsAction="ifRoom"/>
+
 </menu>

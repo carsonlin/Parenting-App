@@ -22,7 +22,7 @@ import Model.ConfigureChildren;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
 // Activity used to edit, delete, or add children.
-public class EditOrDeleteChildActivity extends AppCompatActivity {
+public class EditChildActivity extends AppCompatActivity {
     private ActivityEditOrDeleteChildBinding binding;
 
     private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
@@ -33,7 +33,7 @@ public class EditOrDeleteChildActivity extends AppCompatActivity {
     private ConfigureChildren children;
 
     public static Intent getAddOrDeleteChildIntent(Context c,String activity, int position){
-        Intent intent = new Intent(c, EditOrDeleteChildActivity.class);
+        Intent intent = new Intent(c, EditChildActivity.class);
         intent.putExtra(EXTRA_MESSAGE_ACTIVITY, activity);
         intent.putExtra("list position", position);
         return intent;
@@ -94,7 +94,7 @@ public class EditOrDeleteChildActivity extends AppCompatActivity {
             EditText ET = findViewById(R.id.editChildName);
             String text = ET.getText().toString();
             if(text.length() <= 0){
-                Toast.makeText(EditOrDeleteChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(activityName.equals("add")){
