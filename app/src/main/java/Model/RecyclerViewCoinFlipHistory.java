@@ -69,7 +69,9 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
 
     public void removeUpdateManager(View view, int index){
         gameManager.removeGamehistory(index);
-        view.setVisibility(View.GONE);
+        this.notifyItemRemoved(index);
+        this.notifyItemRangeChanged(index, gameManager.getSavedGamesFromSharedPreferences().size());
+        this.notifyDataSetChanged();
     }
 
     @Override
