@@ -78,7 +78,7 @@ public class Coin {
     }
 
     public long predictedTime(){
-        return 100*(stop-1);
+        return 100*stop;
     }
 
     private void generateRandomEnd(){

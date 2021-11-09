@@ -60,9 +60,9 @@ public class CoinFlipActivity extends AppCompatActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        // Actions to do after 5 seconds
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "VALUE IS "+coin.isHead(), Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(), coin.isHead()?" head":" Tail ", Toast.LENGTH_SHORT);
+
                         toast.show();
 
                     }
