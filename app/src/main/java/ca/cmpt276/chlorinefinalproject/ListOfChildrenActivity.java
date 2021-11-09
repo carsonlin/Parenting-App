@@ -75,7 +75,6 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
-            Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
             Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
             startActivity(i);
             return true;
