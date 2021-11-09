@@ -49,14 +49,24 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == android.R.id.home){
-            Intent intent = new Intent(CoinFlipHistoryActivity.this,CoinFlipActivity.class);
-            intent.putExtra("child","");
-            intent.putExtra("bet","head");
-            startActivity(intent);
-            finish();
+            backButtonpressedBehaviour();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("pressed");
+        backButtonpressedBehaviour();
+    }
+
+    private void backButtonpressedBehaviour() {
+        Intent intent = new Intent(CoinFlipHistoryActivity.this,CoinFlipActivity.class);
+        intent.putExtra("child","");
+        intent.putExtra("bet","head");
+        startActivity(intent);
+        finish();
     }
 
     private void setUpActionBar(){

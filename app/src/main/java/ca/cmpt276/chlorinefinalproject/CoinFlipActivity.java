@@ -66,6 +66,19 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == android.R.id.home){
+            backButtonpressedBehaviour();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("pressed");
+        backButtonpressedBehaviour();
+    }
+
+    private void backButtonpressedBehaviour(){
 
             if(!coin.isAnimating() && coin.isInteracted()) {
                 ChildPick childPickInstance = new ChildPick(child, isHead);
@@ -80,9 +93,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             goToMainActivity(children.isEmpty());
 
             finish();
-            return true;
-        }
-        return false;
+
     }
 
     private void setUpActionBar(){
