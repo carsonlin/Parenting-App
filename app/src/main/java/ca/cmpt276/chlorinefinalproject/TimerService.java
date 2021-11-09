@@ -31,7 +31,7 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long remainingTime = intent.getLongExtra(TimerActivity.REMAINING_TIME, 0);
-        sendNotification("Timer running!", CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
+        sendNotification(getString(R.string.timer_running_notification_message), CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
         startTimer(remainingTime);
         isRunning = true;
 
@@ -49,7 +49,7 @@ public class TimerService extends Service {
                 (PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
 
         Notification notification = new NotificationCompat.Builder(this, channelID)
-                .setContentTitle("Timeout Timer")
+                .setContentTitle(getString(R.string.timer_notification_title))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_baseline_timer_24)
                 .setContentIntent(pendingIntent)
@@ -85,7 +85,7 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
-                sendNotification("Timer is up!", CHANNEL_ID_RING, TIMER_EXPIRED_NOTIF_ID);
+                sendNotification(getString(R.string.timer_finish_notification_message), CHANNEL_ID_RING, TIMER_EXPIRED_NOTIF_ID);
                 sendRemainingMs(0);
             }
         };
