@@ -7,6 +7,7 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+// Handles notifications for TimerActivity
 public class App extends Application {
 
     public static final String CHANNEL_ID_ACTIVE = "TimerActiveChannel";

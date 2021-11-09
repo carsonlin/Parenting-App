@@ -26,4 +26,8 @@
     <string name="name">Name</string>
     <string name="timer_custom_radio_text">Custom</string>
     <string name="minutes">minutes</string>
+    <string name="invalid_timer_duration">Invalid Timer Duration</string>
+    <string name="timer_running_notification_message">Timer running!</string>
+    <string name="timer_notification_title">Timeout Timer</string>
+    <string name="timer_finish_notification_message">Timer is up!</string>
 </resources>
