@@ -19,6 +19,7 @@ public class Coin {
     private static final int LOWER_BOUND = 20;
     private static final int UPPER_BOUND = 40;
     private static final int COIN_CHANGE_ANGLE = 90;
+    public static final int DURATION = 100;
 
     ImageView coin;
     float rotation;
@@ -49,43 +50,31 @@ public class Coin {
         this.abortAnimation = abortAnimation;
     }
 
-    public void setHead(boolean head) {
-        this.head = head;
-    }
-
-    public void setAnimating(boolean animating) {
-        this.animating = animating;
-    }
-
     public boolean isInteracted() {
         return interacted;
     }
 
     public void flip(){
         // generate random stopping point every time Coin is flipped
-        generateRandom(LOWER_BOUND, UPPER_BOUND);
-
+        generateRandomEnd();
         MediaPlayer mp = MediaPlayer.create(this.context, R.raw.coin_flip);
         mp.start();
-
         flipAnimation();
     }
 
-    private void generateRandom(int startOfRange, int endOfRange){
+    private void generateRandomEnd(){
         Random rand = new Random();
-        stop = startOfRange + (rand.nextInt((endOfRange-startOfRange)/2) * 2);
+        stop = Coin.LOWER_BOUND + (rand.nextInt((Coin.UPPER_BOUND - Coin.LOWER_BOUND)/2) * 2);
     }
 
-    // flips image at every 90 multiple images are alternated
     public void flipAnimation() {
         interacted = true;
         animating = true;
         if(!this.abortAnimation){
             ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
             // arbitrary 100, was a sweet spot
-            animation.setDuration(100);
+            animation.setDuration(DURATION);
             animation.addListener(new AnimatorListenerAdapter() {
-
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     rotation += COIN_CHANGE_ANGLE;
@@ -98,13 +87,13 @@ public class Coin {
                         }
                         head = !head;
                     }
-
-                    if (flip < stop)
+                    if (flip < stop){
                         flipAnimation();
+                    }
                     else {
                         flip = 0;
                         animating = false;
-                        generateRandom(LOWER_BOUND, UPPER_BOUND);
+                        generateRandomEnd();
                     }
                 }
             });

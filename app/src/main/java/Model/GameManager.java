@@ -9,24 +9,8 @@ import android.content.SharedPreferences;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-/*
- *
- *   Coin has to be instantiated before using this Game handle
- *
- *           Reason:
- *               passing of different Activity can lead to program
- *               crash due to trying to access an activity which no longer exists
- *
- *
- * */
-
-/*
- shared preferences not implemented
- needs implementation
- */
 
 public class GameManager {
-
     public static final String GAME_HISTORY = "gameHistory";
     public static final String PREFERENCES = "PREFERENCES";
     private final ArrayList<Game> games;
@@ -40,16 +24,14 @@ public class GameManager {
     }
 
     public void saveGameToSharedPreference() {
-        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences("PREFERENCES", MODE_PRIVATE);
+        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(GAME_HISTORY,this.createGameHistoryString());
         editor.apply();
     }
 
-    /*
-        GAME_HISTORY format string
-            child name, child if picked head, if the games outcome was head, game time string .(SEPARATOR)
-    */
+    // GAME_HISTORY format string
+    // child name, child if picked head, if the games outcome was head, game time string
     public String createGameHistoryString() {
         StringBuilder history = new StringBuilder();
 
@@ -63,7 +45,6 @@ public class GameManager {
                     .append(game.getTime().format(formatter))
                     .append("%");
         }
-
         return history.toString();
     }
 
@@ -75,28 +56,17 @@ public class GameManager {
         if (!history.equals("")) {
             String[] gamesArrayTemp = history.split("%");
             for (String games : gamesArrayTemp) {
-                String[] gameInstanceStringEncoded = games.split(",");
+                String[] gameInfo = games.split(",");
 
                 Game gameInstance = new Game(null);
                 ChildPick child = new ChildPick("");
-                int i = 0;
 
-                for (String gameInstanceStringDecoded : gameInstanceStringEncoded) {
+                // Extracting data from index positions
+                child.setName(gameInfo[0]);
+                child.setHeads(Boolean.parseBoolean(gameInfo[1]));
+                gameInstance.setHead(Boolean.parseBoolean(gameInfo[2]));
+                gameInstance.setTime(gameInfo[3]);
 
-                    if (i == 0) {
-                        child.setName(gameInstanceStringDecoded);
-                    }
-                    else if (i == 1) {
-                        child.setHeads(Boolean.parseBoolean(gameInstanceStringDecoded));
-                    }
-                    else if (i == 2) {
-                        gameInstance.setHead(Boolean.parseBoolean(gameInstanceStringDecoded));
-                    }
-                    else if (i == 3) {
-                        gameInstance.setTime(gameInstanceStringDecoded);
-                    }
-                    i++;
-                }
                 gameInstance.setChild(child);
                 savedGames.add(gameInstance);
             }
@@ -108,7 +78,7 @@ public class GameManager {
         games.add(game);
     }
 
-    public void removeGamehistory(int index){
+    public void removeGameHistory(int index){
         if (index<getSavedGamesFromSharedPreferences().size()){
             this.games.remove(index);
             saveGameToSharedPreference();
@@ -123,30 +93,22 @@ public class GameManager {
         ArrayList<String> childrenList = this.childrenList;
 
         if (!isEmptyGames()) {
-
             for (int i = 0; i < games.size(); i++) {
                 Game gameInstance = games.get(i);
-                int foundAtindex = valuePresentinArray(gameInstance.getChild().getName(),childrenList);
-                if (foundAtindex>-1) {
-                    childrenList.remove(foundAtindex);
+                int foundAtIndex = valuePresentInArray(gameInstance.getChild().getName(), childrenList);
+                if (foundAtIndex >- 1) {
+                    childrenList.remove(foundAtIndex);
                 }
             }
-
         }
-
         return childrenList;
     }
 
-    private int valuePresentinArray(String value, ArrayList<String> arr){
-
-        for (int i =0; i < arr.size();i++){
-
+    private int valuePresentInArray(String value, ArrayList<String> arr){
+        for (int i = 0; i < arr.size(); i++){
             if (value.equals(arr.get(i)))
                 return i;
-
         }
-
         return -1;
     }
-
 }

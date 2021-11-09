@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import ca.cmpt276.chlorinefinalproject.CoinFlipActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
+// Recycler view adapter to list children
 public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
-
+    public static final int ANIMATION_DURATION = 1500;
     private final ArrayList<String> listOfChildren;
     private final Activity activity;
+
     public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Activity activity){
         this.listOfChildren = listOfChildren;
         this.activity = activity;
@@ -38,10 +40,10 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
         public MyViewHolder(final View view){
             super(view);
             nameText = view.findViewById(R.id.childName);
-            Button headButton = view.findViewById(R.id.head);
-            Button tailsButton = view.findViewById(R.id.tail);
             choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
 
+            Button headButton = view.findViewById(R.id.head);
+            Button tailsButton = view.findViewById(R.id.tail);
             headButton.setOnClickListener(view1 -> goToToss(listOfChildren.get(getAdapterPosition()),"head"));
             tailsButton.setOnClickListener(view12 -> goToToss(listOfChildren.get(getAdapterPosition()),"tail"));
 
@@ -71,7 +73,7 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
                         choiceHolder.setVisibility(finalVisibility);
                     }
                 });
-                anim.setDuration(1500);
+                anim.setDuration(ANIMATION_DURATION);
                 anim.start();
             });
         }

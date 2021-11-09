@@ -18,6 +18,7 @@ import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
 
+// Activity to select a child for a coin flip
 public class CoinFlipChooseActivity extends AppCompatActivity {
     private ActivityCoinFlipChooseBinding binding;
     private RecyclerView recyclerView;
@@ -35,7 +36,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         listOfChildren = gameManager.getNextChildrenToPick();
 
         ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
-        if (listOfChildren.isEmpty()&&!(children.isEmpty())){
+        if (listOfChildren.isEmpty() && !(children.isEmpty())){
             listOfChildren = children;
         }
         recyclerView = findViewById(R.id.listOfchildrenTochoose);

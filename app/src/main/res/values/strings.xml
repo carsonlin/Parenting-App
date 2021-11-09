@@ -33,4 +33,6 @@
     <string name="title_activity_coin_flip">Coin Flip</string>
     <string name="coin_flip_text_view">%1$s chose %2$s!</string>
     <string name="flip_history_button_text">History</string>
+    <string name="title_activity_timer">Timeout Timer</string>
+    <string name="title_activity_coin_flip_history">Coin Flip History</string>
 </resources>

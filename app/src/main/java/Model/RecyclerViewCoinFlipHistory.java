@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import ca.cmpt276.chlorinefinalproject.R;
@@ -29,18 +28,18 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private final TextView coinFlipchild;
-        private final TextView coinFlipdatetime;
-        private final ImageView coinFliptrash;
-        private final ImageView coinFlipoutcome;
+        private final TextView coinFlipChild;
+        private final TextView coinFlipDateTime;
+        private final ImageView coinFlipOutcome;
 
         public MyViewHolder(final View view){
             super(view);
-            coinFlipchild = view.findViewById(R.id.coinFlipchild);
-            coinFlipdatetime = view.findViewById(R.id.coinFlipdatetime);
-            coinFliptrash = view.findViewById(R.id.coinFliptrashHistory);
-            coinFlipoutcome = view.findViewById(R.id.coinFlipoutcome);
-            coinFliptrash.setOnClickListener(view1 -> removeUpdateManager(view,getAdapterPosition()));
+            coinFlipChild = view.findViewById(R.id.coinFlipchild);
+            coinFlipDateTime = view.findViewById(R.id.coinFlipdatetime);
+            ImageView coinFlipTrash = view.findViewById(R.id.coinFliptrashHistory);
+            coinFlipOutcome = view.findViewById(R.id.coinFlipoutcome);
+
+            coinFlipTrash.setOnClickListener(view1 -> removeUpdateManager(view,getAdapterPosition()));
         }
     }
 
@@ -62,13 +61,13 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         String childText = " Uncofigured child chose "+outcomeText;
         if(!child.getName().isEmpty())
             childText = child.getName()+" chose "+outcomeText;
-        holder.coinFlipchild.setText(childText);
-        holder.coinFlipdatetime.setText(formattedDateTime);
-        Glide.with(this.context).load(outcome).into(holder.coinFlipoutcome);
+        holder.coinFlipChild.setText(childText);
+        holder.coinFlipDateTime.setText(formattedDateTime);
+        Glide.with(this.context).load(outcome).into(holder.coinFlipOutcome);
     }
 
     public void removeUpdateManager(View view, int index){
-        gameManager.removeGamehistory(index);
+        gameManager.removeGameHistory(index);
         view.setVisibility(View.GONE);
     }
 

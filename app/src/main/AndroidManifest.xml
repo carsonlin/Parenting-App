@@ -12,6 +12,7 @@
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
             android:name=".CoinFlipHistoryActivity"
+            android:label="@string/title_activity_coin_flip_history"
             android:exported="false" />
         <activity
             android:name=".CoinFlipChooseActivity"
@@ -24,7 +25,7 @@
         <activity
             android:name=".TimerActivity"
             android:exported="true"
-            android:label="Timeout Timer" />
+            android:label="@string/title_activity_timer" />
         <activity
             android:name=".EditChildActivity"
             android:exported="true"

@@ -15,8 +15,8 @@ import Model.GameManager;
 import Model.RecyclerViewCoinFlipHistory;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipHistoryBinding;
 
+// Activity to display history of past coin flips
 public class CoinFlipHistoryActivity extends AppCompatActivity {
-
     private ActivityCoinFlipHistoryBinding binding;
     private RecyclerView recyclerView;
     private GameManager gameManager;
@@ -25,12 +25,10 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip_history);
-
         binding = ActivityCoinFlipHistoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         gameManager = new GameManager(CoinFlipHistoryActivity.this);
-
         recyclerView = findViewById(R.id.listOfgames);
 
         setAdapters();
@@ -48,7 +46,6 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        System.out.println("pressed");
         backButtonPressedBehaviour();
     }
 
@@ -63,7 +60,6 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(" Game history ");
     }
 
     public void setAdapters(){
