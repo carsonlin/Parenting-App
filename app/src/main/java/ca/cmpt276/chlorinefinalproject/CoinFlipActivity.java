@@ -2,9 +2,12 @@ package ca.cmpt276.chlorinefinalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -39,13 +42,34 @@ public class CoinFlipActivity extends AppCompatActivity {
         setUpTextView();
         setUpActionBar();
         setUpCoin();
+
+
+
+
     }
 
     private void setUpCoin() {
         ImageView cardFace = findViewById(R.id.main_activity_card_face);
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
-        cardFace.setOnClickListener(view -> coin.flip());
+        cardFace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                coin.flip();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // Actions to do after 5 seconds
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "VALUE IS "+coin.predictedHeadoutcome(), Toast.LENGTH_SHORT);
+                        toast.show();
+
+                    }
+                },  coin.predictedTime());
+
+            }
+        });
     }
 
     private void setUpTextView() {

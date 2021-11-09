@@ -62,6 +62,24 @@ public class Coin {
         flipAnimation();
     }
 
+    public boolean predictedHeadoutcome(){
+        boolean headtemp = head;
+        int flipEven = 0;
+        for (int i=0; i < stop; i++){
+
+            flipEven +=1;
+            if ((flipEven % 2) == 0) {
+                headtemp = !headtemp;
+                flipEven = 0;
+            }
+        }
+            return headtemp;
+    }
+
+    public long predictedTime(){
+        return 100*(stop-1);
+    }
+
     private void generateRandomEnd(){
         Random rand = new Random();
         stop = Coin.LOWER_BOUND + (rand.nextInt((Coin.UPPER_BOUND - Coin.LOWER_BOUND)/2) * 2);
