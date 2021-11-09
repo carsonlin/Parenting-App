@@ -7,5 +7,10 @@
         android:icon="@drawable/ic_baseline_add_box_24"
         android:title="@string/add_child"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/clearChildren"
+        android:icon="@drawable/ic_baseline_clear_all_24"
+        android:title="@string/clear_children"
+        app:showAsAction="ifRoom"/>
 
 </menu>

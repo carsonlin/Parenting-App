@@ -1,6 +1,8 @@
 package ca.cmpt276.chlorinefinalproject;
 
 
+import static ca.cmpt276.chlorinefinalproject.EditOrDeleteChildActivity.clearChildrenSharedPreferences;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -72,9 +74,15 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
-            Toast.makeText(this, "Add a child", Toast.LENGTH_SHORT).show();
-            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
+            Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
             startActivity(i);
+            return true;
+        }
+        else if(item.getItemId() == R.id.clearChildren){
+            Toast.makeText(this, "Children List Cleared", Toast.LENGTH_SHORT).show();
+            children.clearChildren();
+            clearChildrenSharedPreferences(this);
+            populateListView();
             return true;
         }
         else if (item.getItemId() == R.id.home){
@@ -83,6 +91,8 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
 
     protected void onResume(){
         super.onResume();

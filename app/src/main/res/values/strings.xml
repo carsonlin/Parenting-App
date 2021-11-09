@@ -26,9 +26,14 @@
     <string name="name">Name</string>
     <string name="timer_custom_radio_text">Custom</string>
     <string name="edit_or_delete_child">Edit Or Delete Child</string>
-    <string name="add_child">Add Child</string>
     <string name="loonie">Loonie</string>
     <string name="minutes">minutes</string>
+    <string name="add_child">Add Child</string>
+    <string name="clear_children">Clear Children</string>
+    <string name="invalid_timer_duration">Invalid Timer Duration</string>
+    <string name="timer_running_notification_message">Timer running!</string>
+    <string name="timer_notification_title">Timeout Timer</string>
+    <string name="timer_finish_notification_message">Timer is up!</string>
     <string name="title_activity_coin_flip_choose">Coin Flip - Choose Child</string>
     <string name="title_activity_coin_flip">Coin Flip</string>
     <string name="coin_flip_text_view">%1$s chose %2$s!</string>
