@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
 
@@ -19,6 +20,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     private ActivityCoinFlipChooseBinding binding;
     private RecyclerView recyclerView;
     private ArrayList<String> listOfChildren;
+    private GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,8 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coin_flip_choose);
         binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        listOfChildren = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
+        gameManager = new GameManager(CoinFlipChooseActivity.this);
+        listOfChildren = gameManager.getNextChildrenToPick();//(ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();
         setUpActionBar();

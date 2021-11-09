@@ -72,10 +72,8 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.addGame(game);
                 gameManager.saveGameToSharedPreference();
             }
-            if (child.isEmpty()){
-                goToMainActivity();
-            }
 
+            goToMainActivity(child.isEmpty());
             finish();
             return true;
         }
@@ -97,8 +95,12 @@ public class CoinFlipActivity extends AppCompatActivity {
         ab.setTitle(headText);
     }
 
-    public void goToMainActivity(){
+    public void goToMainActivity(boolean childEmpty){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+        if(!childEmpty)
+            intent = new Intent(getApplicationContext(),CoinFlipChooseActivity.class);
+
         startActivity(intent);
     }
 }
