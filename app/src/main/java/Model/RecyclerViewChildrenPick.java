@@ -3,6 +3,7 @@ package Model;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -23,10 +24,10 @@ import ca.cmpt276.chlorinefinalproject.R;
 public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
 
     private final ArrayList<String> listOfChildren;
-    private final Context context;
-    public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Context context){
+    private final Activity activity;
+    public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Activity activity){
         this.listOfChildren = listOfChildren;
-        this.context = context;
+        this.activity = activity;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -46,10 +47,10 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
 
             view.setOnClickListener(v -> {
                 int visibility = View.VISIBLE;
-                ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 180));
+                ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(activity, 180));
 
                 if (isExpanded) {
-                    anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(context, 90));
+                    anim = ValueAnimator.ofInt(view.getMeasuredHeight(), (int) convertDpToPx(activity, 90));
                     visibility = View.GONE;
                 }
 
@@ -77,11 +78,12 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
     }
 
     public void goToToss(String child, String bet){
-        Intent intent = new Intent(this.context, CoinFlipActivity.class);
+        Intent intent = new Intent(this.activity, CoinFlipActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("child", child);
         intent.putExtra("bet", bet);
-        this.context.startActivity(intent);
+        this.activity.startActivity(intent);
+        this.activity.finish();
     }
 
     /**
