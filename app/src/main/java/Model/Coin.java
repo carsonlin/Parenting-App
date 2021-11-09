@@ -68,7 +68,8 @@ public class Coin {
         for (int i=0; i < stop; i++){
 
             flipEven +=1;
-            if ((flipEven % 2) == 0) {
+
+            if ((flipEven % 2) == 1) {
                 headtemp = !headtemp;
                 flipEven = 0;
             }
