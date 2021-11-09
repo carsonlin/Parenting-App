@@ -3,6 +3,7 @@ package ca.cmpt276.chlorinefinalproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import Model.ChildPick;
 import Model.Coin;
 import Model.Game;
 import Model.GameManager;
+import Model.ChildPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipBinding;
 
 public class CoinFlipActivity extends AppCompatActivity {
@@ -75,6 +77,8 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.addGame(game);
                 gameManager.saveGameToSharedPreference();
             }
+
+            coin.setAbortAnimation(true);
             ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
 
             goToMainActivity(children.isEmpty());

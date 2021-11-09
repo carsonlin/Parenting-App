@@ -70,7 +70,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     }
 
     public void setAdapters(){
-        RecyclerViewChildrenPick adapter = new RecyclerViewChildrenPick(listOfChildren,getApplicationContext());
+        RecyclerViewChildrenPick adapter = new RecyclerViewChildrenPick(listOfChildren,CoinFlipChooseActivity.this);
 
         if (listOfChildren.isEmpty()) {
             adapter.goToToss("", "");

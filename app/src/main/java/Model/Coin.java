@@ -25,6 +25,7 @@ public class Coin {
     int flip;
     boolean head = true;
     private int stop;
+    private Boolean abortAnimation;
     private boolean animating;
     private boolean interacted;
     private final Activity context;
@@ -33,6 +34,7 @@ public class Coin {
         this.context = context;
         this.coin = coin;
         this.interacted = false;
+        this.abortAnimation = false;
     }
 
     public boolean isAnimating() {
@@ -41,6 +43,18 @@ public class Coin {
 
     public boolean isHead() {
         return head;
+    }
+
+    public void setAbortAnimation(Boolean abortAnimation) {
+        this.abortAnimation = abortAnimation;
+    }
+
+    public void setHead(boolean head) {
+        this.head = head;
+    }
+
+    public void setAnimating(boolean animating) {
+        this.animating = animating;
     }
 
     public boolean isInteracted() {
@@ -66,34 +80,35 @@ public class Coin {
     public void flipAnimation() {
         interacted = true;
         animating = true;
-        ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
-        // arbitrary 100, was a sweet spot
-        animation.setDuration(100);
-        animation.addListener(new AnimatorListenerAdapter() {
+        if(!this.abortAnimation){
+            ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
+            // arbitrary 100, was a sweet spot
+            animation.setDuration(100);
+            animation.addListener(new AnimatorListenerAdapter() {
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                rotation += COIN_CHANGE_ANGLE;
-                flip += 1;
-                if ((flip % 2) == 1) {
-                    if (head) {
-                        Glide.with(context).load(R.drawable.loonie_tail).into(coin);
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    rotation += COIN_CHANGE_ANGLE;
+                    flip += 1;
+                    if ((flip % 2) == 1) {
+                        if (head) {
+                            Glide.with(context).load(R.drawable.loonie_tail).into(coin);
+                        } else {
+                            Glide.with(context).load(R.drawable.loonie_head).into(coin);
+                        }
+                        head = !head;
                     }
+
+                    if (flip < stop)
+                        flipAnimation();
                     else {
-                        Glide.with(context).load(R.drawable.loonie_head).into(coin);
+                        flip = 0;
+                        animating = false;
+                        generateRandom(LOWER_BOUND, UPPER_BOUND);
                     }
-                    head = !head;
                 }
-
-                if (flip < stop)
-                    flipAnimation();
-                else {
-                    flip = 0;
-                    animating = false;
-                    generateRandom(LOWER_BOUND, UPPER_BOUND);
-                }
-            }
-        });
-        animation.start();
+            });
+            animation.start();
+        }
     }
 }
