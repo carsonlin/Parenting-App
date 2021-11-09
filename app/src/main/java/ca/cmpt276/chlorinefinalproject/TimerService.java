@@ -3,9 +3,6 @@ package ca.cmpt276.chlorinefinalproject;
 import static ca.cmpt276.chlorinefinalproject.App.CHANNEL_ID_ACTIVE;
 import static ca.cmpt276.chlorinefinalproject.App.CHANNEL_ID_RING;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -13,13 +10,16 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+// Service that handles timer running when app is in background or closed
 public class TimerService extends Service {
 
     private final static long COUNT_DOWN_INTERVAL = 1000;
     private final static int ACTIVE_TIMER_NOTIF_ID = 1;
     private final static int TIMER_EXPIRED_NOTIF_ID = 2;
     private final static int INTENT_REQUEST_CODE = 1;
-
 
     private CountDownTimer timer;
     public static Boolean isRunning = false;
@@ -32,7 +32,7 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long remainingTime = intent.getLongExtra(TimerActivity.REMAINING_TIME, 0);
-        sendNotification("Timer running!", CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
+        sendNotification(getString(R.string.timer_running_notification_message), CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
         startTimer(remainingTime);
         isRunning = true;
 
@@ -46,10 +46,11 @@ public class TimerService extends Service {
 
         Intent[] intents = {mainIntent, notificationIntent};
 
-        PendingIntent pendingIntent = PendingIntent.getActivities(this, INTENT_REQUEST_CODE, intents, (PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
+        PendingIntent pendingIntent = PendingIntent.getActivities(this, INTENT_REQUEST_CODE, intents,
+                (PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
 
         Notification notification = new NotificationCompat.Builder(this, channelID)
-                .setContentTitle("Timeout Timer")
+                .setContentTitle(getString(R.string.timer_notification_title))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_baseline_timer_24)
                 .setContentIntent(pendingIntent)
@@ -69,7 +70,6 @@ public class TimerService extends Service {
         return isRunning;
     }
 
-
     public void sendRemainingMs(long ms){
         Intent intent = new Intent();
         intent.putExtra(TimerActivity.REMAINING_TIME, ms);
@@ -86,7 +86,7 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
-                sendNotification("Timer is up!", CHANNEL_ID_RING, TIMER_EXPIRED_NOTIF_ID);
+                sendNotification(getString(R.string.timer_finish_notification_message), CHANNEL_ID_RING, TIMER_EXPIRED_NOTIF_ID);
                 sendRemainingMs(0);
             }
         };
