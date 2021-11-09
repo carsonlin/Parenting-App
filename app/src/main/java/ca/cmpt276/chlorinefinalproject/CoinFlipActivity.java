@@ -52,23 +52,18 @@ public class CoinFlipActivity extends AppCompatActivity {
         ImageView cardFace = findViewById(R.id.main_activity_card_face);
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
-        cardFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                coin.flip();
+        cardFace.setOnClickListener(view -> {
+            coin.flip();
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
 
-                        Toast toast = Toast.makeText(getApplicationContext(), coin.isHead()?" head":" Tail ", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), coin.isHead()?" head":" Tail ", Toast.LENGTH_SHORT);
 
-                        toast.show();
+                toast.show();
 
-                    }
-                },  coin.predictedTime()+10);
+            },  coin.predictedTime() + 1000);
 
-            }
         });
     }
 
