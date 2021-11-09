@@ -1,9 +1,5 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +16,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class TimerActivity extends AppCompatActivity {
     public static final int NUM_MILLIS_IN_SECOND = 1000;
@@ -73,7 +75,6 @@ public class TimerActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter(INTENT_FILTER);
         this.registerReceiver(br, filter);
-
     }
 
     BroadcastReceiver br = new BroadcastReceiver() {
@@ -168,6 +169,7 @@ public class TimerActivity extends AppCompatActivity {
                 try{
                     int customDuration = Integer.parseInt(editText.getText().toString());
                     timerDurationInMillis = getMillisFromMinutes(customDuration);
+                    timerText.setText(getString(R.string.timer_textview, customDuration, 0));
                 }
                 catch (NumberFormatException ignored){ }
             }
@@ -184,7 +186,10 @@ public class TimerActivity extends AppCompatActivity {
             btn.setText(getString(R.string.timer_radio_button_text, minutes));
             btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-            btn.setOnClickListener(view -> timerDurationInMillis = getMillisFromMinutes(minutes));
+            btn.setOnClickListener(view -> {
+                timerDurationInMillis = getMillisFromMinutes(minutes);
+                timerText.setText(getString(R.string.timer_textview, minutes, 0));
+            });
             group.addView(btn);
         }
 
@@ -203,11 +208,6 @@ public class TimerActivity extends AppCompatActivity {
             EditText editText = findViewById(R.id.timer_custom_input);
             if (checkedId == customBtn.getId()){
                 editText.setVisibility(View.VISIBLE);
-                try{
-                    int customDuration = Integer.parseInt(editText.getText().toString());
-                    timerDurationInMillis = getMillisFromMinutes(customDuration);
-                }
-                catch (NumberFormatException ignored){ }
             }
             else{
                 editText.setVisibility(View.INVISIBLE);
@@ -220,15 +220,19 @@ public class TimerActivity extends AppCompatActivity {
 
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
-            setComponentVisibility(true);
-            startTimerService(timerDurationInMillis);
+            if (timerDurationInMillis > 0){
+                setComponentVisibility(true);
+                startTimerService(timerDurationInMillis);
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
-            editor.apply();
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
+                editor.apply();
 
-            layout.setBackgroundResource(R.drawable.sleeping_dog);
-
+                layout.setBackgroundResource(R.drawable.sleeping_dog);
+            }
+            else{
+                Toast.makeText(TimerActivity.this, R.string.invalid_timer_duration, Toast.LENGTH_SHORT).show();
+            }
         });
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
