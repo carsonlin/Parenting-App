@@ -105,7 +105,7 @@ public class GameManager {
             bucket.add(0);
         }
 
-        if (!isEmptyGames()) {
+        if (!isEmptyGames() && !childrenList.isEmpty()) {
             for (int i = 0; i < games.size(); i++) {
                 Game gameInstance = games.get(i);
                 int foundAtIndex = valuePresentInArray(gameInstance.getChild().getName(),childrenList);

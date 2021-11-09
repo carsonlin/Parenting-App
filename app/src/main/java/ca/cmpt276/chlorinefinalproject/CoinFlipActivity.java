@@ -50,7 +50,10 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     private void setUpTextView() {
         TextView editTextChildPick = findViewById(R.id.coin_flip_text_view);
-        if (this.isHead){
+        if (this.child.equals("")){
+            editTextChildPick.setText("");
+        }
+        else if (this.isHead){
             editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Heads"));
         }
         else{

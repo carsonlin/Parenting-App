@@ -38,7 +38,7 @@
     <string name="text_heads">heads</string>
     <string name="text_tails">tails</string>
     <string name="coin_flip_history_text">"%1$s chose %2$s"</string>
-    <string name="user">User</string>
+    <string name="user">Undefined User</string>
     <string name="title">title</string>
     <string name="x_icon">x icon</string>
     <string name="trash_icon">trash icon</string>
