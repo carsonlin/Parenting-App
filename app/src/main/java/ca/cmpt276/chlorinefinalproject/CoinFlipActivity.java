@@ -62,11 +62,11 @@ public class CoinFlipActivity extends AppCompatActivity {
                     public void run() {
                         // Actions to do after 5 seconds
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "VALUE IS "+coin.predictedHeadoutcome(), Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(), "VALUE IS "+coin.isHead(), Toast.LENGTH_SHORT);
                         toast.show();
 
                     }
-                },  coin.predictedTime());
+                },  coin.predictedTime()+10);
 
             }
         });
