@@ -61,7 +61,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     private void extractIntentExtras() {
         Intent intent = getIntent();
         child = intent.getStringExtra(CHILD);
-        isHead = intent.getStringExtra(BET).equals("head");
+        isHead = intent.getStringExtra(BET).equals("heads");
     }
 
     @Override
