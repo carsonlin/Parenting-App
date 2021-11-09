@@ -132,7 +132,13 @@ public class GameManager {
     }
 
     public ArrayList<String> getNextChildrenToPick() {
+
         ArrayList<String> childrenList = this.childrenList;
+        ArrayList<Integer> bucket = new ArrayList<>();
+
+        for (int i =0; i < this.childrenList.size();i++){
+            bucket.add(0);
+        }
 
         if (!isEmptyGames()) {
 
@@ -140,14 +146,21 @@ public class GameManager {
                 Game gameInstance = games.get(i);
                 int foundAtindex = valuePresentinArray(gameInstance.getChild().getName(),childrenList);
                 if (foundAtindex>-1) {
-                    childrenList.remove(foundAtindex);
+                    bucket.set(foundAtindex,bucket.get(foundAtindex)+1);
                 }
             }
 
         }
 
-        if (childrenList.size()==0)
-            childrenList = this.childrenList;
+        int lowestPlay = lowestInarray(bucket);
+
+        for (int i = 0; i < childrenList.size(); i++) {
+
+            if (bucket.get(i)>lowestPlay) {
+                childrenList.remove(i);
+            }
+        }
+
 
         return childrenList;
     }
@@ -162,6 +175,19 @@ public class GameManager {
         }
 
         return -1;
+    }
+
+    private int lowestInarray(ArrayList<Integer> plays){
+
+        int lowest = plays.get(0);
+
+        for(int i = 1;i<plays.size();i++){
+
+            if (plays.get(i) < lowest)
+                lowest = plays.get(i);
+        }
+
+        return lowest;
     }
 
 }
