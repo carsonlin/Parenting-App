@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -22,26 +24,114 @@ import android.widget.TextView;
 public class TimerActivity extends AppCompatActivity {
     public static final int NUM_MILLIS_IN_SECOND = 1000;
     public static final int NUM_SECONDS_IN_MINUTE = 60;
-    private CountDownTimer timer;
+    public static final String REMAINING_TIME = "remainingTime";
+    public static final String INTENT_FILTER = "time";
+    public static final String ORIGINAL_TIME = "originalTime";
+    public static final String PAUSE_TIME = "pauseTime";
+    public static final String TIMER_PREFS = "timerSharedPref";
     private TextView timerText;
-    private boolean isTimerPaused;
+    private boolean isTimerPaused = false;
     private long timerDurationInMillis;
     private long timeLeftInMillis;
+
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
+        timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
+
+        View layout = findViewById(R.id.timer_layout);
+        layout.setBackgroundResource(R.drawable.sleeping_dog);
+
+        setComponentVisibility(true);
+
+        if (!TimerService.isRunning()){
+            if (timeLeftInMillis != 0){
+                isTimerPaused = true;
+                Button pauseBtn = findViewById(R.id.timer_pause_button);
+                pauseBtn.setText(R.string.timer_resume_button_text);
+            }
+            else{
+                layout.setBackgroundResource(0);
+                setComponentVisibility(false);
+            }
+        }
+
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
 
         setupToolbar();
 
+        timerText.setText(getString(R.string.timer_textview, getMinutesFromMillis(timeLeftInMillis), getSecondsFromMillis(timeLeftInMillis)));
         setUpTimerButtons();
         setUpInputRadioButtons();
         setUpCustomInput();
-        setComponentVisibility(false);
+
+        IntentFilter filter = new IntentFilter(INTENT_FILTER);
+        this.registerReceiver(br, filter);
+
+    }
+
+    BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            timeLeftInMillis = intent.getLongExtra(REMAINING_TIME, 0);
+            long minutes = getMinutesFromMillis(timeLeftInMillis);
+            long seconds = getSecondsFromMillis(timeLeftInMillis);
+            timerText.setText(getString(R.string.timer_textview, minutes, seconds));
+        }
+    };
+
+    public void startTimerService(long timeInMs){
+        Intent serviceIntent = new Intent(this, TimerService.class);
+        serviceIntent.putExtra(REMAINING_TIME, timeInMs);
+        startService(serviceIntent);
+        isTimerPaused = false;
+    }
+
+    public void stopTimerService(){
+        Intent serviceIntent = new Intent(this, TimerService.class);
+        stopService(serviceIntent);
+        isTimerPaused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(INTENT_FILTER);
+        this.registerReceiver(br, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(br);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(br);
+        }
+        catch (IllegalArgumentException e){
+            // already unregistered
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(br);
+        }
+        catch (IllegalArgumentException e){
+            // already unregistered
+        }
     }
 
     private void setupToolbar() {
@@ -56,19 +146,14 @@ public class TimerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
-
-            //probably have to put code here to preserve the timer when leaving the activity
-
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void setUpCustomInput() {
-        // Text watcher for the custom input edit text
         EditText editText = findViewById(R.id.timer_custom_input);
 
-        // Grab EditText data on change
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -82,7 +167,7 @@ public class TimerActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 try{
                     int customDuration = Integer.parseInt(editText.getText().toString());
-                    timerDurationInMillis = convertMinutesToMillis(customDuration);
+                    timerDurationInMillis = getMillisFromMinutes(customDuration);
                 }
                 catch (NumberFormatException ignored){ }
             }
@@ -98,8 +183,8 @@ public class TimerActivity extends AppCompatActivity {
             RadioButton btn = new RadioButton(this);
             btn.setText(getString(R.string.timer_radio_button_text, minutes));
             btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            btn.setOnClickListener(view -> timerDurationInMillis = convertMinutesToMillis(minutes));
 
+            btn.setOnClickListener(view -> timerDurationInMillis = getMillisFromMinutes(minutes));
             group.addView(btn);
         }
 
@@ -120,7 +205,7 @@ public class TimerActivity extends AppCompatActivity {
                 editText.setVisibility(View.VISIBLE);
                 try{
                     int customDuration = Integer.parseInt(editText.getText().toString());
-                    timerDurationInMillis = convertMinutesToMillis(customDuration);
+                    timerDurationInMillis = getMillisFromMinutes(customDuration);
                 }
                 catch (NumberFormatException ignored){ }
             }
@@ -135,8 +220,12 @@ public class TimerActivity extends AppCompatActivity {
 
         Button startBtn = findViewById(R.id.timer_start_button);
         startBtn.setOnClickListener(view -> {
-            startTimer(timerDurationInMillis);
             setComponentVisibility(true);
+            startTimerService(timerDurationInMillis);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
+            editor.apply();
 
             layout.setBackgroundResource(R.drawable.sleeping_dog);
 
@@ -144,13 +233,18 @@ public class TimerActivity extends AppCompatActivity {
 
         Button pauseBtn = findViewById(R.id.timer_pause_button);
         pauseBtn.setOnClickListener(view -> {
-            if (timer != null){
-                if (isTimerPaused){
-                    resumeTimer();
+            if (timeLeftInMillis != 0) {
+                if (isTimerPaused) {
+                    layout.setBackgroundResource(R.drawable.sleeping_dog);
+                    startTimerService(timeLeftInMillis);
                     pauseBtn.setText(R.string.timer_pause_button_text);
                 }
-                else{
-                    pauseTimer();
+                else {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putLong(PAUSE_TIME, timeLeftInMillis);
+                    editor.apply();
+
+                    stopTimerService();
                     pauseBtn.setText(R.string.timer_resume_button_text);
                 }
             }
@@ -158,59 +252,42 @@ public class TimerActivity extends AppCompatActivity {
 
         Button resetBtn = findViewById(R.id.timer_reset_button);
         resetBtn.setOnClickListener(view -> {
-            resetTimer(startBtn, pauseBtn);
+            resetTimer();
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putLong(PAUSE_TIME, 0);
+            editor.apply();
+
+            timerDurationInMillis = sharedPref.getLong(ORIGINAL_TIME, 0);
+
+            long minutes = getMinutesFromMillis(timerDurationInMillis);
+            long seconds = getSecondsFromMillis(timerDurationInMillis);
+            timerText.setText(getString(R.string.timer_textview, minutes, seconds));
 
             layout.setBackgroundResource(0);
 
         });
     }
 
-    private void startTimer(long durationInMillis){
-        timer = new CountDownTimer(durationInMillis, NUM_MILLIS_IN_SECOND) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // Remember the time left after each tick
-                timeLeftInMillis = millisUntilFinished;
-                // Update timer textview
-                long minutes = millisUntilFinished / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
-                long seconds = (millisUntilFinished / NUM_MILLIS_IN_SECOND) - minutes * NUM_SECONDS_IN_MINUTE;
-                timerText.setText(getString(R.string.timer_textview, minutes, seconds));
-            }
-
-            @Override
-            public void onFinish() {
-                // TODO: Handle timer finish notification and sound here
-            }
-        };
-        timer.start();
-        isTimerPaused = false;
-    }
-
-    private void pauseTimer(){
-        timer.cancel();
-        isTimerPaused = true;
-    }
-
-    private void resumeTimer(){
-        // Resume timer using timeLeftInMillis
-        startTimer(timeLeftInMillis);
-        isTimerPaused = false;
-    }
-
-    // TODO Clean this function up
-    private void resetTimer(Button start, Button pause){
-        // Reset timer
-        timer.cancel();
+    private void resetTimer(){
+        stopTimerService();
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         isTimerPaused = false;
-
-        // Reset button text and visibility
         setComponentVisibility(false);
-        pause.setText(R.string.timer_pause_button_text);
+        Button pauseButton = findViewById(R.id.timer_pause_button);
+        pauseButton.setText(R.string.timer_pause_button_text);
     }
 
-    private long convertMinutesToMillis(int numMinutes){
+    private long getMillisFromMinutes(int numMinutes){
         return numMinutes * (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+    }
+
+    private int getMinutesFromMillis(long ms){
+        return (int) ms / (NUM_MILLIS_IN_SECOND * NUM_SECONDS_IN_MINUTE);
+    }
+
+    private int getSecondsFromMillis(long ms){
+        return (int) (ms / NUM_MILLIS_IN_SECOND) - (getMinutesFromMillis(ms) * NUM_SECONDS_IN_MINUTE);
     }
 
     private void setComponentVisibility(boolean isTimerRunning) {
