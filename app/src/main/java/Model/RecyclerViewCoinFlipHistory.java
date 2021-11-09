@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import ca.cmpt276.chlorinefinalproject.R;
@@ -68,7 +69,9 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
 
     public void removeUpdateManager(View view, int index){
         gameManager.removeGameHistory(index);
-        view.setVisibility(View.GONE);
+        this.notifyItemRemoved(index);
+        this.notifyItemRangeChanged(index, gameManager.getSavedGamesFromSharedPreferences().size());
+        this.notifyDataSetChanged();
     }
 
     @Override
