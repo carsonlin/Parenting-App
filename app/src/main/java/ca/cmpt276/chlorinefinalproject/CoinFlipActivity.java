@@ -28,6 +28,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     private boolean isHead;
     private String child;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +82,16 @@ public class CoinFlipActivity extends AppCompatActivity {
     private void backButtonpressedBehaviour(){
 
             if(!coin.isAnimating() && coin.isInteracted()) {
+
                 ChildPick childPickInstance = new ChildPick(child, isHead);
                 Game game = new Game(childPickInstance);
                 game.setHead(coin.isHead());
                 gameManager.addGame(game);
                 gameManager.saveGameToSharedPreference();
+
             }
 
+            coin.setAbortAnimation(true);
             ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
 
             goToMainActivity(children.isEmpty());
