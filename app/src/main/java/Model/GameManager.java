@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.time.format.DateTimeFormatter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 
 public class GameManager {
+
     public static final String GAME_HISTORY = "gameHistory";
     public static final String PREFERENCES = "PREFERENCES";
     private final ArrayList<Game> games;
@@ -45,6 +47,7 @@ public class GameManager {
                     .append(game.getTime().format(formatter))
                     .append("%");
         }
+
         return history.toString();
     }
 
@@ -80,9 +83,12 @@ public class GameManager {
 
     public void removeGameHistory(int index){
         if (index<getSavedGamesFromSharedPreferences().size()){
+
             this.games.remove(index);
             saveGameToSharedPreference();
+
         }
+
     }
 
     public boolean isEmptyGames() {
@@ -90,17 +96,34 @@ public class GameManager {
     }
 
     public ArrayList<String> getNextChildrenToPick() {
+
         ArrayList<String> childrenList = this.childrenList;
+        ArrayList<Integer> bucket = new ArrayList<>();
+
+        for (int i =0; i < this.childrenList.size();i++){
+            bucket.add(0);
+        }
 
         if (!isEmptyGames()) {
             for (int i = 0; i < games.size(); i++) {
                 Game gameInstance = games.get(i);
-                int foundAtIndex = valuePresentInArray(gameInstance.getChild().getName(), childrenList);
-                if (foundAtIndex > -1) {
-                    childrenList.remove(foundAtIndex);
+                int foundAtindex = valuePresentInArray(gameInstance.getChild().getName(),childrenList);
+                if (foundAtindex>-1) {
+                    bucket.set(foundAtindex,bucket.get(foundAtindex)+1);
                 }
             }
         }
+
+        int lowestPlay = lowestInarray(bucket);
+
+        for (int i = 0; i < childrenList.size(); i++) {
+
+            if (bucket.get(i)>lowestPlay) {
+                childrenList.remove(i);
+            }
+        }
+
+
         return childrenList;
     }
 
@@ -111,4 +134,18 @@ public class GameManager {
         }
         return -1;
     }
+
+    private int lowestInarray(ArrayList<Integer> plays){
+
+        int lowest = plays.get(0);
+
+        for(int i = 1;i<plays.size();i++){
+
+            if (plays.get(i) < lowest)
+                lowest = plays.get(i);
+        }
+
+        return lowest;
+    }
+
 }
