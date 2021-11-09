@@ -1,7 +1,7 @@
 package ca.cmpt276.chlorinefinalproject;
 
 
-import static ca.cmpt276.chlorinefinalproject.EditOrDeleteChildActivity.clearChildrenSharedPreferences;
+import static ca.cmpt276.chlorinefinalproject.EditChildActivity.clearChildrenSharedPreferences;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -74,7 +74,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
-            Intent i = EditOrDeleteChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
             startActivity(i);
             return true;
         }
@@ -91,8 +91,6 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         }
         return false;
     }
-
-
 
     protected void onResume(){
         super.onResume();
