@@ -81,6 +81,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             return true;
         }
         else if(item.getItemId() == R.id.clearChildren){
+            Toast.makeText(this, "Children List Cleared", Toast.LENGTH_SHORT).show();
             children.clearChildren();
             clearChildrenSharedPreferences(this);
             populateListView();
