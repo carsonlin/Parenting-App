@@ -43,20 +43,8 @@ public class Coin {
         return head;
     }
 
-    public void setHead(boolean head) {
-        this.head = head;
-    }
-
-    public void setAnimating(boolean animating) {
-        this.animating = animating;
-    }
-
     public boolean isInteracted() {
         return interacted;
-    }
-
-    public void setInteracted(boolean interacted) {
-        this.interacted = interacted;
     }
 
     public void flip(){

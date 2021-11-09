@@ -1,5 +1,9 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,19 +11,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import java.util.ArrayList;
-
-import Model.Coin;
 import Model.GameManager;
-import Model.RecyclerViewChildrenPick;
 import Model.RecyclerViewCoinFlipHistory;
-import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipHistoryBinding;
 
 public class CoinFlipHistoryActivity extends AppCompatActivity {
@@ -42,14 +35,12 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
 
         setAdapters();
         setUpActionBar();
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == android.R.id.home){
-            backButtonpressedBehaviour();
+            backButtonPressedBehaviour();
             return true;
         }
         return false;
@@ -58,13 +49,11 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         System.out.println("pressed");
-        backButtonpressedBehaviour();
+        backButtonPressedBehaviour();
     }
 
-    private void backButtonpressedBehaviour() {
-        Intent intent = new Intent(CoinFlipHistoryActivity.this,CoinFlipActivity.class);
-        intent.putExtra("child","");
-        intent.putExtra("bet","head");
+    private void backButtonPressedBehaviour() {
+        Intent intent = new Intent(getApplicationContext(), CoinFlipChooseActivity.class);
         startActivity(intent);
         finish();
     }
@@ -78,15 +67,10 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     }
 
     public void setAdapters(){
-
-
-        RecyclerViewCoinFlipHistory adapter = new RecyclerViewCoinFlipHistory(gameManager,getApplicationContext());
+        RecyclerViewCoinFlipHistory adapter = new RecyclerViewCoinFlipHistory(gameManager, getApplicationContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
     }
-
-
 }

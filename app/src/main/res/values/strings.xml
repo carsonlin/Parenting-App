@@ -29,4 +29,8 @@
     <string name="add_child">Add Child</string>
     <string name="loonie">Loonie</string>
     <string name="minutes">minutes</string>
+    <string name="title_activity_coin_flip_choose">Coin Flip - Choose Child</string>
+    <string name="title_activity_coin_flip">Coin Flip</string>
+    <string name="coin_flip_text_view">%1$s chose %2$s!</string>
+    <string name="flip_history_button_text">History</string>
 </resources>

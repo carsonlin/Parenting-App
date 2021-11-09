@@ -3,7 +3,6 @@ package ca.cmpt276.chlorinefinalproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import Model.ChildPick;
 import Model.Coin;
 import Model.Game;
 import Model.GameManager;
-import Model.ChildPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipBinding;
 
 public class CoinFlipActivity extends AppCompatActivity {
@@ -37,30 +36,20 @@ public class CoinFlipActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         ImageView cardFace = findViewById(R.id.main_activity_card_face);
-        editTextChildPick = findViewById(R.id.editTextChildPick);
-        TextView editTextGameCount = findViewById(R.id.textViewgameHistory);
-        TextView editTextGameHistory = findViewById(R.id.editTextHistory);
+        editTextChildPick = findViewById(R.id.coin_flip_text_view);
 
-        Intent intent = getIntent();
-        child = intent.getStringExtra("child");
-        isHead = intent.getStringExtra("bet").equals("head");
+        extractIntentExtras();
 
         setUpActionBar();
-
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> coin.flip());
+    }
 
-        editTextGameCount.setText(gameManager.getSavedGamesFromSharedPreferences().size() + " plays");
-
-        editTextGameHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CoinFlipActivity.this, CoinFlipHistoryActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    private void extractIntentExtras() {
+        Intent intent = getIntent();
+        child = intent.getStringExtra("child");
+        isHead = intent.getStringExtra("bet").equals("head");
     }
 
     @Override
@@ -79,7 +68,6 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void backButtonpressedBehaviour(){
-
             if(!coin.isAnimating() && coin.isInteracted()) {
                 ChildPick childPickInstance = new ChildPick(child, isHead);
                 Game game = new Game(childPickInstance);
@@ -87,13 +75,11 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.addGame(game);
                 gameManager.saveGameToSharedPreference();
             }
-
             ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
 
             goToMainActivity(children.isEmpty());
 
             finish();
-
     }
 
     private void setUpActionBar(){
@@ -101,14 +87,13 @@ public class CoinFlipActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        String headText = this.child + " flip coin";
-        editTextChildPick.setText(this.child + " picked" + (this.isHead ?" Heads":" Tails"));
 
-        if (this.child.isEmpty()){
-            headText = " flip coin ";
-            editTextChildPick.setText("no child configured");
+        if (this.isHead){
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Heads"));
         }
-        ab.setTitle(headText);
+        else{
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Tails"));
+        }
     }
 
     public void goToMainActivity(boolean childEmpty){

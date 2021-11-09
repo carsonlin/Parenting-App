@@ -15,9 +15,11 @@
             android:exported="false" />
         <activity
             android:name=".CoinFlipChooseActivity"
+            android:label="@string/title_activity_coin_flip_choose"
             android:exported="true" />
         <activity
             android:name=".CoinFlipActivity"
+            android:label="@string/title_activity_coin_flip"
             android:exported="true" />
         <activity
             android:name=".TimerActivity"

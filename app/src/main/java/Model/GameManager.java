@@ -4,7 +4,6 @@ import static android.content.Context.MODE_PRIVATE;
 import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.time.format.DateTimeFormatter;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 public class GameManager {
 
     public static final String GAME_HISTORY = "gameHistory";
+    public static final String PREFERENCES = "PREFERENCES";
     private final ArrayList<Game> games;
     private final ArrayList<String> childrenList;
     private final Activity context;
@@ -40,8 +40,6 @@ public class GameManager {
     }
 
     public void saveGameToSharedPreference() {
-        //PREFERENCES, MODE_PRIVATE
-        //SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences("PREFERENCES", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(GAME_HISTORY,this.createGameHistoryString());
@@ -71,19 +69,13 @@ public class GameManager {
 
     public ArrayList<Game> getSavedGamesFromSharedPreferences() {
         ArrayList<Game> savedGames = new ArrayList<>();
-        //SharedPreferences sharedPref = this.context.getPreferences(MODE_PRIVATE);
-        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences("PREFERENCES", MODE_PRIVATE);
+        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         String history = sharedPref.getString(GAME_HISTORY, "");
-
-        System.out.println("saved string == " + history);
 
         if (!history.equals("")) {
             String[] gamesArrayTemp = history.split("%");
-
-            System.out.println("saved string to arr size " + gamesArrayTemp.length);
-            for (String gamesArrayi : gamesArrayTemp) {
-
-                String[] gameInstanceStringEncoded = gamesArrayi.split(",");
+            for (String games : gamesArrayTemp) {
+                String[] gameInstanceStringEncoded = games.split(",");
 
                 Game gameInstance = new Game(null);
                 ChildPick child = new ChildPick("");
@@ -117,14 +109,10 @@ public class GameManager {
     }
 
     public void removeGamehistory(int index){
-
         if (index<getSavedGamesFromSharedPreferences().size()){
-
             this.games.remove(index);
             saveGameToSharedPreference();
-
         }
-
     }
 
     public boolean isEmptyGames() {
@@ -145,9 +133,6 @@ public class GameManager {
             }
 
         }
-
-        if (childrenList.size()==0)
-            childrenList = this.childrenList;
 
         return childrenList;
     }

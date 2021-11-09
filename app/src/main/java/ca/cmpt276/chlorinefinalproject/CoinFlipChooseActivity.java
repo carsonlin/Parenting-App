@@ -1,7 +1,9 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -28,14 +30,27 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coin_flip_choose);
         binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         gameManager = new GameManager(CoinFlipChooseActivity.this);
         listOfChildren = gameManager.getNextChildrenToPick();
+
         ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
-        if (listOfChildren.isEmpty()&&!(children.isEmpty()))
+        if (listOfChildren.isEmpty()&&!(children.isEmpty())){
             listOfChildren = children;
+        }
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();
         setUpActionBar();
+        setUpHistoryButton();
+    }
+
+    private void setUpHistoryButton() {
+        Button history = findViewById(R.id.coinflip_history_button);
+        history.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), CoinFlipHistoryActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     @Override
@@ -52,7 +67,6 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(" pick child to flip ");
     }
 
     public void setAdapters(){
