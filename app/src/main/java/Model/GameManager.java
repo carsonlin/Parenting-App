@@ -96,7 +96,7 @@ public class GameManager {
             for (int i = 0; i < games.size(); i++) {
                 Game gameInstance = games.get(i);
                 int foundAtIndex = valuePresentInArray(gameInstance.getChild().getName(), childrenList);
-                if (foundAtIndex >- 1) {
+                if (foundAtIndex > -1) {
                     childrenList.remove(foundAtIndex);
                 }
             }

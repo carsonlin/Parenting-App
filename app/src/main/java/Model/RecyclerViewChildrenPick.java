@@ -44,8 +44,10 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
 
             Button headButton = view.findViewById(R.id.head);
             Button tailsButton = view.findViewById(R.id.tail);
-            headButton.setOnClickListener(view1 -> goToToss(listOfChildren.get(getAdapterPosition()),"head"));
-            tailsButton.setOnClickListener(view12 -> goToToss(listOfChildren.get(getAdapterPosition()),"tail"));
+            headButton.setOnClickListener(view1 -> goToToss(listOfChildren.get(getAdapterPosition()),
+                    activity.getString(R.string.text_heads)));
+            tailsButton.setOnClickListener(view12 -> goToToss(listOfChildren.get(getAdapterPosition()),
+                    activity.getString(R.string.text_tails)));
 
             view.setOnClickListener(v -> {
                 int visibility = View.VISIBLE;

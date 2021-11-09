@@ -13,9 +13,9 @@
         android:layout_width="185dp"
         android:layout_height="35dp"
         android:gravity="center"
-        android:text="title"
+        android:text="@string/title"
         android:textColor="@color/black"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="10px"
+        android:padding="10dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,13 +39,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/head"
-            android:text=" Head " />
+            android:text="@string/text_heads"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tail"
-            android:text=" Tail " />
+            android:text="@string/text_tails"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 

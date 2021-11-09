@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import ca.cmpt276.chlorinefinalproject.R;
@@ -40,7 +39,7 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
             ImageView coinFlipTrash = view.findViewById(R.id.coinFliptrashHistory);
             coinFlipOutcome = view.findViewById(R.id.coinFlipoutcome);
 
-            coinFlipTrash.setOnClickListener(view1 -> removeUpdateManager(view,getAdapterPosition()));
+            coinFlipTrash.setOnClickListener(view1 -> removeUpdateManager(getAdapterPosition()));
         }
     }
 
@@ -55,19 +54,27 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerViewCoinFlipHistory.MyViewHolder holder, int position) {
         Game game = gameManager.getSavedGamesFromSharedPreferences().get(position);
         ChildPick child = game.getChild();
-        int outcome = game.isHead()==child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
+        int outcome = game.isHead() == child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = game.getTime().format(formatter);
-        String outcomeText = (child.isHeads()?" Heads ":" Tails ");
-        String childText = " Uncofigured child chose "+outcomeText;
-        if(!child.getName().isEmpty())
-            childText = child.getName()+" chose "+outcomeText;
+
+        String outcomeText = (child.isHeads() ?
+                context.getString(R.string.text_heads):context.getString(R.string.text_tails));
+
+        String childText;
+        if(!child.getName().isEmpty()){
+            childText = String.format(context.getString(R.string.coin_flip_history_text), child.getName(), outcomeText);
+        }
+        else{
+            childText = String.format(context.getString(R.string.coin_flip_history_text), context.getString(R.string.user), outcomeText);
+        }
         holder.coinFlipChild.setText(childText);
         holder.coinFlipDateTime.setText(formattedDateTime);
         Glide.with(this.context).load(outcome).into(holder.coinFlipOutcome);
     }
 
-    public void removeUpdateManager(View view, int index){
+    public void removeUpdateManager(int index){
         gameManager.removeGameHistory(index);
         this.notifyItemRemoved(index);
         this.notifyItemRangeChanged(index, gameManager.getSavedGamesFromSharedPreferences().size());
