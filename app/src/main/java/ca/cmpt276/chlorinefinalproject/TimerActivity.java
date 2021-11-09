@@ -23,6 +23,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+// Activity that runs timer of preset or custom duration in minutes
 public class TimerActivity extends AppCompatActivity {
     public static final int NUM_MILLIS_IN_SECOND = 1000;
     public static final int NUM_SECONDS_IN_MINUTE = 60;

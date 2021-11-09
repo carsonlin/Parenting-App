@@ -13,6 +13,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+// Service that handles timer running when app is in background or closed
 public class TimerService extends Service {
 
     private final static long COUNT_DOWN_INTERVAL = 1000;
