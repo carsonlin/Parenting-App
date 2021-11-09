@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import Model.Coin;
 import Model.Game;
 import Model.GameManager;
@@ -73,7 +75,10 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.saveGameToSharedPreference();
             }
 
-            goToMainActivity(child.isEmpty());
+            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
+
+            goToMainActivity(children.isEmpty());
+
             finish();
             return true;
         }

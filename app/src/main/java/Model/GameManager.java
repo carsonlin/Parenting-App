@@ -134,14 +134,34 @@ public class GameManager {
     public ArrayList<String> getNextChildrenToPick() {
         ArrayList<String> childrenList = this.childrenList;
 
-        if (isEmptyGames()) {
-            ArrayList<String> childrenPlayed = new ArrayList<>();
+        if (!isEmptyGames()) {
+
             for (int i = 0; i < games.size(); i++) {
                 Game gameInstance = games.get(i);
-                childrenPlayed.add(gameInstance.getChild().getName());
+                int foundAtindex = valuePresentinArray(gameInstance.getChild().getName(),childrenList);
+                if (foundAtindex>-1) {
+                    childrenList.remove(foundAtindex);
+                }
             }
-            childrenList.removeAll(childrenPlayed);
+
         }
+
+        if (childrenList.size()==0)
+            childrenList = this.childrenList;
+
         return childrenList;
     }
+
+    private int valuePresentinArray(String value, ArrayList<String> arr){
+
+        for (int i =0; i < arr.size();i++){
+
+            if (value.equals(arr.get(i)))
+                return i;
+
+        }
+
+        return -1;
+    }
+
 }

@@ -40,8 +40,6 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.listOfgames);
 
-        System.out.println("gammes count "+gameManager.getSavedGamesFromSharedPreferences().size());
-
         setAdapters();
         setUpActionBar();
 

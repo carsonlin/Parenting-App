@@ -29,7 +29,10 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         gameManager = new GameManager(CoinFlipChooseActivity.this);
-        listOfChildren = gameManager.getNextChildrenToPick();//(ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
+        listOfChildren = gameManager.getNextChildrenToPick();
+        ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
+        if (listOfChildren.isEmpty()&&!(children.isEmpty()))
+            listOfChildren = children;
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
         setAdapters();
         setUpActionBar();
