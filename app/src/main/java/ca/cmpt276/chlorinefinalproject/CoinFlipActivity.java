@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +41,6 @@ public class CoinFlipActivity extends AppCompatActivity {
         setUpTextView();
         setUpActionBar();
         setUpCoin();
-
-
-
-
     }
 
     private void setUpCoin() {
@@ -54,16 +49,13 @@ public class CoinFlipActivity extends AppCompatActivity {
         gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> {
             coin.flip();
-
             Handler handler = new Handler();
             handler.postDelayed(() -> {
-
-                Toast toast = Toast.makeText(getApplicationContext(), coin.isHead()?" head":" Tail ", Toast.LENGTH_SHORT);
-
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        coin.isHead() ? getString(R.string.text_heads) : getString(R.string.text_tails),
+                        Toast.LENGTH_SHORT);
                 toast.show();
-
-            },  coin.predictedTime() + 1000);
-
+            }, coin.predictedTime() + 1000);
         });
     }
 

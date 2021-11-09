@@ -56,29 +56,16 @@ public class Coin {
 
     public void flip(){
         // generate random stopping point every time Coin is flipped
-        generateRandomEnd();
-        MediaPlayer mp = MediaPlayer.create(this.context, R.raw.coin_flip);
-        mp.start();
-        flipAnimation();
-    }
-
-    public boolean predictedHeadoutcome(){
-        boolean headtemp = head;
-        int flipEven = 0;
-        for (int i=0; i < stop; i++){
-
-            flipEven +=1;
-
-            if ((flipEven % 2) == 1) {
-                headtemp = !headtemp;
-                flipEven = 0;
-            }
+        if (!animating && !interacted){
+            generateRandomEnd();
+            MediaPlayer mp = MediaPlayer.create(this.context, R.raw.coin_flip);
+            mp.start();
+            flipAnimation();
         }
-            return headtemp;
     }
 
     public long predictedTime(){
-        return 100*stop;
+        return 100L *stop;
     }
 
     private void generateRandomEnd(){
