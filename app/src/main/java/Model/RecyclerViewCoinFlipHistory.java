@@ -21,17 +21,17 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
 
     private final GameManager gameManager;
     private final Context context;
-    private final RecyclerView recyclerView;
-    public RecyclerViewCoinFlipHistory(GameManager gameManager, Context context,RecyclerView recyclerView){
+
+    public RecyclerViewCoinFlipHistory(GameManager gameManager, Context context){
         this.gameManager = gameManager;
         this.context = context;
-        this.recyclerView = recyclerView;
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private final TextView coinFlipchild;
         private final TextView coinFlipdatetime;
-        private final TextView coinFliptrash;
+        private final ImageView coinFliptrash;
         private final ImageView coinFlipoutcome;
 
         public MyViewHolder(final View view){
@@ -47,7 +47,7 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
     @NonNull
     @Override
     public RecyclerViewCoinFlipHistory.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_children_pick_toss,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.coin_flip_history_entity,parent,false);
         return new RecyclerViewCoinFlipHistory.MyViewHolder(itemView);
     }
 
@@ -55,11 +55,15 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerViewCoinFlipHistory.MyViewHolder holder, int position) {
         Game game = gameManager.getSavedGamesFromSharedPreferences().get(position);
         ChildPick child = game.getChild();
-        int outcome = game.isHead()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
+        int outcome = game.isHead()==child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(game.getTime().toString(), formatter);
-        holder.coinFlipchild.setText(child.getName()+" chose "+(child.isHeads()?" Heads ":" Tails "));
-        holder.coinFlipdatetime.setText(dateTime.toString());
+        String formattedDateTime = game.getTime().format(formatter);
+        String outcomeText = (child.isHeads()?" Heads ":" Tails ");
+        String childText = " Uncofigured child chose "+outcomeText;
+        if(!child.getName().isEmpty())
+            childText = child.getName()+" chose "+outcomeText;
+        holder.coinFlipchild.setText(childText);
+        holder.coinFlipdatetime.setText(formattedDateTime);
         Glide.with(this.context).load(outcome).into(holder.coinFlipoutcome);
     }
 

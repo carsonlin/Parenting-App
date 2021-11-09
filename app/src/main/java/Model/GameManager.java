@@ -1,5 +1,6 @@
 package Model;
 
+import static android.content.Context.MODE_PRIVATE;
 import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
 
 import android.app.Activity;
@@ -39,7 +40,9 @@ public class GameManager {
     }
 
     public void saveGameToSharedPreference() {
-        SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
+        //PREFERENCES, MODE_PRIVATE
+        //SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences("PREFERENCES", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(GAME_HISTORY,this.createGameHistoryString());
         editor.apply();
@@ -68,7 +71,8 @@ public class GameManager {
 
     public ArrayList<Game> getSavedGamesFromSharedPreferences() {
         ArrayList<Game> savedGames = new ArrayList<>();
-        SharedPreferences sharedPref = this.context.getPreferences(Context.MODE_PRIVATE);
+        //SharedPreferences sharedPref = this.context.getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = this.context.getApplicationContext().getSharedPreferences("PREFERENCES", MODE_PRIVATE);
         String history = sharedPref.getString(GAME_HISTORY, "");
 
         System.out.println("saved string == " + history);
@@ -117,9 +121,7 @@ public class GameManager {
         if (index<getSavedGamesFromSharedPreferences().size()){
 
             this.games.remove(index);
-
             saveGameToSharedPreference();
-
 
         }
 

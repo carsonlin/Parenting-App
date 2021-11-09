@@ -4,52 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:padding="5dp">
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/coinFlipchild"
-        android:layout_width="185dp"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text=" chose head"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="InvalidId,MissingConstraints" />
-
-    <TextView
-        android:id="@+id/coinFlipdatetime"
-        android:layout_width="185dp"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="datetime"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinFlipchild"
-        tools:ignore="InvalidId,MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/coinFlipchild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text=" chose head"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="InvalidId,MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/coinFlipdatetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="datetime"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coinFlipchild"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="InvalidId,MissingConstraints" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/coinFlipoutcome"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="5dp"
         android:src="@drawable/icons8_x_50"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
         android:id="@+id/coinFliptrashHistory"
-        android:layout_marginEnd="28dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="15dp"
         android:src="@drawable/icons8_trash_50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinFlipoutcome" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/coinFlipoutcome"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

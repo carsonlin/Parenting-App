@@ -48,12 +48,15 @@ public class CoinFlipActivity extends AppCompatActivity {
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> coin.flip());
+
         editTextGameCount.setText(gameManager.getSavedGamesFromSharedPreferences().size() + " plays");
 
         editTextGameHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(CoinFlipActivity.this, CoinFlipHistoryActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
