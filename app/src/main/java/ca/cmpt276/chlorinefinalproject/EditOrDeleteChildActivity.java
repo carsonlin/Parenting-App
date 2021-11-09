@@ -133,4 +133,10 @@ public class EditOrDeleteChildActivity extends AppCompatActivity {
         }
         return childList;
     }
+
+    public static void clearChildrenSharedPreferences(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear().apply();
+    }
 }

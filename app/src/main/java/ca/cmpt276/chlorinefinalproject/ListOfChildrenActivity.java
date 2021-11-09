@@ -1,6 +1,8 @@
 package ca.cmpt276.chlorinefinalproject;
 
 
+import static ca.cmpt276.chlorinefinalproject.EditOrDeleteChildActivity.clearChildrenSharedPreferences;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -78,12 +80,20 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             startActivity(i);
             return true;
         }
+        else if(item.getItemId() == R.id.clearChildren){
+            children.clearChildren();
+            clearChildrenSharedPreferences(this);
+            populateListView();
+            return true;
+        }
         else if (item.getItemId() == R.id.home){
             finish();
             return true;
         }
         return false;
     }
+
+
 
     protected void onResume(){
         super.onResume();

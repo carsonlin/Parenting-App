@@ -26,4 +26,6 @@
     <string name="name">Name</string>
     <string name="timer_custom_radio_text">Custom</string>
     <string name="minutes">minutes</string>
+    <string name="add_child">Add Child</string>
+    <string name="clear_children">Clear Children</string>
 </resources>
