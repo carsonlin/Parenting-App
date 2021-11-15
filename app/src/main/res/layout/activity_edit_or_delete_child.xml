@@ -67,7 +67,7 @@
 
     <EditText
         android:id="@+id/editChildName"
-        android:layout_width="230dp"
+        android:layout_width="365dp"
         android:layout_height="69dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:ems="10"
