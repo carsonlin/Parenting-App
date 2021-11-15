@@ -91,8 +91,8 @@ public class EditChildActivity extends AppCompatActivity {
     private void saveButtonPressed(){
         Button button = findViewById(R.id.saveButton);
         button.setOnClickListener(view -> {
-            EditText ET = findViewById(R.id.editChildName);
-            String text = ET.getText().toString();
+            EditText editText = findViewById(R.id.editChildName);
+            String text = editText.getText().toString();
             if(text.length() <= 0){
                 Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
                 return;

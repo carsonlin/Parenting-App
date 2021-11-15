@@ -47,4 +47,8 @@
     <string name="title">title</string>
     <string name="x_icon">x icon</string>
     <string name="trash_icon">trash icon</string>
+    <string name="whose_turn">Whose Turn</string>
+    <string name="delete">Delete</string>
+    <string name="task_name">Task Name</string>
+    <string name="edit_task">Edit Task</string>
 </resources>
