@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+//TaskManager class that holds a list of tasks (may not be needed)
 public class TaskManager {
     private ArrayList<Task> taskManager;
     private int managerSize;
