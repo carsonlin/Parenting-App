@@ -47,4 +47,6 @@
     <string name="title">title</string>
     <string name="x_icon">x icon</string>
     <string name="trash_icon">trash icon</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="child_profile_picture">child profile picture</string>
 </resources>
