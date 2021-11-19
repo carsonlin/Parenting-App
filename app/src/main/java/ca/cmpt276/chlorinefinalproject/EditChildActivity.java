@@ -45,23 +45,6 @@ public class EditChildActivity extends AppCompatActivity {
         return intent;
     }
 
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    if (result != null) {
-                        Bitmap map = null;
-                        ImageView imageView = findViewById(R.id.childProfilePic);
-                        try {
-                            map = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        imageView.setImageBitmap(map);
-                    }
-                }
-            });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,8 +118,24 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void uploadImagePressed() {
-        Button button = findViewById(R.id.uploadImage);
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if (result != null) {
+                            Bitmap map = null;
+                            ImageView imageView = findViewById(R.id.childProfilePic);
+                            try {
+                                map = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            imageView.setImageBitmap(map);
+                        }
+                    }
+                });
 
+        Button button = findViewById(R.id.uploadImage);
         button.setOnClickListener(view -> mGetContent.launch("image/*"));
     }
 
