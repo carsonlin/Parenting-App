@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 // Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
 public class ConfigureChildren {
-    private final ArrayList<String> listOfChildren;
+    private final ArrayList<Child> listOfChildren;
     private static ConfigureChildren instance = null;
 
     private ConfigureChildren(){
@@ -21,7 +21,7 @@ public class ConfigureChildren {
 
     public void addChild(String childName){
         if(childName.length() > 0 ){
-            listOfChildren.add(childName);
+            listOfChildren.add(new Child(childName));
         }
     }
     public void deleteChild(int index){
@@ -31,7 +31,7 @@ public class ConfigureChildren {
     }
     public void editChild(int index,String childName){
         if(index >= 0 && index < listOfChildren.size()){
-            listOfChildren.set(index, childName);
+            listOfChildren.get(index).setName(childName);
         }
     }
 
@@ -40,7 +40,7 @@ public class ConfigureChildren {
     }
 
     public String getChild(int index){
-        return listOfChildren.get(index);
+        return listOfChildren.get(index).getName();
     }
 
     public int getListSize(){

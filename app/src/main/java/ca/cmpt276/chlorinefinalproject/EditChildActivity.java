@@ -3,17 +3,23 @@ package ca.cmpt276.chlorinefinalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +56,7 @@ public class EditChildActivity extends AppCompatActivity {
         setUpActionBar();
         deleteButtonPressed();
         saveButtonPressed();
+        uploadImagePressed();
     }
 
     private void setUpUI(){
@@ -108,6 +115,28 @@ public class EditChildActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void uploadImagePressed() {
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if (result != null) {
+                            Bitmap map = null;
+                            ImageView imageView = findViewById(R.id.childProfilePic);
+                            try {
+                                map = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            imageView.setImageBitmap(map);
+                        }
+                    }
+                });
+
+        Button button = findViewById(R.id.uploadImage);
+        button.setOnClickListener(view -> mGetContent.launch("image/*"));
     }
 
     public void saveChildrenSharedPreferences(){
