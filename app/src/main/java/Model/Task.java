@@ -9,26 +9,26 @@ public class Task {
     private int childIndex;
     private final ArrayList<Child> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
 
-    Task(String newTaskName, Child newChild, ArrayList<Child> newListOfChildren){
-        taskName = newTaskName;
-        child = newChild;
-        listOfChildren = newListOfChildren;
-        childIndex = listOfChildren.indexOf(child);
+    Task(String taskName, Child child, ArrayList<Child> listOfChildren){
+        this.taskName = taskName;
+        this.child = child;
+        this.listOfChildren = listOfChildren;
+        this.childIndex = listOfChildren.indexOf(child);
     }
 
-    Task(String newTaskName, ArrayList<Child> newListOfChildren){
-        taskName = newTaskName;
-        childIndex = 0;
-        listOfChildren = newListOfChildren;
-        child = listOfChildren.get(childIndex);
+    Task(String taskName, ArrayList<Child> listOfChildren){
+        this.taskName = taskName;
+        this.childIndex = 0;
+        this.listOfChildren = listOfChildren;
+        this.child = listOfChildren.get(childIndex);
     }
 
-    public void setTaskName(String newTaskName){
-        taskName = newTaskName;
+    public void setTaskName(String taskName){
+        this.taskName = taskName;
     }
 
-    public void setTaskChild(Child newChild){
-        child = newChild;
+    public void setTaskChild(Child child){
+        this.child = child;
     }
 
     public String getTaskName(){
