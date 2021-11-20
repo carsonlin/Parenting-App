@@ -5,18 +5,18 @@ import java.util.ArrayList;
 //task model class that holds Name of task and supports task completion (updating next child)
 public class Task {
     private String taskName;
-    private String child; //currently a string, needs to be child class
+    private Child child;
     private int childIndex;
-    private final ArrayList<String> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
+    private final ArrayList<Child> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
 
-    Task(String newTaskName, String newChild, ArrayList<String> newListOfChildren){
+    Task(String newTaskName, Child newChild, ArrayList<Child> newListOfChildren){
         taskName = newTaskName;
         child = newChild;
         listOfChildren = newListOfChildren;
         childIndex = listOfChildren.indexOf(child);
     }
 
-    Task(String newTaskName, ArrayList<String> newListOfChildren){
+    Task(String newTaskName, ArrayList<Child> newListOfChildren){
         taskName = newTaskName;
         childIndex = 0;
         listOfChildren = newListOfChildren;
@@ -27,7 +27,7 @@ public class Task {
         taskName = newTaskName;
     }
 
-    public void setTaskChild(String newChild){
+    public void setTaskChild(Child newChild){
         child = newChild;
     }
 
@@ -35,7 +35,7 @@ public class Task {
         return taskName;
     }
 
-    public String getTaskChild(){
+    public Child getTaskChild(){
         return child;
     }
 
