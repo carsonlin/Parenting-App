@@ -1,6 +1,7 @@
 package ca.cmpt276.chlorinefinalproject;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -19,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +36,12 @@ public class EditChildActivity extends AppCompatActivity {
 
     private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
     private static final String CHILD_LIST = "childList";
+    public static final String PATH_LIST = "pathList";
     private static final String PREFERENCES = "appPrefs";
     private String activityName;
     private int position;
-    private ConfigureChildren children;
+    private ConfigureChildren childManager;
+    private Bitmap imageBitmap;
 
     public static Intent getAddOrDeleteChildIntent(Context c,String activity, int position){
         Intent intent = new Intent(c, EditChildActivity.class);
@@ -51,7 +56,7 @@ public class EditChildActivity extends AppCompatActivity {
         binding = ActivityEditOrDeleteChildBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        children = ConfigureChildren.getInstance();
+        childManager = ConfigureChildren.getInstance();
         setUpUI();
         setUpActionBar();
         deleteButtonPressed();
@@ -63,6 +68,7 @@ public class EditChildActivity extends AppCompatActivity {
         Intent intent = getIntent();
         position = intent.getIntExtra("list position", 0);
         EditText editText = findViewById(R.id.editChildName);
+        ImageView imageView = findViewById(R.id.childProfilePic);
         activityName = intent.getStringExtra(EXTRA_MESSAGE_ACTIVITY);
 
         if(activityName.equals("add")){
@@ -72,7 +78,9 @@ public class EditChildActivity extends AppCompatActivity {
         }
 
         if(activityName.equals("edit")){
-            editText.setText(children.getChild(position));
+            editText.setText(childManager.getChildName(position));
+            imageBitmap = childManager.getChildObject(position).getImage();
+            imageView.setImageBitmap(imageBitmap);
         }
     }
 
@@ -89,7 +97,8 @@ public class EditChildActivity extends AppCompatActivity {
     private void deleteButtonPressed(){
         Button button = findViewById(R.id.deleteButton);
         button.setOnClickListener(view -> {
-            children.deleteChild(position);
+            childManager.deleteChild(position);
+            childManager.deleteFilePath(position);
             saveChildrenSharedPreferences();
             finish();
         });
@@ -105,32 +114,41 @@ public class EditChildActivity extends AppCompatActivity {
                 return;
             }
             if(activityName.equals("add")){
-                children.addChild(text);
+                childManager.addChild(text, imageBitmap);
+                String path = saveToInternalStorage(imageBitmap, text + ".jpg");
+                childManager.addFilePath(path);
+
                 saveChildrenSharedPreferences();
+                System.out.println(getFilePathSharedPreferences(this));
                 finish();
             }
             if(activityName.equals("edit")){
-                children.editChild(position, text);
+                childManager.editChildName(position, text);
+                String path = saveToInternalStorage(imageBitmap, text + ".jpg");
+                childManager.editFilePath(position, path);
                 saveChildrenSharedPreferences();
+                System.out.println(getFilePathSharedPreferences(this));
                 finish();
             }
         });
     }
 
     private void uploadImagePressed() {
+        // Launches gallery for user to select image
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri result) {
                         if (result != null) {
                             Bitmap map = null;
-                            ImageView imageView = findViewById(R.id.childProfilePic);
                             try {
                                 map = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            ImageView imageView = findViewById(R.id.childProfilePic);
                             imageView.setImageBitmap(map);
+                            imageBitmap = map;
                         }
                     }
                 });
@@ -139,15 +157,43 @@ public class EditChildActivity extends AppCompatActivity {
         button.setOnClickListener(view -> mGetContent.launch("image/*"));
     }
 
+    private String saveToInternalStorage(Bitmap bitmapImage, String filename) {
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File filePath = new File(directory, filename);
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(filePath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert outputStream != null;
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return filePath.getAbsolutePath();
+    }
+
     public void saveChildrenSharedPreferences(){
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(CHILD_LIST).apply();
         StringBuilder childListString = new StringBuilder();
-        for(int i = 0; i < children.getListSize(); i++){
-            childListString.append(children.getChild(i)).append(",");
+        StringBuilder imagePathString = new StringBuilder();
+
+        for(int i = 0; i < childManager.getListSize(); i++){
+            childListString.append(childManager.getChildName(i)).append(",");
+            imagePathString.append(childManager.getFilePath(i)).append(",");
         }
         editor.putString(CHILD_LIST, childListString.toString());
+        editor.putString(PATH_LIST, imagePathString.toString());
         editor.apply();
     }
 
@@ -161,6 +207,18 @@ public class EditChildActivity extends AppCompatActivity {
             childList.remove(0);
         }
         return childList;
+    }
+
+    public static List<String> getFilePathSharedPreferences(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        String temp = "";
+        String filePathString = prefs.getString(PATH_LIST, temp);
+        List<String> pathList = new ArrayList<>(Arrays.asList(filePathString.split(",")));
+        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
+        if(pathList.get(0).equals("") && (pathList.size() == 1)){
+            pathList.remove(0);
+        }
+        return pathList;
     }
 
     public static void clearChildrenSharedPreferences(Context context){

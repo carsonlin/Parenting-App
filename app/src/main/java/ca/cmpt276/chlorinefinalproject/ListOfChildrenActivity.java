@@ -4,6 +4,8 @@ package ca.cmpt276.chlorinefinalproject;
 import static ca.cmpt276.chlorinefinalproject.EditChildActivity.clearChildrenSharedPreferences;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import Model.ConfigureChildren;
@@ -40,15 +45,32 @@ public class ListOfChildrenActivity extends AppCompatActivity {
 
     private void populateListView() {
         List<String> childList = EditChildActivity.getChildrenSharedPreferences(this);
+        List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this);
         children.clearChildren();
+        children.clearFilePaths();
         for(int i = 0; i < childList.size(); i++){
-            children.addChild(childList.get(i));
+            String path = pathList.get(i);
+            Bitmap map = loadImageFromStorage(path);
+
+            children.addChild(childList.get(i), map);
+            children.addFilePath(path);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.list_items, childList);
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
+    }
+
+    private Bitmap loadImageFromStorage(String path) {
+        try {
+            File file = new File(path);
+            return BitmapFactory.decodeStream(new FileInputStream(file));
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void registerClickCallback(){
