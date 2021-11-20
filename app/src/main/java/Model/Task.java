@@ -5,37 +5,37 @@ import java.util.ArrayList;
 //task model class that holds Name of task and supports task completion (updating next child)
 public class Task {
     private String taskName;
-    private String child; //currently a string, needs to be child class
+    private Child child;
     private int childIndex;
-    private final ArrayList<String> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
+    private final ArrayList<Child> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
 
-    Task(String newTaskName, String newChild, ArrayList<String> newListOfChildren){
-        taskName = newTaskName;
-        child = newChild;
-        listOfChildren = newListOfChildren;
-        childIndex = listOfChildren.indexOf(child);
+    Task(String taskName, Child child, ArrayList<Child> listOfChildren){
+        this.taskName = taskName;
+        this.child = child;
+        this.listOfChildren = listOfChildren;
+        this.childIndex = listOfChildren.indexOf(child);
     }
 
-    Task(String newTaskName, ArrayList<String> newListOfChildren){
-        taskName = newTaskName;
-        childIndex = 0;
-        listOfChildren = newListOfChildren;
-        child = listOfChildren.get(childIndex);
+    Task(String taskName, ArrayList<Child> listOfChildren){
+        this.taskName = taskName;
+        this.childIndex = 0;
+        this.listOfChildren = listOfChildren;
+        this.child = listOfChildren.get(childIndex);
     }
 
-    public void setTaskName(String newTaskName){
-        taskName = newTaskName;
+    public void setTaskName(String taskName){
+        this.taskName = taskName;
     }
 
-    public void setTaskChild(String newChild){
-        child = newChild;
+    public void setTaskChild(Child child){
+        this.child = child;
     }
 
     public String getTaskName(){
         return taskName;
     }
 
-    public String getTaskChild(){
+    public Child getTaskChild(){
         return child;
     }
 
