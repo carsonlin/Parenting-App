@@ -73,7 +73,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     private void registerClickCallback(){
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "edit", position);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, false, position);
             startActivity(i);
         });
     }
@@ -93,7 +93,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
-            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, true, -1);
             startActivity(i);
             return true;
         }

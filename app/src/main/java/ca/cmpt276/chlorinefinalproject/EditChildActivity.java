@@ -35,18 +35,19 @@ public class EditChildActivity extends AppCompatActivity {
     private ActivityEditOrDeleteChildBinding binding;
 
     private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
+    public static final String LIST_POSITION = "list position";
     private static final String CHILD_LIST = "childList";
     public static final String PATH_LIST = "pathList";
     private static final String PREFERENCES = "appPrefs";
-    private String activityName;
+    private boolean isAddActivity;
     private int position;
     private ConfigureChildren childManager;
     private Bitmap imageBitmap;
 
-    public static Intent getAddOrDeleteChildIntent(Context c,String activity, int position){
+    public static Intent getAddOrDeleteChildIntent(Context c, boolean isAddActivity, int position){
         Intent intent = new Intent(c, EditChildActivity.class);
-        intent.putExtra(EXTRA_MESSAGE_ACTIVITY, activity);
-        intent.putExtra("list position", position);
+        intent.putExtra(EXTRA_MESSAGE_ACTIVITY, isAddActivity);
+        intent.putExtra(LIST_POSITION, position);
         return intent;
     }
 
@@ -69,15 +70,14 @@ public class EditChildActivity extends AppCompatActivity {
         position = intent.getIntExtra("list position", 0);
         EditText editText = findViewById(R.id.editChildName);
         ImageView imageView = findViewById(R.id.childProfilePic);
-        activityName = intent.getStringExtra(EXTRA_MESSAGE_ACTIVITY);
+        isAddActivity = intent.getBooleanExtra(EXTRA_MESSAGE_ACTIVITY, true);
 
-        if(activityName.equals("add")){
+        if(isAddActivity){
             Button button = findViewById(R.id.deleteButton);
             button.setVisibility(View.GONE);
             editText.setText("");
         }
-
-        if(activityName.equals("edit")){
+        else{
             editText.setText(childManager.getName(position));
             imageBitmap = childManager.getChild(position).getImage();
             imageView.setImageBitmap(imageBitmap);
@@ -89,7 +89,7 @@ public class EditChildActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        if(activityName.equals("add")){
+        if(isAddActivity){
             ab.setTitle("Add a Child");
         }
     }
@@ -108,22 +108,22 @@ public class EditChildActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             EditText ET = findViewById(R.id.editChildName);
             String text = ET.getText().toString();
-            if(text.length() <= 0){
+            if (text.length() <= 0){
                 Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
-                return;
             }
-            if(activityName.equals("add")){
+             else {
                 String path = saveToInternalStorage(imageBitmap, text + ".jpg");
-                childManager.addChild(text, imageBitmap, path);
+                if (isAddActivity){
+                    childManager.addChild(text, imageBitmap, path);
+                }
+                else {
+                    childManager.editChild(position, text, path);
+                }
                 saveChildrenSharedPreferences();
                 finish();
             }
-            if(activityName.equals("edit")){
-                String path = saveToInternalStorage(imageBitmap, text + ".jpg");
-                childManager.editChild(position, text, path);
-                saveChildrenSharedPreferences();
-                finish();
-            }
+
+
         });
     }
 
@@ -154,13 +154,11 @@ public class EditChildActivity extends AppCompatActivity {
     private String saveToInternalStorage(Bitmap bitmapImage, String filename) {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
-        // Create imageDir
         File filePath = new File(directory, filename);
 
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(filePath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
