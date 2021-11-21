@@ -64,8 +64,18 @@ public class Coin {
         }
     }
 
+    public boolean predictedHeadoutcome(){
+
+        boolean headtemp = head;
+        for (int i=20; i < stop; i+=2){
+            headtemp = !headtemp;
+        }
+        return headtemp;
+
+    }
+
     public long predictedTime(){
-        return 100L *stop;
+        return DURATION*(stop-1);
     }
 
     private void generateRandomEnd(){

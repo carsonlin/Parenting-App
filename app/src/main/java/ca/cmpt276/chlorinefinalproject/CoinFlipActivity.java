@@ -48,14 +48,16 @@ public class CoinFlipActivity extends AppCompatActivity {
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> {
+            // decoupled coin flip implemented
             coin.flip();
+            boolean head = coin.predictedHeadoutcome();
             Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        coin.isHead() ? getString(R.string.text_heads) : getString(R.string.text_tails),
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }, coin.predictedTime() + 1000);
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    Toast toast = Toast.makeText(getApplicationContext(), head?" head":" Tail ", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            },  coin.predictedTime());
         });
     }
 
