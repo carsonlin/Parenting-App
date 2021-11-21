@@ -91,6 +91,40 @@ public class GameManager {
 
     }
 
+    public ArrayList<String> getQueueofNewchildrenList(){
+
+        ArrayList<String> children = new ArrayList<>();
+        ArrayList<Game> games = this.getSavedGamesFromSharedPreferences();
+        int indexOfchildFromlist = -1;
+
+        if (games.size()>0){
+            Game lastGame = games.get(games.size() - 1);
+            indexOfchildFromlist = getIndexofChildfromList(lastGame.getChild().getName());
+        }
+        for (int i=(indexOfchildFromlist+1); i < this.childrenList.size() ;i++){
+            children.add(this.childrenList.get(i));
+        }
+        for(int i=0; i <=indexOfchildFromlist;i++){
+            children.add(this.childrenList.get(i));
+        }
+
+        return children;
+
+    }
+
+    public int getIndexofChildfromList(String child){
+
+        for (int i = 0;i < this.childrenList.size();i++){
+
+            if (this.childrenList.get(i).equals(child))
+                return i;
+
+        }
+
+        return -1;
+
+    }
+
     public boolean isEmptyGames() {
         return games.isEmpty();
     }
