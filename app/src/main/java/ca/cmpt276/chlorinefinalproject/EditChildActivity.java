@@ -122,7 +122,7 @@ public class EditChildActivity extends AppCompatActivity {
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
-                    childManager.editChild(position, text, path);
+                    childManager.editChild(position, text, imageBitmap, path);
                 }
                 saveChildrenSharedPreferences();
                 finish();

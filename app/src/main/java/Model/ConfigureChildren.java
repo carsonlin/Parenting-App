@@ -35,10 +35,11 @@ public class ConfigureChildren {
             listOfChildren.remove(index);
         }
     }
-    public void editChild(int index, String childName, String filePath){
+    public void editChild(int index, String childName, Bitmap image, String filePath){
         if(index >= 0 && index < listOfChildren.size()){
             Child child = listOfChildren.get(index);
             child.setName(childName);
+            child.setImage(image);
             child.setFilePath(filePath);
         }
     }

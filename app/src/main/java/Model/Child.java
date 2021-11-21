@@ -20,7 +20,6 @@ public class Child {
         this.name = name;
     }
 
-    // returns bitmap? imageview?
     public Bitmap getImage(){
         return image;
     }
