@@ -54,7 +54,8 @@ public class CoinFlipActivity extends AppCompatActivity {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(), head?" head":" Tail ", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            head?R.string.text_heads:R.string.text_tails, Toast.LENGTH_SHORT);
                     toast.show();
                 }
             },  coin.animationDuration());
@@ -67,17 +68,17 @@ public class CoinFlipActivity extends AppCompatActivity {
             editTextChildPick.setText("");
         }
         else if (this.isHead){
-            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Heads"));
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, this.getResources().getString(R.string.text_heads)));
         }
         else{
-            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Tails"));
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, this.getResources().getString((R.string.text_tails))));
         }
     }
 
     private void extractIntentExtras() {
         Intent intent = getIntent();
         child = intent.getStringExtra(CHILD);
-        isHead = intent.getStringExtra(BET).equals("heads");
+        isHead = intent.getStringExtra(BET).equals(this.getResources().getString(R.string.text_heads));
     }
 
     @Override

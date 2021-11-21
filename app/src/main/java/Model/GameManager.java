@@ -69,7 +69,6 @@ public class GameManager {
                 child.setHeads(Boolean.parseBoolean(gameInfo[1]));
                 gameInstance.setHead(Boolean.parseBoolean(gameInfo[2]));
                 gameInstance.setTime(gameInfo[3]);
-
                 gameInstance.setChild(child);
                 savedGames.add(gameInstance);
             }
@@ -83,16 +82,12 @@ public class GameManager {
 
     public void removeGameHistory(int index){
         if (index<getSavedGamesFromSharedPreferences().size()){
-
             this.games.remove(index);
             saveGameToSharedPreference();
-
         }
-
     }
 
     public ArrayList<String> getQueueofNewchildrenList(){
-
         ArrayList<String> children = new ArrayList<>();
         ArrayList<Game> games = this.getSavedGamesFromSharedPreferences();
         int indexOfchildFromlist = -1;
@@ -101,28 +96,24 @@ public class GameManager {
             Game lastGame = games.get(games.size() - 1);
             indexOfchildFromlist = getIndexofChildfromList(lastGame.getChild().getName());
         }
+
         for (int i=(indexOfchildFromlist+1); i < this.childrenList.size() ;i++){
             children.add(this.childrenList.get(i));
         }
+
         for(int i=0; i <=indexOfchildFromlist;i++){
             children.add(this.childrenList.get(i));
         }
 
         return children;
-
     }
 
     public int getIndexofChildfromList(String child){
-
         for (int i = 0;i < this.childrenList.size();i++){
-
             if (this.childrenList.get(i).equals(child))
                 return i;
-
         }
-
         return -1;
-
     }
 
     public boolean isEmptyGames() {
@@ -130,7 +121,6 @@ public class GameManager {
     }
 
     public ArrayList<String> getNextChildrenToPick() {
-
         ArrayList<String> childrenList = this.childrenList;
         ArrayList<Integer> bucket = new ArrayList<>();
         ArrayList<String> temp = new ArrayList<>();

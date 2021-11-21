@@ -21,6 +21,7 @@ import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding
 
 // Activity to select a child for a coin flip
 public class CoinFlipChooseActivity extends AppCompatActivity {
+    public static final String OVERRIDE = "override";
     private ActivityCoinFlipChooseBinding binding;
     private RecyclerView recyclerView;
     private ArrayList<String> listOfChildren;
@@ -103,12 +104,12 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     private void override() {
 
         Intent intent = new Intent(getBaseContext(), CoinFlipChooseActivity.class);
-        intent.putExtra("override", true);
+        intent.putExtra(OVERRIDE, true);
         startActivity(intent);
     }
 
     private boolean isOverride() {
-        return getIntent().getBooleanExtra("override", false);
+        return getIntent().getBooleanExtra(OVERRIDE, false);
     }
 
     private void setUpActionBar(){
