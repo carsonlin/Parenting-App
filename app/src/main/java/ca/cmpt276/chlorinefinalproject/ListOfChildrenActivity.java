@@ -47,13 +47,10 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         List<String> childList = EditChildActivity.getChildrenSharedPreferences(this);
         List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this);
         children.clearChildren();
-        children.clearFilePaths();
         for(int i = 0; i < childList.size(); i++){
             String path = pathList.get(i);
             Bitmap map = loadImageFromStorage(path);
-
-            children.addChild(childList.get(i), map);
-            children.addFilePath(path);
+            children.addChild(childList.get(i), map, path);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,

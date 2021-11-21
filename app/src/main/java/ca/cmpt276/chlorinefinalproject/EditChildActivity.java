@@ -78,8 +78,8 @@ public class EditChildActivity extends AppCompatActivity {
         }
 
         if(activityName.equals("edit")){
-            editText.setText(childManager.getChildName(position));
-            imageBitmap = childManager.getChildObject(position).getImage();
+            editText.setText(childManager.getName(position));
+            imageBitmap = childManager.getChild(position).getImage();
             imageView.setImageBitmap(imageBitmap);
         }
     }
@@ -98,7 +98,6 @@ public class EditChildActivity extends AppCompatActivity {
         Button button = findViewById(R.id.deleteButton);
         button.setOnClickListener(view -> {
             childManager.deleteChild(position);
-            childManager.deleteFilePath(position);
             saveChildrenSharedPreferences();
             finish();
         });
@@ -114,20 +113,15 @@ public class EditChildActivity extends AppCompatActivity {
                 return;
             }
             if(activityName.equals("add")){
-                childManager.addChild(text, imageBitmap);
                 String path = saveToInternalStorage(imageBitmap, text + ".jpg");
-                childManager.addFilePath(path);
-
+                childManager.addChild(text, imageBitmap, path);
                 saveChildrenSharedPreferences();
-                System.out.println(getFilePathSharedPreferences(this));
                 finish();
             }
             if(activityName.equals("edit")){
-                childManager.editChildName(position, text);
                 String path = saveToInternalStorage(imageBitmap, text + ".jpg");
-                childManager.editFilePath(position, path);
+                childManager.editChild(position, text, path);
                 saveChildrenSharedPreferences();
-                System.out.println(getFilePathSharedPreferences(this));
                 finish();
             }
         });
@@ -189,8 +183,8 @@ public class EditChildActivity extends AppCompatActivity {
         StringBuilder imagePathString = new StringBuilder();
 
         for(int i = 0; i < childManager.getListSize(); i++){
-            childListString.append(childManager.getChildName(i)).append(",");
-            imagePathString.append(childManager.getFilePath(i)).append(",");
+            childListString.append(childManager.getName(i)).append(",");
+            imagePathString.append(childManager.getChild(i).getFilePath()).append(",");
         }
         editor.putString(CHILD_LIST, childListString.toString());
         editor.putString(PATH_LIST, imagePathString.toString());

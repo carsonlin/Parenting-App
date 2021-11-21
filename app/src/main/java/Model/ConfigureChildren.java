@@ -7,12 +7,10 @@ import java.util.ArrayList;
 // Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
 public class ConfigureChildren {
     private final ArrayList<Child> listOfChildren;
-    private final ArrayList<String> listOfFilePaths;
     private static ConfigureChildren instance = null;
 
     private ConfigureChildren(){
         listOfChildren = new ArrayList<>();
-        listOfFilePaths = new ArrayList<>();
     }
 
     //singleton support
@@ -23,10 +21,11 @@ public class ConfigureChildren {
         return instance;
     }
 
-    public void addChild(String childName, Bitmap image){
+    public void addChild(String childName, Bitmap image, String filePath){
         if(childName.length() > 0 ){
             Child child = new Child(childName);
             child.setImage(image);
+            child.setFilePath(filePath);
             listOfChildren.add(child);
         }
     }
@@ -36,41 +35,23 @@ public class ConfigureChildren {
             listOfChildren.remove(index);
         }
     }
-    public void editChildName(int index, String childName){
+    public void editChild(int index, String childName, String filePath){
         if(index >= 0 && index < listOfChildren.size()){
-            listOfChildren.get(index).setName(childName);
+            Child child = listOfChildren.get(index);
+            child.setName(childName);
+            child.setFilePath(filePath);
         }
     }
 
-    public String getChildName(int index){
+    public String getName(int index){
         return listOfChildren.get(index).getName();
     }
 
-    public Child getChildObject(int index){
+    public Child getChild(int index){
         if(index >= 0 && index < listOfChildren.size()){
             return listOfChildren.get(index);
         }
         return null;
-    }
-
-    public void addFilePath(String filePath){
-        listOfFilePaths.add(filePath);
-    }
-
-    public void deleteFilePath(int index){
-        if(index >= 0 && index < listOfChildren.size()){
-            listOfFilePaths.remove(index);
-        }
-    }
-
-    public void editFilePath(int index, String filePath){
-        if(index >= 0 && index < listOfChildren.size()){
-            listOfFilePaths.set(index, filePath);
-        }
-    }
-
-    public String getFilePath(int index){
-        return listOfFilePaths.get(index);
     }
 
     public int getListSize(){
@@ -79,9 +60,5 @@ public class ConfigureChildren {
 
     public void clearChildren(){
         listOfChildren.clear();
-    }
-
-    public void clearFilePaths(){
-        listOfFilePaths.clear();
     }
 }

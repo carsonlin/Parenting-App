@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 public class Child {
     private String name;
     private Bitmap image;
+    private String filePath;
 
     public Child(String name){
         this.name = name;
@@ -28,5 +29,13 @@ public class Child {
         if (image != null){
             this.image = image;
         }
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
