@@ -75,7 +75,7 @@ public class Coin {
     }
 
     public long predictedTime(){
-        return DURATION*(stop-1);
+        return (long) DURATION*(stop-4); // last 2 flips,  takes account of flip speed
     }
 
     private void generateRandomEnd(){
