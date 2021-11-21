@@ -1,7 +1,7 @@
 package Model;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
+import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildNameSharedPreferences;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -22,7 +22,7 @@ public class GameManager {
     public GameManager(Activity activity) {
         this.context = activity;
         this.games = getSavedGamesFromSharedPreferences();
-        this.childrenList = (ArrayList<String>) getChildrenSharedPreferences(context.getApplicationContext());
+        this.childrenList = (ArrayList<String>) getChildNameSharedPreferences(context.getApplicationContext());
     }
 
     public void saveGameToSharedPreference() {

@@ -21,12 +21,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Model.Child;
 import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
@@ -213,7 +216,7 @@ public class EditChildActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public static List<String> getChildrenSharedPreferences(Context context){
+    public static List<String> getChildNameSharedPreferences(Context context){
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         String temp = "";
         String childListString = prefs.getString(CHILD_LIST, temp);
@@ -235,6 +238,23 @@ public class EditChildActivity extends AppCompatActivity {
             pathList.remove(0);
         }
         return pathList;
+    }
+
+    public ArrayList<Child> getListOfChildObjects(){
+        ArrayList<Child> listOfChildObjects = new ArrayList<>();
+        List<String> listOfNames= getChildNameSharedPreferences(this);
+        List<String> listOfFilePaths= getFilePathSharedPreferences(this);
+        for(int i = 0; i < listOfNames.size(); i++){
+            Child child = new Child(listOfNames.get(i));
+            child.setFilePath(listOfFilePaths.get(i));
+            File file = new File(child.getFilePath());
+            try {
+                child.setImage(BitmapFactory.decodeStream(new FileInputStream(file)));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return listOfChildObjects;
     }
 
     public static void clearChildrenSharedPreferences(Context context){

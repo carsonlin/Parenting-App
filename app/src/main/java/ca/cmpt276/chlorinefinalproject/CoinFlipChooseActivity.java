@@ -35,7 +35,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         gameManager = new GameManager(CoinFlipChooseActivity.this);
         listOfChildren = gameManager.getNextChildrenToPick();
 
-        ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
+        ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildNameSharedPreferences(CoinFlipChooseActivity.this);
         if (listOfChildren.isEmpty() && !(children.isEmpty())){
             listOfChildren = children;
         }
