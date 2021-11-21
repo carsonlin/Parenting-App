@@ -20,7 +20,6 @@ public class Coin {
     private static final int UPPER_BOUND = 40;
     private static final int COIN_CHANGE_ANGLE = 90;
     public static final int DURATION = 100;
-
     ImageView coin;
     float rotation;
     int flip;
@@ -31,7 +30,7 @@ public class Coin {
     private boolean interacted;
     private final Activity context;
 
-    public Coin(Activity context, ImageView coin){
+    public Coin(Activity context, ImageView coin) {
         this.context = context;
         this.coin = coin;
         this.interacted = false;
@@ -54,9 +53,9 @@ public class Coin {
         return interacted;
     }
 
-    public void flip(){
+    public void flip() {
         // generate random stopping point every time Coin is flipped
-        if (!animating && !interacted){
+        if (!animating && !interacted) {
             generateRandomEnd();
             MediaPlayer mp = MediaPlayer.create(this.context, R.raw.coin_flip);
             mp.start();
@@ -64,29 +63,29 @@ public class Coin {
         }
     }
 
-    public boolean predictedHeadoutcome(){
+    public boolean outcome() {
 
         boolean headtemp = head;
-        for (int i=20; i < stop; i+=2){
+        for (int i = 20; i < stop; i += 2) {
             headtemp = !headtemp;
         }
         return headtemp;
 
     }
 
-    public long predictedTime(){
-        return (long) DURATION*(stop-4); // last 2 flips,  takes account of flip speed
+    public long animationDuration() {
+        return (long) DURATION * (stop - 4); // last 2 flips,  takes account of flip speed
     }
 
-    private void generateRandomEnd(){
+    private void generateRandomEnd() {
         Random rand = new Random();
-        stop = Coin.LOWER_BOUND + (rand.nextInt((Coin.UPPER_BOUND - Coin.LOWER_BOUND)/2) * 2);
+        stop = Coin.LOWER_BOUND + (rand.nextInt((Coin.UPPER_BOUND - Coin.LOWER_BOUND) / 2) * 2);
     }
 
     public void flipAnimation() {
         interacted = true;
         animating = true;
-        if(!this.abortAnimation){
+        if (!this.abortAnimation) {
             ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
             // arbitrary 100, was a sweet spot
             animation.setDuration(DURATION);
@@ -103,10 +102,9 @@ public class Coin {
                         }
                         head = !head;
                     }
-                    if (flip < stop){
+                    if (flip < stop) {
                         flipAnimation();
-                    }
-                    else {
+                    } else {
                         flip = 0;
                         animating = false;
                         generateRandomEnd();
