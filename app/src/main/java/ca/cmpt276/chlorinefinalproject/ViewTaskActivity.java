@@ -9,9 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public static final String TASK_INDEX = "Task selected";
     int taskIndex;
+    Boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_task);
         extractDataFromIntent();
         setupToolbar();
+        setupTurnCompleteButton();
+        setupEditButton();
+        setEditMode(false);
 
         // use taskIndex to get the right task from the taskManager
 
@@ -52,11 +55,62 @@ public class ViewTaskActivity extends AppCompatActivity {
         ab.setTitle(R.string.task);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu){
-//        getMenuInflater().inflate(R.menu.menu_edit_task, menu);
-//        return true;
-//    }
+    private void setupTurnCompleteButton(){
+        Button button = findViewById(R.id.taskCompleteButton);
+
+        button.setOnClickListener(view -> {
+
+            //Code here for advancing current child to next child in round robin!
+
+        });
+    }
+
+    private void setupEditButton(){
+        Button button = findViewById(R.id.editButton);
+
+        button.setOnClickListener(view -> toggleEditMode());
+    }
+
+    private void setEditMode(Boolean edit){
+        TextView taskName = findViewById(R.id.taskDesc);
+        EditText editText = findViewById(R.id.editTaskName);
+
+        if (edit){
+            taskName.setVisibility(View.INVISIBLE);
+            editText.setVisibility(View.VISIBLE);
+        }
+        else {
+            taskName.setVisibility(View.VISIBLE);
+            editText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void toggleEditMode(){
+        setEditMode(!editMode);
+        editMode = !editMode;
+    }
+
+    private void setupSaveButton(){
+        Button saveButton = findViewById(R.id.saveButton);
+
+        saveButton.setOnClickListener(view -> {
+
+            // code for saving change to task name
+
+            setContentView(R.layout.activity_view_task);
+
+        });
+    }
+
+    private void setupDeleteButton(){
+        Button saveButton = findViewById(R.id.deleteButton);
+
+        saveButton.setOnClickListener(view -> {
+
+            // code for deleting task
+
+        });
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

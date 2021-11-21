@@ -51,7 +51,9 @@
     <string name="delete">Delete</string>
     <string name="task_name">Task Name</string>
     <string name="edit_task">Edit Task</string>
-    <string name="task">Task:</string>
+    <string name="task_colon">Task:</string>
+    <string name="task">Task</string>
     <string name="current_turn">Current Turn:</string>
     <string name="turn_complete">Turn complete!</string>
+    <string name="edit_task_name">edit task name</string>
 </resources>
