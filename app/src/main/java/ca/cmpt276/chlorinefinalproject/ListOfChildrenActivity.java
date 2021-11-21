@@ -22,14 +22,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import Model.ConfigureChildren;
+import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
-// Activity uses ConfigureChildren class to save and retrieve from shared preferences
+// Activity uses ChildManager class to save and retrieve from shared preferences
 public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
 
-    private ConfigureChildren children;
+    private ChildManager children;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         binding = ActivityListOfChildrenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        children = ConfigureChildren.getInstance();
+        children = ChildManager.getInstance();
         setUpActionBar();
         populateListView();
         registerClickCallback();

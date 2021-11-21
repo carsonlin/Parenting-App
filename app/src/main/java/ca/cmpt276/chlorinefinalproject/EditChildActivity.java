@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Model.ConfigureChildren;
+import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
 // Activity used to edit, delete, or add children.
@@ -41,7 +41,7 @@ public class EditChildActivity extends AppCompatActivity {
     private static final String PREFERENCES = "appPrefs";
     private boolean isAddActivity;
     private int position;
-    private ConfigureChildren childManager;
+    private ChildManager childManager;
     private Bitmap imageBitmap;
 
     public static Intent getAddOrDeleteChildIntent(Context c, boolean isAddActivity, int position){
@@ -57,7 +57,7 @@ public class EditChildActivity extends AppCompatActivity {
         binding = ActivityEditOrDeleteChildBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        childManager = ConfigureChildren.getInstance();
+        childManager = ChildManager.getInstance();
         setUpUI();
         setUpActionBar();
         deleteButtonPressed();

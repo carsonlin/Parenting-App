@@ -5,18 +5,18 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 // Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
-public class ConfigureChildren {
+public class ChildManager {
     private final ArrayList<Child> listOfChildren;
-    private static ConfigureChildren instance = null;
+    private static ChildManager instance = null;
 
-    private ConfigureChildren(){
+    private ChildManager(){
         listOfChildren = new ArrayList<>();
     }
 
     //singleton support
-    public static ConfigureChildren getInstance(){
+    public static ChildManager getInstance(){
         if(instance == null){
-            instance = new ConfigureChildren();
+            instance = new ChildManager();
         }
         return instance;
     }
