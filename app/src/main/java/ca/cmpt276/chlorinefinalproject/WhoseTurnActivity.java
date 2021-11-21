@@ -14,6 +14,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Model.TaskChild;
+import Model.TaskListAdapter;
+
 public class WhoseTurnActivity extends AppCompatActivity {
 
     @Override
@@ -45,14 +48,16 @@ public class WhoseTurnActivity extends AppCompatActivity {
 
     private void setupListView(){
 
-        ArrayList<String> tasks = new ArrayList<>();
+        ArrayList<TaskChild> tasks = new ArrayList<>();
 
         //placeholder stuff for testing
-        tasks.add("Take out the garbage");
-        tasks.add("Sit in the front seat");
-        tasks.add("Choose the tv show");
+        tasks.add(new TaskChild("Take out the garbage", "Johnny"));
+        tasks.add(new TaskChild("Sit in the front seat", "Carson"));
+        tasks.add(new TaskChild("Choose the TV show", "Jack"));
+        tasks.add(new TaskChild("Build the help screen", "Cuthbert"));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.tasks_layout, tasks);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.tasks_layout, tasks);
+        TaskListAdapter adapter = new TaskListAdapter(this, R.layout.adapter_view_layout_tasks, tasks);
 
         ListView list = findViewById(R.id.taskListView);
         list.setAdapter(adapter);
