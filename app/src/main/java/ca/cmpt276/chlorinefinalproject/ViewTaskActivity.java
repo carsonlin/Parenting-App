@@ -24,28 +24,13 @@ public class ViewTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_or_delete_child);
-        changeLayoutTextToTask();
+        setContentView(R.layout.activity_view_task);
         extractDataFromIntent();
         setupToolbar();
-        setupSaveButton();
-        setupEditText();
 
         // use taskIndex to get the right task from the taskManager
 
     }
-
-    private void setupSaveButton(){
-        Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(view -> {
-
-            EditText editText = findViewById(R.id.editChildName);
-            String taskName = editText.getText().toString();
-            Log.i("SAVE TASK", "Saving " + taskName);
-
-        });
-    }
-
 
     public static Intent makeIntent(Context context, int taskSelected){
         Intent intent = new Intent(context, ViewTaskActivity.class);
@@ -64,21 +49,14 @@ public class ViewTaskActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(R.string.edit_task);
+        ab.setTitle(R.string.task);
     }
 
-    private void setupEditText() {
-        EditText editText = findViewById(R.id.editChildName);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-    }
-
-    private void changeLayoutTextToTask(){
-        TextView textView = findViewById(R.id.childName);
-        textView.setText(R.string.task_name);
-
-        textView = findViewById(R.id.deleteButton);
-        textView.setText(R.string.delete);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        getMenuInflater().inflate(R.menu.menu_edit_task, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -88,13 +66,5 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        getMenuInflater().inflate(R.menu.menu_edit_task, menu);
-//
-//        return true;
-//    }
 
 }

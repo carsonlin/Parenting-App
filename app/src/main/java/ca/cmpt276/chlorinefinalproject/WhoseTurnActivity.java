@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -43,6 +44,12 @@ public class WhoseTurnActivity extends AppCompatActivity {
         if (id == android.R.id.home){
             finish();
         }
+        else if (id == R.id.addChild){
+            // add new task block
+        }
+        else if (id == R.id.clearChildren){
+            // delete all tasks. not sure if we even need to implement this tbh
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -73,5 +80,13 @@ public class WhoseTurnActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_listofchildren, menu);
+        return true;
+    }
+
+
 
 }
