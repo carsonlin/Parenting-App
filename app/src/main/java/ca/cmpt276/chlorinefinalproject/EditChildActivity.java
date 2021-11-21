@@ -1,5 +1,6 @@
 package ca.cmpt276.chlorinefinalproject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -63,7 +65,9 @@ public class EditChildActivity extends AppCompatActivity {
         setUpActionBar();
         deleteButtonPressed();
         saveButtonPressed();
+//        setUpImageUploadButtons();
         uploadImagePressed();
+        takePhotoPressed();
     }
 
     private void setUpUI(){
@@ -132,7 +136,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void uploadImagePressed() {
         // Launches gallery for user to select image
-        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+        ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri result) {
@@ -154,7 +158,72 @@ public class EditChildActivity extends AppCompatActivity {
                 });
 
         Button button = findViewById(R.id.uploadImage);
-        button.setOnClickListener(view -> mGetContent.launch("image/*"));
+        button.setOnClickListener(view -> getContent.launch("image/*"));
+    }
+
+    private void takePhotoPressed() {
+        ActivityResultLauncher<Intent> launchCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            if (result.getData() != null) {
+                                Bundle bundle = result.getData().getExtras();
+                                imageBitmap = (Bitmap) bundle.get("data");
+                                ImageView imageView = findViewById(R.id.childProfilePic);
+                                imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
+                                        imageView.getMaxWidth(),
+                                        imageView.getMaxHeight(),
+                                        false));
+                            }
+                        }
+                    }
+                });
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Button button = findViewById(R.id.takePhoto);
+        button.setOnClickListener(view -> launchCamera.launch(intent));
+    }
+
+    private void setUpImageUploadButtons() {
+        Button uploadButton = findViewById(R.id.uploadImage);
+        Button takePhotoButton = findViewById(R.id.takePhoto);
+
+        Intent uploadIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        uploadIntent.setType("image/*");
+
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        getImageContent(uploadIntent, uploadButton);
+        getImageContent(takePhotoIntent, takePhotoButton);
+    }
+
+    private void getImageContent(Intent intent, Button button){
+        ActivityResultLauncher<Intent> launchCamera = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            if (result.getData() != null) {
+                                Intent data = result.getData();
+                                Bitmap map = null;
+                                try {
+                                    map = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                imageBitmap = map;
+                                ImageView imageView = findViewById(R.id.childProfilePic);
+                                imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
+                                        imageView.getMaxWidth(),
+                                        imageView.getMaxHeight(),
+                                        false));
+                            }
+                        }
+                    }
+                });
+
+        button.setOnClickListener(view -> launchCamera.launch(intent));
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage, String filename) {
