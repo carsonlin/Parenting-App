@@ -28,10 +28,11 @@
         <entry key="app/src/main/res/layout/activity_list_of_children_to_choose.xml" value="0.140625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29128205128205126" />
         <entry key="app/src/main/res/layout/activity_timer.xml" value="0.2318840579710145" />
-        <entry key="app/src/main/res/layout/coin_flip_history_entity.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/coin_flip_history_entity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_children_pick_toss.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_edit_or_delete_child.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/content_list_of_children.xml" value="0.1609375" />
+        <entry key="app/src/main/res/layout/list_items.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/listitems.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_coinflipactivity.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_editordeletechild.xml" value="0.1609375" />
