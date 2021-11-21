@@ -253,6 +253,7 @@ public class EditChildActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            listOfChildObjects.add(child);
         }
         return listOfChildObjects;
     }
