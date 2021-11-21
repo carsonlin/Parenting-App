@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -67,21 +68,25 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void setUpUI(){
         Intent intent = getIntent();
-        position = intent.getIntExtra("list position", 0);
+        position = intent.getIntExtra(LIST_POSITION, 0);
         EditText editText = findViewById(R.id.editChildName);
         ImageView imageView = findViewById(R.id.childProfilePic);
         isAddActivity = intent.getBooleanExtra(EXTRA_MESSAGE_ACTIVITY, true);
 
-        if(isAddActivity){
+        if (isAddActivity){
             Button button = findViewById(R.id.deleteButton);
             button.setVisibility(View.GONE);
             editText.setText("");
+            imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_image);
         }
         else{
             editText.setText(childManager.getName(position));
             imageBitmap = childManager.getChild(position).getImage();
-            imageView.setImageBitmap(imageBitmap);
         }
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
+                imageView.getMaxWidth(),
+                imageView.getMaxHeight(),
+                false));
     }
 
     private void setUpActionBar(){
@@ -122,8 +127,6 @@ public class EditChildActivity extends AppCompatActivity {
                 saveChildrenSharedPreferences();
                 finish();
             }
-
-
         });
     }
 
@@ -140,9 +143,12 @@ public class EditChildActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            ImageView imageView = findViewById(R.id.childProfilePic);
-                            imageView.setImageBitmap(map);
                             imageBitmap = map;
+                            ImageView imageView = findViewById(R.id.childProfilePic);
+                            imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
+                                    imageView.getMaxWidth(),
+                                    imageView.getMaxHeight(),
+                                    false));
                         }
                     }
                 });
