@@ -127,18 +127,12 @@ public class EditChildActivity extends AppCompatActivity {
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
+                    Child child = childManager.getChild(position);
 
                     if(isImageupdated)
-                        deleteExistingfile(childManager.getChild(position).getFilePath());
+                        deleteExistingfile(child.getFilePath());
 
-                    Child child = childManager.getChild(position);
-                    // Avoid saving duplicate image if unchanged
-                    if (imageBitmap == child.getImage()){
-                        path = child.getFilePath();
-                    }
-                    else {
-                        path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
-                    }
+                    path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.editChild(position, text, imageBitmap, path);
                 }
                 saveChildrenSharedPreferences();
