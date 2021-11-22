@@ -81,34 +81,30 @@ public class GameManager {
     }
 
     public void removeGameHistory(int index){
-        if (index<getSavedGamesFromSharedPreferences().size()){
+        if (index < getSavedGamesFromSharedPreferences().size()){
             this.games.remove(index);
             saveGameToSharedPreference();
         }
     }
 
-    public ArrayList<String> getQueueofNewchildrenList(){
+    public ArrayList<String> getQueueOfNewChildrenList(){
         ArrayList<String> children = new ArrayList<>();
         ArrayList<Game> games = this.getSavedGamesFromSharedPreferences();
-        int indexOfchildFromlist = -1;
-
-        if (games.size()>0){
+        int indexOfChildFromList = -1;
+        if (games.size() > 0){
             Game lastGame = games.get(games.size() - 1);
-            indexOfchildFromlist = getIndexofChildfromList(lastGame.getChild().getName());
+            indexOfChildFromList = getIndexOfChildFromList(lastGame.getChild().getName());
         }
-
-        for (int i=(indexOfchildFromlist+1); i < this.childrenList.size() ;i++){
+        for (int i=(indexOfChildFromList + 1); i < this.childrenList.size(); i++){
             children.add(this.childrenList.get(i));
         }
-
-        for(int i=0; i <=indexOfchildFromlist;i++){
+        for(int i = 0; i <= indexOfChildFromList; i++){
             children.add(this.childrenList.get(i));
         }
-
         return children;
     }
 
-    public int getIndexofChildfromList(String child){
+    public int getIndexOfChildFromList(String child){
         for (int i = 0;i < this.childrenList.size();i++){
             if (this.childrenList.get(i).equals(child))
                 return i;

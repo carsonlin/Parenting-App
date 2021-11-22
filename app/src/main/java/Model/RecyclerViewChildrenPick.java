@@ -6,8 +6,6 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,7 +119,7 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
          holder.nameText.setText(listOfChildren.get(position));
-         int index = this.gameManager.getIndexofChildfromList(listOfChildren.get(position));
+         int index = this.gameManager.getIndexOfChildFromList(listOfChildren.get(position));
          List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this.activity.getApplicationContext());
          if (index>-1)
             Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);

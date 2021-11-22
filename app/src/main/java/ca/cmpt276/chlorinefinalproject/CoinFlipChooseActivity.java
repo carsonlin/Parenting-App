@@ -37,7 +37,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         gameManager = new GameManager(CoinFlipChooseActivity.this);
 
         if (isOverride()) {
-            listOfChildren = gameManager.getQueueofNewchildrenList();
+            listOfChildren = gameManager.getQueueOfNewChildrenList();
         } else {
             listOfChildren = gameManager.getNextChildrenToPick();
 
@@ -51,15 +51,14 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         adapter = new RecyclerViewChildrenPick(listOfChildren,CoinFlipChooseActivity.this);
         setAdapters();
         setUpActionBar();
-        setUpbuttons();
-        setUpvisiblebuttons();
+        setUpButtons();
+        setUpVisibleButtons();
 
     }
 
-    private void setUpbuttons() {
-
+    private void setUpButtons() {
         Button history = findViewById(R.id.coinflip_history_button);
-        Button chooseNonebutton = findViewById(R.id.coinflip_choose_none_button2);
+        Button chooseNoneButton = findViewById(R.id.coinflip_choose_none_button2);
         Button override = findViewById(R.id.coinflip_overide_button);
         override.setOnClickListener(view -> override());
         history.setOnClickListener(view -> {
@@ -67,23 +66,23 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        chooseNonebutton.setOnClickListener(view -> navigateWithnoChildchoosen());
-
+        chooseNoneButton.setOnClickListener(view -> navigateWithNoChildchoosen());
     }
 
-    private void setUpvisiblebuttons(){
+    private void setUpVisibleButtons(){
 
         Button override = findViewById(R.id.coinflip_overide_button);
         Button historyButton = findViewById(R.id.coinflip_history_button);
-        Button chooseNonebutton = findViewById(R.id.coinflip_choose_none_button2);
+        Button chooseNoneButton = findViewById(R.id.coinflip_choose_none_button2);
 
         if (isOverride()) {
             override.setVisibility(View.GONE);
-            chooseNonebutton.setVisibility(View.VISIBLE);
+            chooseNoneButton.setVisibility(View.VISIBLE);
             historyButton.setVisibility(View.GONE);
-        }else{
+        }
+        else{
             override.setVisibility(View.VISIBLE);
-            chooseNonebutton.setVisibility(View.GONE);
+            chooseNoneButton.setVisibility(View.GONE);
             historyButton.setVisibility(View.VISIBLE);
         }
     }
@@ -98,7 +97,6 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     }
 
     private void override() {
-
         Intent intent = new Intent(getBaseContext(), CoinFlipChooseActivity.class);
         intent.putExtra(OVERRIDE, true);
         startActivity(intent);
@@ -115,16 +113,14 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void navigateWithnoChildchoosen(){
+    private void navigateWithNoChildchoosen(){
         adapter.goToToss("", "");
         finish();
     }
 
     public void setAdapters(){
-
-
         if (listOfChildren.isEmpty()) {
-            navigateWithnoChildchoosen();
+            navigateWithNoChildchoosen();
         }
         else {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
