@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// Java class to support adding, editing, and deleting children using arraylist (singleton implementation)
+// Java class to manage list of child objects, supports saving data to SharedPreferences
 public class ChildManager {
     private static final String CHILD_LIST = "childList";
     public static final String PATH_LIST = "pathList";

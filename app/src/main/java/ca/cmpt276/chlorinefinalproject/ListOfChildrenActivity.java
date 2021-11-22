@@ -17,7 +17,7 @@ import Model.ChildListAdapter;
 import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
-// Activity uses ChildManager class to save and retrieve from shared preferences
+// Activity to display currently configured list of children
 public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
 

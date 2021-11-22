@@ -15,11 +15,9 @@ import com.bumptech.glide.Glide;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import ca.cmpt276.chlorinefinalproject.EditChildActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
 public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerViewCoinFlipHistory.MyViewHolder> {
-
     private final GameManager gameManager;
     private final ChildManager childManager;
     private final Context context;
@@ -80,8 +78,9 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         Glide.with(this.context).load(outcome).into(holder.coinFlipOutcome);
 
 
-        if (index>-1)
+        if (index > -1){
             Glide.with(this.context).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
+        }
     }
 
     public void removeUpdateManager(int index){

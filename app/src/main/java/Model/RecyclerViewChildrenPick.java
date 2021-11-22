@@ -136,9 +136,9 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
          holder.nameText.setText(listOfChildren.get(position));
          int index = this.gameManager.getIndexOfChildFromList(listOfChildren.get(position));
          List<String> pathList = childManager.getFilePathSharedPreferences(this.activity.getApplicationContext());
-         if (index>-1)
-            Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
-
+         if (index > -1){
+             Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
+         }
     }
 
     @Override

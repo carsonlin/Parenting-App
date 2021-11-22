@@ -54,7 +54,6 @@ public class ChildListAdapter extends ArrayAdapter<Child> {
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         holder.childName.setText(name);
         Glide.with(context).load(image).circleCrop().into(holder.childImage);
 

@@ -11,7 +11,6 @@ import java.util.Collections;
 
 
 public class GameManager {
-
     public static final String GAME_HISTORY = "gameHistory";
     public static final String PREFERENCES = "PREFERENCES";
     private final ArrayList<Game> games;

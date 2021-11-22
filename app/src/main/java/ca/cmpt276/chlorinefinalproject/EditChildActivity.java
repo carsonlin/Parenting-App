@@ -37,7 +37,7 @@ public class EditChildActivity extends AppCompatActivity {
     public static final String LIST_POSITION = "list position";
     private boolean isAddActivity;
     private int position;
-    private boolean isImageupdated = false;
+    private boolean isImageUpdated = false;
     private ChildManager childManager;
     private Bitmap imageBitmap;
 
@@ -119,7 +119,7 @@ public class EditChildActivity extends AppCompatActivity {
                 else {
                     Child child = childManager.getChild(position);
 
-                    if(isImageupdated){
+                    if(isImageUpdated){
                         deleteExistingFile(child.getFilePath());
                     }
                     path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
@@ -159,7 +159,7 @@ public class EditChildActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         imageBitmap = map;
-                        isImageupdated = true;
+                        isImageUpdated = true;
                         ImageView imageView = findViewById(R.id.childProfilePic);
                         Glide.with(getApplicationContext()).load(result).into(imageView);
                     }
