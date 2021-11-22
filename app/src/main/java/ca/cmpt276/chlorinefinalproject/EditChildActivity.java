@@ -237,6 +237,7 @@ public class EditChildActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(CHILD_LIST).apply();
+        editor.remove(PATH_LIST).apply();
         StringBuilder childListString = new StringBuilder();
         StringBuilder imagePathString = new StringBuilder();
 
