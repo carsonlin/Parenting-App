@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import Model.ChildManager;
+
 // Main Ui for the app
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
         setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
+        ChildManager childManager = ChildManager.getInstance();
+        childManager.getListOfChildObjects(this);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
