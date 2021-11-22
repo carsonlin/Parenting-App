@@ -36,11 +36,6 @@ public class ChildManager {
         if(childName.length() > 0 ){
             Child child = new Child(childName, image, filePath);
             listOfChildren.add(child);
-
-            if (listOfChildren.size() == 1){ // this assigns all the task without children when the first child is added
-                TaskManager taskManager = TaskManager.getInstance();
-                taskManager.setAllTaskIndexZero();
-            }
         }
     }
 
@@ -83,8 +78,6 @@ public class ChildManager {
     }
 
     public void clearChildren(){
-        TaskManager taskManager = TaskManager.getInstance();
-        taskManager.updateTasksOnChildDelete(0, 0);
         listOfChildren.clear();
     }
 

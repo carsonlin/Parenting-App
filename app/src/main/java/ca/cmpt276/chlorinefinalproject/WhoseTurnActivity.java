@@ -33,9 +33,6 @@ public class WhoseTurnActivity extends AppCompatActivity {
         setupToolbar();
         setupListView();
         setupClickGameOnList();
-
-        // make sure to set textviews with current task name and child name
-
     }
 
     private void setupToolbar() {
