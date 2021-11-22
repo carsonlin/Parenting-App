@@ -41,7 +41,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         } else {
             listOfChildren = gameManager.getNextChildrenToPick();
 
-            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipChooseActivity.this);
+            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildNameSharedPreferences(CoinFlipChooseActivity.this);
             if (listOfChildren.isEmpty() && !(children.isEmpty())) {
                 listOfChildren = children;
             }
@@ -61,17 +61,13 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         Button history = findViewById(R.id.coinflip_history_button);
         Button chooseNonebutton = findViewById(R.id.coinflip_choose_none_button2);
         Button override = findViewById(R.id.coinflip_overide_button);
-        override.setOnClickListener(view -> {
-            override();
-        });
+        override.setOnClickListener(view -> override());
         history.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), CoinFlipHistoryActivity.class);
             startActivity(intent);
             finish();
         });
-        chooseNonebutton.setOnClickListener(view -> {
-            navigateWithnoChildchoosen();
-        });
+        chooseNonebutton.setOnClickListener(view -> navigateWithnoChildchoosen());
 
     }
 
