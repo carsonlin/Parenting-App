@@ -9,7 +9,7 @@
     >
 
     <TextView
-        android:id="@+id/childName"
+        android:id="@+id/taskNameTextView"
         android:layout_width="185dp"
         android:layout_height="35dp"
         android:gravity="center"
@@ -21,6 +21,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="InvalidId,MissingConstraints" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="2dp"
+        android:src="@drawable/default_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/childrenChoiceslinearLayout"

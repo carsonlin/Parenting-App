@@ -13,6 +13,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
+        <activity
+            android:name=".AddTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WhoseTurnActivity"
+            android:exported="false"
+            android:label="@string/whose_turn" />
+
         <service
             android:name=".TimerService"
             android:exported="false" />

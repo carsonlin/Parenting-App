@@ -39,7 +39,7 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
 
         public MyViewHolder(final View view){
             super(view);
-            nameText = view.findViewById(R.id.childName);
+            nameText = view.findViewById(R.id.taskNameTextView);
             choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
 
             Button headButton = view.findViewById(R.id.head);
