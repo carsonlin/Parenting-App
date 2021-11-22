@@ -114,7 +114,7 @@ public class ChildManager {
         return pathList;
     }
 
-    public ArrayList<Child> getListOfChildObjects(Context context){
+    public void updateChildManager(Context context){
         List<String> listOfNames = getChildNameSharedPreferences(context);
         List<String> listOfFilePaths = getFilePathSharedPreferences(context);
         clearChildren();
@@ -131,7 +131,6 @@ public class ChildManager {
             }
             addChild(name, image, path);
         }
-        return listOfChildren;
     }
 
     public void clearChildrenSharedPreferences(Context context){

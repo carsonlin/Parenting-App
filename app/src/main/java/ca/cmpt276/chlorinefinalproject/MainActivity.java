@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
-        childManager.getListOfChildObjects(this);
+        childManager.updateChildManager(this);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
