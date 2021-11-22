@@ -104,7 +104,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.saveGameToSharedPreference();
             }
             coin.setAbortAnimation(true);
-            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
+            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildNameSharedPreferences(CoinFlipActivity.this);
             goToMainActivity(children.isEmpty());
             finish();
     }
