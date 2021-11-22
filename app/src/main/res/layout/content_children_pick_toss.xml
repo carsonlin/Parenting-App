@@ -9,7 +9,7 @@
     >
 
     <TextView
-        android:id="@+id/childName"
+        android:id="@+id/taskNameTextView"
         android:layout_width="185dp"
         android:layout_height="35dp"
         android:gravity="center"
