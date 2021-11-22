@@ -23,20 +23,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.chlorinefinalproject.CoinFlipActivity;
-import ca.cmpt276.chlorinefinalproject.EditChildActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
 // Recycler view adapter to list children
 public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
     public static final int ANIMATION_DURATION = 1500;
-    private final ArrayList<String> listOfChildren;
+    private ArrayList<String> listOfChildren;
     private final Activity activity;
-    private GameManager gameManager;
+    private final GameManager gameManager;
+    private final ChildManager childManager;
 
-    public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Activity activity){
-        this.listOfChildren = listOfChildren;
+    public RecyclerViewChildrenPick(boolean isOverride, GameManager gameManager, ChildManager childManager, Activity activity){
         this.activity = activity;
-        this.gameManager = new GameManager(activity);
+        this.gameManager = gameManager;
+        this.childManager = childManager;
+
+        if (isOverride) {
+            listOfChildren = gameManager.getQueueOfNewChildrenList();
+        } else {
+            listOfChildren = gameManager.getNextChildrenToPick();
+
+            ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(activity);
+            if (listOfChildren.isEmpty() && !(children.isEmpty())) {
+                this.listOfChildren = children;
+            }
+        }
+    }
+
+    public ArrayList<String> getListOfChildren(){
+        return listOfChildren;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -120,10 +135,10 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
     public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
          holder.nameText.setText(listOfChildren.get(position));
          int index = this.gameManager.getIndexOfChildFromList(listOfChildren.get(position));
-         List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this.activity.getApplicationContext());
-         if (index>-1)
-            Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
-
+         List<String> pathList = childManager.getFilePathSharedPreferences(this.activity.getApplicationContext());
+         if (index > -1){
+             Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
+         }
     }
 
     @Override

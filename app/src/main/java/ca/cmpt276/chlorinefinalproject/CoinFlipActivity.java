@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import Model.ChildManager;
 import Model.ChildPick;
 import Model.Coin;
 import Model.Game;
@@ -26,6 +27,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     public static final String BET = "bet";
     private ActivityCoinFlipBinding binding;
     private GameManager gameManager;
+    private ChildManager childManager;
     private Coin coin;
     private boolean isHead;
     private String child;
@@ -41,6 +43,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         setUpTextView();
         setUpActionBar();
         setUpCoin();
+        childManager = ChildManager.getInstance();
     }
 
     private void setUpCoin() {
@@ -104,7 +107,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.saveGameToSharedPreference();
             }
             coin.setAbortAnimation(true);
-            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildNameSharedPreferences(CoinFlipActivity.this);
+            ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(CoinFlipActivity.this);
             goToMainActivity(children.isEmpty());
             finish();
     }

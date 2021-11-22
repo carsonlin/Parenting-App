@@ -15,25 +15,24 @@ import com.bumptech.glide.Glide;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import ca.cmpt276.chlorinefinalproject.EditChildActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
 public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerViewCoinFlipHistory.MyViewHolder> {
-
     private final GameManager gameManager;
+    private final ChildManager childManager;
     private final Context context;
 
-    public RecyclerViewCoinFlipHistory(GameManager gameManager, Context context){
+    public RecyclerViewCoinFlipHistory(GameManager gameManager, ChildManager childManager, Context context){
         this.gameManager = gameManager;
+        this.childManager = childManager;
         this.context = context;
-
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private final TextView coinFlipChild;
         private final TextView coinFlipDateTime;
         private final ImageView coinFlipOutcome;
-        private ImageView childProfilePic;
+        private final ImageView childProfilePic;
 
         public MyViewHolder(final View view){
             super(view);
@@ -59,7 +58,7 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         ChildPick child = game.getChild();
         int outcome = game.isHead() == child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
         int index = this.gameManager.getIndexOfChildFromList(child.getName());
-        List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this.context);
+        List<String> pathList = childManager.getFilePathSharedPreferences(this.context);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = game.getTime().format(formatter);
@@ -79,8 +78,9 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         Glide.with(this.context).load(outcome).into(holder.coinFlipOutcome);
 
 
-        if (index>-1)
+        if (index > -1){
             Glide.with(this.context).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
+        }
     }
 
     public void removeUpdateManager(int index){
