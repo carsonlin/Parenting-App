@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -14,13 +15,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import Model.ChildManager;
+import Model.Task;
+import Model.TaskManager;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
     public static final String TASK_INDEX = "Task selected";
     int taskIndex;
     Boolean editMode = false;
+    TaskManager taskManager = TaskManager.getInstance();
+    ChildManager childManager = ChildManager.getInstance();
+    Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +42,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         setupTurnCompleteButton();
         setupEditButton();
         setEditMode(false);
-
-        // use taskIndex to get the right task from the taskManager
-
+        populateTextViews();
+        setupChildImage();
     }
 
     public static Intent makeIntent(Context context, int taskSelected){
@@ -45,6 +55,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private void extractDataFromIntent() { //these two methods are from Dr. Fraser's Youtube tutorial
         Intent intent = getIntent();
         taskIndex = intent.getIntExtra(TASK_INDEX, -1);
+        task = taskManager.getTask(taskIndex);
     }
 
     private void setupToolbar() {
@@ -60,10 +71,17 @@ public class ViewTaskActivity extends AppCompatActivity {
         Button button = findViewById(R.id.taskCompleteButton);
 
         button.setOnClickListener(view -> {
-
-            //Code here for advancing current child to next child in round robin!
-
+            task.completeTask();
+            finish();
         });
+    }
+
+    private void setupChildImage(){
+        ImageView childImage = findViewById(R.id.childImage);
+
+        //childImage.setImageBitmap(childManager.getChild(task.getChildIndex()).getImage());
+
+        Glide.with(getApplicationContext()).load(childManager.getChild(task.getChildIndex()).getImage()).into(childImage);
     }
 
     private void setupEditButton(){
@@ -71,13 +89,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.editTaskName);
 
         button.setOnClickListener(view -> {
-
             if (editMode){
                 String newTaskName = editText.getText().toString();
+                task.setTaskName(newTaskName);
             }
-
-            // UPDATE NAME UP TASK OBJECT HERE!!
-
             toggleEditMode();
         });
     }
@@ -91,19 +106,33 @@ public class ViewTaskActivity extends AppCompatActivity {
             taskName.setVisibility(View.INVISIBLE);
             editText.setVisibility(View.VISIBLE);
             editButton.setText(R.string.save_changes);
-            editText.setText("Insert name of current task");
+            editText.setText(task.getTaskName());
 
         }
         else {
             taskName.setVisibility(View.VISIBLE);
             editText.setVisibility(View.INVISIBLE);
             editButton.setText(R.string.edit_task);
+            taskName.setText(task.getTaskName());
         }
     }
 
     private void toggleEditMode(){
         setEditMode(!editMode);
         editMode = !editMode;
+    }
+
+    public void populateTextViews(){
+        TextView taskDescView = findViewById(R.id.taskDesc);
+        TextView childNameView = findViewById(R.id.childName);
+        taskDescView.setText(task.getTaskName());
+
+        if (task.getChildIndex() != -1) {
+            childNameView.setText(childManager.getChild(task.getChildIndex()).getName());
+        }
+        else {
+            childNameView.setText("");
+        }
     }
 
     @Override
@@ -119,9 +148,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             finish();
         }
         else if (id == R.id.delete_button){
-
-            // DELETE task with index "taskIndex"
-
+            taskManager.removeTask(taskIndex);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

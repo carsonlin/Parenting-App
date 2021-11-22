@@ -5,47 +5,45 @@ import java.util.ArrayList;
 //task model class that holds Name of task and supports task completion (updating next child)
 public class Task {
     private String taskName;
-    private Child child;
     private int childIndex;
-    private final ArrayList<Child> listOfChildren;   //build new list of children from shared preferences every time activity clicked?
 
-    Task(String taskName, Child child, ArrayList<Child> listOfChildren){
+    public Task(String taskName){
         this.taskName = taskName;
-        this.child = child;
-        this.listOfChildren = listOfChildren;
-        this.childIndex = listOfChildren.indexOf(child);
-    }
 
-    Task(String taskName, ArrayList<Child> listOfChildren){
-        this.taskName = taskName;
-        this.childIndex = 0;
-        this.listOfChildren = listOfChildren;
-        this.child = listOfChildren.get(childIndex);
+        ChildManager childManager = ChildManager.getInstance();
+
+        if (childManager.hasChildren()){
+            this.childIndex = 0;
+        }
+        else {
+            this.childIndex = -1;
+        }
     }
 
     public void setTaskName(String taskName){
         this.taskName = taskName;
     }
 
-    public void setTaskChild(Child child){
-        this.child = child;
-    }
-
     public String getTaskName(){
         return taskName;
     }
 
-    public Child getTaskChild(){
-        return child;
+    public int getChildIndex(){
+        return childIndex;
     }
 
-    public void taskCompleted(){
-        if(childIndex == listOfChildren.size() - 1){
-            childIndex = 0;
-        }
-        else{
-            childIndex++;
-        }
-        child = listOfChildren.get(childIndex);
+    public void decrementChildIndex(){
+        childIndex--;
+    }
+
+    public void setChildIndex(int index){
+        childIndex = index;
+    }
+
+    public void completeTask(){
+        ChildManager childManager = ChildManager.getInstance();
+        int numberOfChildren = childManager.getNumberofChildren();
+
+        childIndex = (childIndex + 1) % numberOfChildren;
     }
 }

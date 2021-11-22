@@ -10,15 +10,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Model.Child;
+import Model.ChildManager;
+import Model.Task;
 import Model.TaskChild;
 import Model.TaskListAdapter;
+import Model.TaskManager;
 
 public class WhoseTurnActivity extends AppCompatActivity {
+
+    TaskManager taskManager = TaskManager.getInstance();
+    ChildManager childManager = ChildManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,12 @@ public class WhoseTurnActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setupListView();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
@@ -58,20 +70,25 @@ public class WhoseTurnActivity extends AppCompatActivity {
 
     private void setupListView(){
 
-        ArrayList<TaskChild> tasks = new ArrayList<>();
+        ArrayList<Task> tasks = taskManager.getTasks();
+        ArrayList<TaskChild> taskChildrenList = new ArrayList<>();
 
-        //placeholder stuff for testing
-        tasks.add(new TaskChild("Take out the garbage", "Johnny"));
-        tasks.add(new TaskChild("Sit in the front seat", "Carson"));
-        tasks.add(new TaskChild("Choose the TV show", "Jack"));
-        tasks.add(new TaskChild("Build the help screen", "Cuthbert"));
+        ArrayList<Child> children = childManager.getChildren();
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.tasks_layout, tasks);
-        TaskListAdapter adapter = new TaskListAdapter(this, R.layout.adapter_view_layout_tasks, tasks);
+        for (Task task : tasks){
+
+            if (task.getChildIndex() != -1){
+                taskChildrenList.add(new TaskChild(task.getTaskName(), children.get(task.getChildIndex()).getName()));
+            }
+            else{
+                taskChildrenList.add(new TaskChild(task.getTaskName(), ""));
+            }
+        }
+
+        TaskListAdapter adapter = new TaskListAdapter(this, R.layout.adapter_view_layout_tasks, taskChildrenList);
 
         ListView list = findViewById(R.id.taskListView);
         list.setAdapter(adapter);
-
     }
 
     private void setupClickGameOnList(){
@@ -89,7 +106,4 @@ public class WhoseTurnActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_listofchildren, menu);
         return true;
     }
-
-
-
 }

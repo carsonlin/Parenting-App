@@ -53,7 +53,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             children.addChild(childList.get(i), map, path);
         }
 
-        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getList());
+        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getChildren());
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }

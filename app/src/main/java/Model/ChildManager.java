@@ -31,10 +31,14 @@ public class ChildManager {
     }
 
     public void deleteChild(int index){
+        TaskManager taskManager = TaskManager.getInstance();
+
         if(index >= 0 && index < listOfChildren.size()){
             listOfChildren.remove(index);
+            taskManager.updateTasksOnChildDelete(index, listOfChildren.size());
         }
     }
+
     public void editChild(int index, String childName, Bitmap image, String filePath){
         if(index >= 0 && index < listOfChildren.size()){
             Child child = listOfChildren.get(index);
@@ -55,8 +59,16 @@ public class ChildManager {
         return null;
     }
 
-    public ArrayList<Child> getList(){
+    public ArrayList<Child> getChildren(){
         return listOfChildren;
+    }
+
+    public Boolean hasChildren(){
+        return !listOfChildren.isEmpty();
+    }
+
+    public int getNumberofChildren(){
+        return listOfChildren.size();
     }
 
     public int getListSize(){
