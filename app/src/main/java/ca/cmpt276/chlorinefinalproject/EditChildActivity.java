@@ -178,23 +178,39 @@ public class EditChildActivity extends AppCompatActivity {
     private String saveToInternalStorage(Bitmap bitmapImage, String filename) {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
-        File filePath = new File(directory, filename);
 
-        FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(filePath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                assert outputStream != null;
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            File filePath = new File(directory, filename);
+            if (!filePath.createNewFile()){
+                filePath.delete();
             }
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(filePath);
+                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    assert outputStream != null;
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            return filePath.getAbsolutePath();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+            return "";
         }
-        return filePath.getAbsolutePath();
+
+
+
+
     }
 
     public void saveChildrenSharedPreferences(){
