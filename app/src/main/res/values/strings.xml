@@ -59,4 +59,10 @@
     <string name="turn_complete">Turn complete!</string>
     <string name="edit_task_name">edit task name</string>
     <string name="image_of_the_child">image of the child</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="child_profile_picture">child profile picture</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="flip_override_button_text">Override</string>
+    <string name="flip_choose_none_button_text">Choose none</string>
+
 </resources>

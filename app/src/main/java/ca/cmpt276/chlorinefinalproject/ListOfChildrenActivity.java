@@ -4,6 +4,8 @@ package ca.cmpt276.chlorinefinalproject;
 import static ca.cmpt276.chlorinefinalproject.EditChildActivity.clearChildrenSharedPreferences;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,16 +17,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
-import Model.ConfigureChildren;
+import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
-// Activity uses ConfigureChildren class to save and retrieve from shared preferences
+// Activity uses ChildManager class to save and retrieve from shared preferences
 public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
 
-    private ConfigureChildren children;
+    private ChildManager children;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         binding = ActivityListOfChildrenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        children = ConfigureChildren.getInstance();
+        children = ChildManager.getInstance();
         setUpActionBar();
         populateListView();
         registerClickCallback();
@@ -40,9 +45,12 @@ public class ListOfChildrenActivity extends AppCompatActivity {
 
     private void populateListView() {
         List<String> childList = EditChildActivity.getChildrenSharedPreferences(this);
+        List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this);
         children.clearChildren();
         for(int i = 0; i < childList.size(); i++){
-            children.addChild(childList.get(i));
+            String path = pathList.get(i);
+            Bitmap map = loadImageFromStorage(path);
+            children.addChild(childList.get(i), map, path);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -51,10 +59,21 @@ public class ListOfChildrenActivity extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
+    private Bitmap loadImageFromStorage(String path) {
+        try {
+            File file = new File(path);
+            return BitmapFactory.decodeStream(new FileInputStream(file));
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void registerClickCallback(){
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "edit", position);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, false, position);
             startActivity(i);
         });
     }
@@ -74,7 +93,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if (item.getItemId() == R.id.addChild){
-            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, "add", -1);
+            Intent i = EditChildActivity.getAddOrDeleteChildIntent(ListOfChildrenActivity.this, true, -1);
             startActivity(i);
             return true;
         }
