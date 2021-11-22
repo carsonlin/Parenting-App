@@ -27,9 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import Model.Child;
 import Model.ChildManager;
@@ -122,11 +120,21 @@ public class EditChildActivity extends AppCompatActivity {
                 Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
             }
              else {
-                String path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                 if (isAddActivity){
+                    String path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
+                    Child child = childManager.getChild(position);
+                    String path;
+
+                    // Avoid saving duplicate image if unchanged
+                    if (imageBitmap == child.getImage()){
+                        path = child.getFilePath();
+                    }
+                    else {
+                        path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
+                    }
                     childManager.editChild(position, text, imageBitmap, path);
                 }
                 saveChildrenSharedPreferences();
@@ -204,23 +212,15 @@ public class EditChildActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
-
             return filePath.getAbsolutePath();
-
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
             return "";
         }
-
-
-
-
     }
 
     private String randomIdentifier(){
-
         final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
         final java.util.Random rand = new java.util.Random();
             StringBuilder builder = new StringBuilder();
@@ -231,9 +231,7 @@ public class EditChildActivity extends AppCompatActivity {
                 }
             }
             return builder.toString();
-
     }
-
 
     public void saveChildrenSharedPreferences(){
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
