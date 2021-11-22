@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import ca.cmpt276.chlorinefinalproject.EditChildActivity;
 import ca.cmpt276.chlorinefinalproject.R;
 
 public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerViewCoinFlipHistory.MyViewHolder> {
@@ -31,14 +33,15 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         private final TextView coinFlipChild;
         private final TextView coinFlipDateTime;
         private final ImageView coinFlipOutcome;
+        private ImageView childProfilePic;
 
         public MyViewHolder(final View view){
             super(view);
             coinFlipChild = view.findViewById(R.id.coinFlipchild);
             coinFlipDateTime = view.findViewById(R.id.coinFlipdatetime);
+            childProfilePic = view.findViewById(R.id.childProfilePic);
             ImageView coinFlipTrash = view.findViewById(R.id.coinFliptrashHistory);
             coinFlipOutcome = view.findViewById(R.id.coinFlipoutcome);
-
             coinFlipTrash.setOnClickListener(view1 -> removeUpdateManager(getAdapterPosition()));
         }
     }
@@ -55,6 +58,8 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         Game game = gameManager.getSavedGamesFromSharedPreferences().get(position);
         ChildPick child = game.getChild();
         int outcome = game.isHead() == child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
+        int index = this.gameManager.getIndexofChildfromList(child.getName());
+        List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this.context);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = game.getTime().format(formatter);
@@ -72,6 +77,10 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         holder.coinFlipChild.setText(childText);
         holder.coinFlipDateTime.setText(formattedDateTime);
         Glide.with(this.context).load(outcome).into(holder.coinFlipOutcome);
+
+
+        if (index>-1)
+            Glide.with(this.context).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
     }
 
     public void removeUpdateManager(int index){
