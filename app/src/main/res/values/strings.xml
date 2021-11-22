@@ -54,7 +54,7 @@
     <string name="helpScreenTitle">About Practical Parent!</string>
     <string name="helpDescription">Our Practical Parent app was designed to efficiently solve household disputes between children.
         Currently supporting a variety of features including a child list, stop watch, coin flip, and task manager.</string>
-    <string name="citationDescription">For all video/website tutorials and copyright use, click the following</string>
+    <string name="citationDescription">For video/website tutorials and copyright use, click the following</string>
     <string name="citationTitle">Citations:</string>
     <string name="developerNameTitle">Developed By:</string>
     <string name="developerNames">Johnny Mai, Jack Manuel, Cuthbert Martin Lwinga, Carson Lin</string>
