@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,21 +68,36 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     private void setupEditButton(){
         Button button = findViewById(R.id.editButton);
+        EditText editText = findViewById(R.id.editTaskName);
 
-        button.setOnClickListener(view -> toggleEditMode());
+        button.setOnClickListener(view -> {
+
+            if (editMode){
+                String newTaskName = editText.getText().toString();
+            }
+
+            // UPDATE NAME UP TASK OBJECT HERE!!
+
+            toggleEditMode();
+        });
     }
 
     private void setEditMode(Boolean edit){
         TextView taskName = findViewById(R.id.taskDesc);
         EditText editText = findViewById(R.id.editTaskName);
+        Button editButton = findViewById(R.id.editButton);
 
         if (edit){
             taskName.setVisibility(View.INVISIBLE);
             editText.setVisibility(View.VISIBLE);
+            editButton.setText(R.string.save_changes);
+            editText.setText("Insert name of current task");
+
         }
         else {
             taskName.setVisibility(View.VISIBLE);
             editText.setVisibility(View.INVISIBLE);
+            editButton.setText(R.string.edit_task);
         }
     }
 
@@ -90,26 +106,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         editMode = !editMode;
     }
 
-    private void setupSaveButton(){
-        Button saveButton = findViewById(R.id.saveButton);
-
-        saveButton.setOnClickListener(view -> {
-
-            // code for saving change to task name
-
-            setContentView(R.layout.activity_view_task);
-
-        });
-    }
-
-    private void setupDeleteButton(){
-        Button saveButton = findViewById(R.id.deleteButton);
-
-        saveButton.setOnClickListener(view -> {
-
-            // code for deleting task
-
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_edit_task, menu);
+        return true;
     }
 
     @Override
@@ -117,6 +117,11 @@ public class ViewTaskActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home){
             finish();
+        }
+        else if (id == R.id.delete_button){
+
+            // DELETE task with index "taskIndex"
+
         }
         return super.onOptionsItemSelected(item);
     }

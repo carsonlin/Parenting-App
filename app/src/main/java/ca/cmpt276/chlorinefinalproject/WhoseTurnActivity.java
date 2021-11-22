@@ -24,10 +24,12 @@ public class WhoseTurnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whose_turn);
-
         setupToolbar();
         setupListView();
         setupClickGameOnList();
+
+        // make sure to set textviews with current task name and child name
+
     }
 
     private void setupToolbar() {
@@ -45,7 +47,8 @@ public class WhoseTurnActivity extends AppCompatActivity {
             finish();
         }
         else if (id == R.id.addChild){
-            // add new task block
+            Intent intent = new Intent(WhoseTurnActivity.this, AddTaskActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.clearChildren){
             // delete all tasks. not sure if we even need to implement this tbh
