@@ -55,6 +55,10 @@ public class ChildManager {
         return null;
     }
 
+    public ArrayList<Child> getList(){
+        return listOfChildren;
+    }
+
     public int getListSize(){
         return listOfChildren.size();
     }
