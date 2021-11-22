@@ -36,7 +36,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getListOfChildObjects(this));
+        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getList());
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }

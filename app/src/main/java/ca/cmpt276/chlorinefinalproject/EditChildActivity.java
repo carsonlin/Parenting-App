@@ -19,6 +19,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -78,10 +80,7 @@ public class EditChildActivity extends AppCompatActivity {
             editText.setText(childManager.getName(position));
             imageBitmap = childManager.getChild(position).getImage();
         }
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                imageView.getMaxWidth(),
-                imageView.getMaxHeight(),
-                false));
+        Glide.with(getApplicationContext()).load(imageBitmap).into(imageView);
     }
 
     private void setUpActionBar(){
@@ -114,15 +113,15 @@ public class EditChildActivity extends AppCompatActivity {
              else {
                 String path;
                 if (isAddActivity){
-                     path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
+                    path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
                     Child child = childManager.getChild(position);
 
-                    if(isImageupdated)
-                        deleteExistingfile(child.getFilePath());
-
+                    if(isImageupdated){
+                        deleteExistingFile(child.getFilePath());
+                    }
                     path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.editChild(position, text, imageBitmap, path);
                 }
@@ -132,8 +131,7 @@ public class EditChildActivity extends AppCompatActivity {
         });
     }
 
-    public boolean deleteExistingfile(String path){
-
+    public void deleteExistingFile(String path){
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
         try {
@@ -141,16 +139,12 @@ public class EditChildActivity extends AppCompatActivity {
             String filename = filePath.getName();
             filePath = new File(directory, filename);
 
-            if(filePath.exists())
+            if(filePath.exists()){
                 filePath.delete();
-
-            return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
-        return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void uploadImagePressed() {
@@ -167,10 +161,7 @@ public class EditChildActivity extends AppCompatActivity {
                         imageBitmap = map;
                         isImageupdated = true;
                         ImageView imageView = findViewById(R.id.childProfilePic);
-                        imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                                imageView.getMaxWidth(),
-                                imageView.getMaxHeight(),
-                                false));
+                        Glide.with(getApplicationContext()).load(result).into(imageView);
                     }
                 });
 
@@ -186,10 +177,7 @@ public class EditChildActivity extends AppCompatActivity {
                             Bundle bundle = result.getData().getExtras();
                             imageBitmap = (Bitmap) bundle.get("data");
                             ImageView imageView = findViewById(R.id.childProfilePic);
-                            imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                                    imageView.getMaxWidth(),
-                                    imageView.getMaxHeight(),
-                                    false));
+                            Glide.with(getApplicationContext()).load(imageBitmap).into(imageView);
                         }
                     }
                 });

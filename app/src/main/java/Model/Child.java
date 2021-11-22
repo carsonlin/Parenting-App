@@ -8,8 +8,10 @@ public class Child {
     private Bitmap image;
     private String filePath;
 
-    public Child(String name){
+    public Child(String name, Bitmap image, String filePath){
         this.name = name;
+        this.image = image;
+        this.filePath = filePath;
     }
 
     public String getName() {

@@ -17,7 +17,7 @@ public class ChildManager {
     private static final String CHILD_LIST = "childList";
     public static final String PATH_LIST = "pathList";
     private static final String PREFERENCES = "appPrefs";
-    private ArrayList<Child> listOfChildren;
+    private final ArrayList<Child> listOfChildren;
     private static ChildManager instance = null;
 
     private ChildManager(){
@@ -34,9 +34,7 @@ public class ChildManager {
 
     public void addChild(String childName, Bitmap image, String filePath){
         if(childName.length() > 0 ){
-            Child child = new Child(childName);
-            child.setImage(image);
-            child.setFilePath(filePath);
+            Child child = new Child(childName, image, filePath);
             listOfChildren.add(child);
         }
     }
@@ -117,22 +115,23 @@ public class ChildManager {
     }
 
     public ArrayList<Child> getListOfChildObjects(Context context){
-        ArrayList<Child> listOfChildObjects = new ArrayList<>();
-        List<String> listOfNames= getChildNameSharedPreferences(context);
-        List<String> listOfFilePaths= getFilePathSharedPreferences(context);
+        List<String> listOfNames = getChildNameSharedPreferences(context);
+        List<String> listOfFilePaths = getFilePathSharedPreferences(context);
+        clearChildren();
         for(int i = 0; i < listOfNames.size(); i++){
-            Child child = new Child(listOfNames.get(i));
-            child.setFilePath(listOfFilePaths.get(i));
-            File file = new File(child.getFilePath());
+            String name = listOfNames.get(i);
+            String path = listOfFilePaths.get(i);
+            Bitmap image = null;
+
+            File file = new File(path);
             try {
-                child.setImage(BitmapFactory.decodeStream(new FileInputStream(file)));
+                image = BitmapFactory.decodeStream(new FileInputStream(file));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            listOfChildObjects.add(child);
+            addChild(name, image, path);
         }
-        listOfChildren = listOfChildObjects;
-        return listOfChildObjects;
+        return listOfChildren;
     }
 
     public void clearChildrenSharedPreferences(Context context){

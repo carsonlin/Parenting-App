@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
         setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
+
+        // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
         childManager.getListOfChildObjects(this);
     }
