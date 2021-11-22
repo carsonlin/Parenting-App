@@ -14,9 +14,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupButton(R.id.coinFlipButton, CoinFlipChooseActivity.class);
+        setupButton(R.id.taskCompleteButton, CoinFlipChooseActivity.class);
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
+        setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
