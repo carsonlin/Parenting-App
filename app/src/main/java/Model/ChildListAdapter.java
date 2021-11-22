@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import ca.cmpt276.chlorinefinalproject.R;
@@ -52,12 +54,8 @@ public class ChildListAdapter extends ArrayAdapter<Child> {
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         holder.childName.setText(name);
-        holder.childImage.setImageBitmap(Bitmap.createScaledBitmap(image,
-                holder.childImage.getMaxWidth(),
-                holder.childImage.getMaxHeight(),
-                false));
+        Glide.with(context).load(image).circleCrop().into(holder.childImage);
 
         return convertView;
     }

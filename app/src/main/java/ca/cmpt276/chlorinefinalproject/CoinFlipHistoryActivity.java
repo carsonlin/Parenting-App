@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import Model.ChildManager;
 import Model.GameManager;
 import Model.RecyclerViewCoinFlipHistory;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipHistoryBinding;
@@ -20,6 +21,7 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     private ActivityCoinFlipHistoryBinding binding;
     private RecyclerView recyclerView;
     private GameManager gameManager;
+    private ChildManager childManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         gameManager = new GameManager(CoinFlipHistoryActivity.this);
+        childManager = ChildManager.getInstance();
         recyclerView = findViewById(R.id.listOfgames);
 
         setAdapters();
@@ -63,7 +66,7 @@ public class CoinFlipHistoryActivity extends AppCompatActivity {
     }
 
     public void setAdapters(){
-        RecyclerViewCoinFlipHistory adapter = new RecyclerViewCoinFlipHistory(gameManager, getApplicationContext());
+        RecyclerViewCoinFlipHistory adapter = new RecyclerViewCoinFlipHistory(gameManager, childManager, getApplicationContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

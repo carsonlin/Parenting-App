@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
+import Model.ChildManager;
 import Model.GameManager;
 import Model.RecyclerViewChildrenPick;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityCoinFlipChooseBinding;
@@ -24,9 +23,8 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
     public static final String OVERRIDE = "override";
     private ActivityCoinFlipChooseBinding binding;
     private RecyclerView recyclerView;
-    private ArrayList<String> listOfChildren;
-    private GameManager gameManager;
     private RecyclerViewChildrenPick adapter;
+    private boolean isOverride;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +32,13 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coin_flip_choose);
         binding = ActivityCoinFlipChooseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        gameManager = new GameManager(CoinFlipChooseActivity.this);
 
-        if (isOverride()) {
-            listOfChildren = gameManager.getQueueOfNewChildrenList();
-        } else {
-            listOfChildren = gameManager.getNextChildrenToPick();
-
-            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildNameSharedPreferences(CoinFlipChooseActivity.this);
-            if (listOfChildren.isEmpty() && !(children.isEmpty())) {
-                listOfChildren = children;
-            }
-        }
+        GameManager gameManager = new GameManager(CoinFlipChooseActivity.this);
+        ChildManager childManager = ChildManager.getInstance();
+        isOverride = getIntent().getBooleanExtra(OVERRIDE, false);
 
         recyclerView = findViewById(R.id.listOfchildrenTochoose);
-        adapter = new RecyclerViewChildrenPick(listOfChildren,CoinFlipChooseActivity.this);
+        adapter = new RecyclerViewChildrenPick(isOverride, gameManager, childManager,CoinFlipChooseActivity.this);
         setAdapters();
         setUpActionBar();
         setUpButtons();
@@ -66,7 +56,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        chooseNoneButton.setOnClickListener(view -> navigateWithNoChildchoosen());
+        chooseNoneButton.setOnClickListener(view -> navigateWithNoChildChosen());
     }
 
     private void setUpVisibleButtons(){
@@ -75,7 +65,7 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         Button historyButton = findViewById(R.id.coinflip_history_button);
         Button chooseNoneButton = findViewById(R.id.coinflip_choose_none_button2);
 
-        if (isOverride()) {
+        if (isOverride) {
             override.setVisibility(View.GONE);
             chooseNoneButton.setVisibility(View.VISIBLE);
             historyButton.setVisibility(View.GONE);
@@ -102,10 +92,6 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean isOverride() {
-        return getIntent().getBooleanExtra(OVERRIDE, false);
-    }
-
     private void setUpActionBar(){
         setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
@@ -113,14 +99,14 @@ public class CoinFlipChooseActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void navigateWithNoChildchoosen(){
+    private void navigateWithNoChildChosen(){
         adapter.goToToss("", "");
         finish();
     }
 
     public void setAdapters(){
-        if (listOfChildren.isEmpty()) {
-            navigateWithNoChildchoosen();
+        if (adapter.getListOfChildren().isEmpty()) {
+            navigateWithNoChildChosen();
         }
         else {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
