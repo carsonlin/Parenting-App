@@ -9,7 +9,7 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityHelpScreenBinding;
-
+//Help screen showing citations (supporting hyperlinks), developer list and features implemented
 public class HelpScreenActivity extends AppCompatActivity {
     private ActivityHelpScreenBinding binding;
 
