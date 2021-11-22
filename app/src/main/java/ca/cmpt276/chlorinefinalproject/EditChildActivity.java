@@ -46,6 +46,7 @@ public class EditChildActivity extends AppCompatActivity {
     private static final String PREFERENCES = "appPrefs";
     private boolean isAddActivity;
     private int position;
+    private boolean isImageupdated = false;
     private ChildManager childManager;
     private Bitmap imageBitmap;
 
@@ -127,12 +128,37 @@ public class EditChildActivity extends AppCompatActivity {
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
+
+                    if(isImageupdated)
+                        deleteExistingfile(childManager.getChild(position).getFilePath());
+
                     childManager.editChild(position, text, imageBitmap, path);
                 }
                 saveChildrenSharedPreferences();
                 finish();
             }
         });
+    }
+
+    public boolean deleteExistingfile(String path){
+
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
+        try {
+            File filePath = new File(path);
+            String filename = filePath.getName();
+            filePath = new File(directory, filename);
+
+            if(filePath.exists())
+                filePath.delete();
+
+            return true;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return false;
     }
 
     private void uploadImagePressed() {
@@ -147,6 +173,7 @@ public class EditChildActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         imageBitmap = map;
+                        isImageupdated = true;
                         ImageView imageView = findViewById(R.id.childProfilePic);
                         imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
                                 imageView.getMaxWidth(),
@@ -233,7 +260,6 @@ public class EditChildActivity extends AppCompatActivity {
             return builder.toString();
 
     }
-
 
     public void saveChildrenSharedPreferences(){
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
