@@ -1,6 +1,7 @@
 package Model;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,11 @@ public class ChildManager {
             child.setImage(image);
             child.setFilePath(filePath);
             listOfChildren.add(child);
+
+            if (listOfChildren.size() == 1){ // this assigns all the task without children when the first child is added
+                TaskManager taskManager = TaskManager.getInstance();
+                taskManager.setAllTaskIndexZero();
+            }
         }
     }
 
@@ -53,10 +59,7 @@ public class ChildManager {
     }
 
     public Child getChild(int index){
-        if(index >= 0 && index < listOfChildren.size()){
-            return listOfChildren.get(index);
-        }
-        return null;
+        return listOfChildren.get(index);
     }
 
     public ArrayList<Child> getChildren(){
@@ -67,7 +70,7 @@ public class ChildManager {
         return !listOfChildren.isEmpty();
     }
 
-    public int getNumberofChildren(){
+    public int getNumberOfChildren(){
         return listOfChildren.size();
     }
 
@@ -76,6 +79,8 @@ public class ChildManager {
     }
 
     public void clearChildren(){
+        TaskManager taskManager = TaskManager.getInstance();
+        taskManager.updateTasksOnChildDelete(0, 0);
         listOfChildren.clear();
     }
 }

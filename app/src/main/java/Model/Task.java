@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
-
 //task model class that holds Name of task and supports task completion (updating next child)
 public class Task {
     private String taskName;
@@ -42,8 +40,10 @@ public class Task {
 
     public void completeTask(){
         ChildManager childManager = ChildManager.getInstance();
-        int numberOfChildren = childManager.getNumberofChildren();
+        int numberOfChildren = childManager.getNumberOfChildren();
 
-        childIndex = (childIndex + 1) % numberOfChildren;
+        if (numberOfChildren != 0){
+            childIndex = (childIndex + 1) % numberOfChildren;
+        }
     }
 }

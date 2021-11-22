@@ -78,10 +78,9 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     private void setupChildImage(){
         ImageView childImage = findViewById(R.id.childImage);
-
-        //childImage.setImageBitmap(childManager.getChild(task.getChildIndex()).getImage());
-
-        Glide.with(getApplicationContext()).load(childManager.getChild(task.getChildIndex()).getImage()).into(childImage);
+        if (task.getChildIndex() != -1){
+            Glide.with(getApplicationContext()).load(childManager.getChild(task.getChildIndex()).getImage()).into(childImage);
+        }
     }
 
     private void setupEditButton(){

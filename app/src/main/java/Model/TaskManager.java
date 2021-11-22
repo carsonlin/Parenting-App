@@ -22,7 +22,6 @@ public class TaskManager {
     }
 
     public void updateTasksOnChildDelete(int indexDeleted, int newNumberOfChildren){
-
         for (Task task : tasks){
 
             if (newNumberOfChildren == 0){
@@ -34,6 +33,12 @@ public class TaskManager {
             else if (task.getChildIndex() == indexDeleted && task.getChildIndex() == newNumberOfChildren){
                 task.setChildIndex(0);
             }
+        }
+    }
+
+    public void setAllTaskIndexZero(){
+        for (Task task : tasks){
+            task.setChildIndex(0);
         }
     }
 
