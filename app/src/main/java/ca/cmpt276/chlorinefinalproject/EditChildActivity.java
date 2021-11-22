@@ -27,7 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import Model.Child;
 import Model.ChildManager;
@@ -120,7 +122,7 @@ public class EditChildActivity extends AppCompatActivity {
                 Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
             }
              else {
-                String path = saveToInternalStorage(imageBitmap, text + ".jpg");
+                String path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                 if (isAddActivity){
                     childManager.addChild(text, imageBitmap, path);
                 }
@@ -185,7 +187,8 @@ public class EditChildActivity extends AppCompatActivity {
         try {
             File filePath = new File(directory, filename);
             if (!filePath.createNewFile()){
-                filePath.delete();
+                if(filePath.delete())
+                    filePath = new File(directory, filename);
             }
             FileOutputStream outputStream = null;
             try {
@@ -215,6 +218,22 @@ public class EditChildActivity extends AppCompatActivity {
 
 
     }
+
+    private String randomIdentifier(){
+
+        final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
+        final java.util.Random rand = new java.util.Random();
+            StringBuilder builder = new StringBuilder();
+            while(builder.toString().length() == 0) {
+                int length = rand.nextInt(5)+5;
+                for(int i = 0; i < length; i++) {
+                    builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
+                }
+            }
+            return builder.toString();
+
+    }
+
 
     public void saveChildrenSharedPreferences(){
         SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
