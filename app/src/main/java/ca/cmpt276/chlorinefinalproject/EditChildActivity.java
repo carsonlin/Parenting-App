@@ -132,7 +132,6 @@ public class EditChildActivity extends AppCompatActivity {
                         deleteExistingfile(childManager.getChild(position).getFilePath());
 
                     Child child = childManager.getChild(position);
-
                     // Avoid saving duplicate image if unchanged
                     if (imageBitmap == child.getImage()){
                         path = child.getFilePath();
