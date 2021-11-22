@@ -58,7 +58,7 @@ public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerVi
         Game game = gameManager.getSavedGamesFromSharedPreferences().get(position);
         ChildPick child = game.getChild();
         int outcome = game.isHead() == child.isHeads()?R.drawable.icons8_checkmark_60:R.drawable.icons8_x_50;
-        int index = this.gameManager.getIndexofChildfromList(child.getName());
+        int index = this.gameManager.getIndexOfChildFromList(child.getName());
         List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this.context);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

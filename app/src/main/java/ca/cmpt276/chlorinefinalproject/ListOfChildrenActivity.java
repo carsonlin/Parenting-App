@@ -44,7 +44,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        List<String> childList = EditChildActivity.getChildrenSharedPreferences(this);
+        List<String> childList = EditChildActivity.getChildNameSharedPreferences(this);
         List<String> pathList = EditChildActivity.getFilePathSharedPreferences(this);
         children.clearChildren();
         for(int i = 0; i < childList.size(); i++){
