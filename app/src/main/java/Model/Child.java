@@ -2,14 +2,16 @@ package Model;
 
 import android.graphics.Bitmap;
 
-// Object representing a configurable child
+// Object representing a configurable child stores name, bitmap, and image filepath
 public class Child {
     private String name;
     private Bitmap image;
     private String filePath;
 
-    public Child(String name){
+    public Child(String name, Bitmap image, String filePath){
         this.name = name;
+        this.image = image;
+        this.filePath = filePath;
     }
 
     public String getName() {

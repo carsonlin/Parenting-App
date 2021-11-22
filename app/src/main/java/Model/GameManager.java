@@ -1,7 +1,6 @@
 package Model;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ca.cmpt276.chlorinefinalproject.EditChildActivity.getChildrenSharedPreferences;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import java.util.Collections;
 
 
 public class GameManager {
-
     public static final String GAME_HISTORY = "gameHistory";
     public static final String PREFERENCES = "PREFERENCES";
     private final ArrayList<Game> games;
@@ -22,7 +20,7 @@ public class GameManager {
     public GameManager(Activity activity) {
         this.context = activity;
         this.games = getSavedGamesFromSharedPreferences();
-        this.childrenList = (ArrayList<String>) getChildrenSharedPreferences(context.getApplicationContext());
+        this.childrenList = (ArrayList<String>) ChildManager.getInstance().getChildNameSharedPreferences(context.getApplicationContext());
     }
 
     public void saveGameToSharedPreference() {
@@ -69,7 +67,6 @@ public class GameManager {
                 child.setHeads(Boolean.parseBoolean(gameInfo[1]));
                 gameInstance.setHead(Boolean.parseBoolean(gameInfo[2]));
                 gameInstance.setTime(gameInfo[3]);
-
                 gameInstance.setChild(child);
                 savedGames.add(gameInstance);
             }
@@ -82,13 +79,35 @@ public class GameManager {
     }
 
     public void removeGameHistory(int index){
-        if (index<getSavedGamesFromSharedPreferences().size()){
-
+        if (index < getSavedGamesFromSharedPreferences().size()){
             this.games.remove(index);
             saveGameToSharedPreference();
-
         }
+    }
 
+    public ArrayList<String> getQueueOfNewChildrenList(){
+        ArrayList<String> children = new ArrayList<>();
+        ArrayList<Game> games = this.getSavedGamesFromSharedPreferences();
+        int indexOfChildFromList = -1;
+        if (games.size() > 0){
+            Game lastGame = games.get(games.size() - 1);
+            indexOfChildFromList = getIndexOfChildFromList(lastGame.getChild().getName());
+        }
+        for (int i=(indexOfChildFromList + 1); i < this.childrenList.size(); i++){
+            children.add(this.childrenList.get(i));
+        }
+        for(int i = 0; i <= indexOfChildFromList; i++){
+            children.add(this.childrenList.get(i));
+        }
+        return children;
+    }
+
+    public int getIndexOfChildFromList(String child){
+        for (int i = 0;i < this.childrenList.size();i++){
+            if (this.childrenList.get(i).equals(child))
+                return i;
+        }
+        return -1;
     }
 
     public boolean isEmptyGames() {
@@ -96,7 +115,6 @@ public class GameManager {
     }
 
     public ArrayList<String> getNextChildrenToPick() {
-
         ArrayList<String> childrenList = this.childrenList;
         ArrayList<Integer> bucket = new ArrayList<>();
         ArrayList<String> temp = new ArrayList<>();

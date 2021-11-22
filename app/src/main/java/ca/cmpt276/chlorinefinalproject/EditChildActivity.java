@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,13 +19,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import Model.Child;
 import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
@@ -36,11 +35,9 @@ public class EditChildActivity extends AppCompatActivity {
 
     private static final String EXTRA_MESSAGE_ACTIVITY= "Extra - message";
     public static final String LIST_POSITION = "list position";
-    private static final String CHILD_LIST = "childList";
-    public static final String PATH_LIST = "pathList";
-    private static final String PREFERENCES = "appPrefs";
     private boolean isAddActivity;
     private int position;
+    private boolean isImageUpdated = false;
     private ChildManager childManager;
     private Bitmap imageBitmap;
 
@@ -83,10 +80,7 @@ public class EditChildActivity extends AppCompatActivity {
             editText.setText(childManager.getName(position));
             imageBitmap = childManager.getChild(position).getImage();
         }
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                imageView.getMaxWidth(),
-                imageView.getMaxHeight(),
-                false));
+        Glide.with(getApplicationContext()).load(imageBitmap).into(imageView);
     }
 
     private void setUpActionBar(){
@@ -103,7 +97,7 @@ public class EditChildActivity extends AppCompatActivity {
         Button button = findViewById(R.id.deleteButton);
         button.setOnClickListener(view -> {
             childManager.deleteChild(position);
-            saveChildrenSharedPreferences();
+            childManager.saveChildrenSharedPreferences(this);
             finish();
         });
     }
@@ -117,17 +111,40 @@ public class EditChildActivity extends AppCompatActivity {
                 Toast.makeText(EditChildActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
             }
              else {
-                String path = saveToInternalStorage(imageBitmap, text + ".jpg");
+                String path;
                 if (isAddActivity){
+                    path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.addChild(text, imageBitmap, path);
                 }
                 else {
+                    Child child = childManager.getChild(position);
+
+                    if(isImageUpdated){
+                        deleteExistingFile(child.getFilePath());
+                    }
+                    path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.editChild(position, text, imageBitmap, path);
                 }
-                saveChildrenSharedPreferences();
+                childManager.saveChildrenSharedPreferences(this);
                 finish();
             }
         });
+    }
+
+    public void deleteExistingFile(String path){
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
+        try {
+            File filePath = new File(path);
+            String filename = filePath.getName();
+            filePath = new File(directory, filename);
+
+            if(filePath.exists()){
+                filePath.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void uploadImagePressed() {
@@ -142,11 +159,9 @@ public class EditChildActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         imageBitmap = map;
+                        isImageUpdated = true;
                         ImageView imageView = findViewById(R.id.childProfilePic);
-                        imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                                imageView.getMaxWidth(),
-                                imageView.getMaxHeight(),
-                                false));
+                        Glide.with(getApplicationContext()).load(result).into(imageView);
                     }
                 });
 
@@ -162,10 +177,7 @@ public class EditChildActivity extends AppCompatActivity {
                             Bundle bundle = result.getData().getExtras();
                             imageBitmap = (Bitmap) bundle.get("data");
                             ImageView imageView = findViewById(R.id.childProfilePic);
-                            imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap,
-                                    imageView.getMaxWidth(),
-                                    imageView.getMaxHeight(),
-                                    false));
+                            Glide.with(getApplicationContext()).load(imageBitmap).into(imageView);
                         }
                     }
                 });
@@ -178,68 +190,45 @@ public class EditChildActivity extends AppCompatActivity {
     private String saveToInternalStorage(Bitmap bitmapImage, String filename) {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir("profileImageDir", Context.MODE_PRIVATE);
-        File filePath = new File(directory, filename);
 
-        FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(filePath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                assert outputStream != null;
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            File filePath = new File(directory, filename);
+            if (!filePath.createNewFile()){
+                if(filePath.delete())
+                    filePath = new File(directory, filename);
             }
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(filePath);
+                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    assert outputStream != null;
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return filePath.getAbsolutePath();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+            return "";
         }
-        return filePath.getAbsolutePath();
     }
 
-    public void saveChildrenSharedPreferences(){
-        SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(CHILD_LIST).apply();
-        StringBuilder childListString = new StringBuilder();
-        StringBuilder imagePathString = new StringBuilder();
-
-        for(int i = 0; i < childManager.getListSize(); i++){
-            childListString.append(childManager.getName(i)).append(",");
-            imagePathString.append(childManager.getChild(i).getFilePath()).append(",");
-        }
-        editor.putString(CHILD_LIST, childListString.toString());
-        editor.putString(PATH_LIST, imagePathString.toString());
-        editor.apply();
-    }
-
-    public static List<String> getChildrenSharedPreferences(Context context){
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        String temp = "";
-        String childListString = prefs.getString(CHILD_LIST, temp);
-        List<String> childList = new ArrayList<>(Arrays.asList(childListString.split(",")));
-        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
-        if(childList.get(0).equals("") && (childList.size() == 1)){
-            childList.remove(0);
-        }
-        return childList;
-    }
-
-    public static List<String> getFilePathSharedPreferences(Context context){
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        String temp = "";
-        String filePathString = prefs.getString(PATH_LIST, temp);
-        List<String> pathList = new ArrayList<>(Arrays.asList(filePathString.split(",")));
-        //from https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list
-        if(pathList.get(0).equals("") && (pathList.size() == 1)){
-            pathList.remove(0);
-        }
-        return pathList;
-    }
-
-    public static void clearChildrenSharedPreferences(Context context){
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear().apply();
+    private String randomIdentifier(){
+        final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
+        final java.util.Random rand = new java.util.Random();
+            StringBuilder builder = new StringBuilder();
+            while(builder.toString().length() == 0) {
+                int length = rand.nextInt(5)+5;
+                for(int i = 0; i < length; i++) {
+                    builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
+                }
+            }
+            return builder.toString();
     }
 }

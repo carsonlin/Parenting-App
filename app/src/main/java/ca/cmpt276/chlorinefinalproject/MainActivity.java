@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import Model.ChildManager;
+
 // Main Ui for the app
 public class MainActivity extends AppCompatActivity {
 
@@ -14,9 +16,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupButton(R.id.coinFlipButton, CoinFlipChooseActivity.class);
+        setupButton(R.id.taskCompleteButton, CoinFlipChooseActivity.class);
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
+        setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
+
+        // To initialize child manager with objects from shared preferences
+        ChildManager childManager = ChildManager.getInstance();
+        childManager.updateChildManager(this);
         setupButton(R.id.helpScreenButton, HelpScreenActivity.class);
     }
 

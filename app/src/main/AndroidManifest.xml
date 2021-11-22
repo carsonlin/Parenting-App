@@ -14,6 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".AddTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WhoseTurnActivity"
+            android:exported="false"
+            android:label="@string/whose_turn" />
+
+        <activity
             android:name=".HelpScreenActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -27,16 +38,22 @@
             android:exported="false"
             android:label="@string/title_activity_coin_flip_history"
             android:screenOrientation="portrait"/>
+            android:exported="false"
+            android:label="@string/title_activity_coin_flip_history" />
         <activity
             android:name=".CoinFlipChooseActivity"
             android:exported="true"
             android:label="@string/title_activity_coin_flip_choose"
             android:screenOrientation="portrait"/>
+            android:exported="true"
+            android:label="@string/title_activity_coin_flip_choose" />
         <activity
             android:name=".CoinFlipActivity"
             android:exported="true"
             android:label="@string/title_activity_coin_flip"
             android:screenOrientation="portrait"/>
+            android:exported="true"
+            android:label="@string/title_activity_coin_flip" />
         <activity
             android:name=".TimerActivity"
             android:exported="true"

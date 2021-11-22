@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import Model.ChildManager;
 import Model.ChildPick;
 import Model.Coin;
 import Model.Game;
@@ -26,6 +27,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     public static final String BET = "bet";
     private ActivityCoinFlipBinding binding;
     private GameManager gameManager;
+    private ChildManager childManager;
     private Coin coin;
     private boolean isHead;
     private String child;
@@ -41,6 +43,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         setUpTextView();
         setUpActionBar();
         setUpCoin();
+        childManager = ChildManager.getInstance();
     }
 
     private void setUpCoin() {
@@ -48,14 +51,17 @@ public class CoinFlipActivity extends AppCompatActivity {
         coin = new Coin(CoinFlipActivity.this, cardFace);
         gameManager = new GameManager(CoinFlipActivity.this);
         cardFace.setOnClickListener(view -> {
+            // decoupled coin flip implemented
             coin.flip();
+            boolean head = coin.outcome();
             Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        coin.isHead() ? getString(R.string.text_heads) : getString(R.string.text_tails),
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }, coin.predictedTime() + 1000);
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            head?R.string.text_heads:R.string.text_tails, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            },  coin.animationDuration());
         });
     }
 
@@ -65,17 +71,17 @@ public class CoinFlipActivity extends AppCompatActivity {
             editTextChildPick.setText("");
         }
         else if (this.isHead){
-            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Heads"));
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, this.getResources().getString(R.string.text_heads)));
         }
         else{
-            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, "Tails"));
+            editTextChildPick.setText(String.format((getString(R.string.coin_flip_text_view)), this.child, this.getResources().getString((R.string.text_tails))));
         }
     }
 
     private void extractIntentExtras() {
         Intent intent = getIntent();
         child = intent.getStringExtra(CHILD);
-        isHead = intent.getStringExtra(BET).equals("heads");
+        isHead = intent.getStringExtra(BET).equals(this.getResources().getString(R.string.text_heads));
     }
 
     @Override
@@ -101,7 +107,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 gameManager.saveGameToSharedPreference();
             }
             coin.setAbortAnimation(true);
-            ArrayList<String> children = (ArrayList<String>) EditChildActivity.getChildrenSharedPreferences(CoinFlipActivity.this);
+            ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(CoinFlipActivity.this);
             goToMainActivity(children.isEmpty());
             finish();
     }

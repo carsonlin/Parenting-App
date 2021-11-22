@@ -10,13 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.cmpt276.chlorinefinalproject.CoinFlipActivity;
 import ca.cmpt276.chlorinefinalproject.R;
@@ -24,24 +28,43 @@ import ca.cmpt276.chlorinefinalproject.R;
 // Recycler view adapter to list children
 public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewChildrenPick.MyViewHolder> {
     public static final int ANIMATION_DURATION = 1500;
-    private final ArrayList<String> listOfChildren;
+    private ArrayList<String> listOfChildren;
     private final Activity activity;
+    private final GameManager gameManager;
+    private final ChildManager childManager;
 
-    public RecyclerViewChildrenPick(ArrayList<String> listOfChildren, Activity activity){
-        this.listOfChildren = listOfChildren;
+    public RecyclerViewChildrenPick(boolean isOverride, GameManager gameManager, ChildManager childManager, Activity activity){
         this.activity = activity;
+        this.gameManager = gameManager;
+        this.childManager = childManager;
+
+        if (isOverride) {
+            listOfChildren = gameManager.getQueueOfNewChildrenList();
+        } else {
+            listOfChildren = gameManager.getNextChildrenToPick();
+
+            ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(activity);
+            if (listOfChildren.isEmpty() && !(children.isEmpty())) {
+                this.listOfChildren = children;
+            }
+        }
+    }
+
+    public ArrayList<String> getListOfChildren(){
+        return listOfChildren;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private final TextView nameText;
         private final LinearLayout choiceHolder;
         private Boolean isExpanded = false;
+        private ImageView childProfilePic;
 
         public MyViewHolder(final View view){
             super(view);
-            nameText = view.findViewById(R.id.childName);
+            nameText = view.findViewById(R.id.taskNameTextView);
             choiceHolder = view.findViewById(R.id.childrenChoiceslinearLayout);
-
+            childProfilePic = view.findViewById(R.id.childProfilePic);
             Button headButton = view.findViewById(R.id.head);
             Button tailsButton = view.findViewById(R.id.tail);
             headButton.setOnClickListener(view1 -> goToToss(listOfChildren.get(getAdapterPosition()),
@@ -110,7 +133,12 @@ public class RecyclerViewChildrenPick extends RecyclerView.Adapter<RecyclerViewC
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewChildrenPick.MyViewHolder holder, int position) {
-        holder.nameText.setText(listOfChildren.get(position));
+         holder.nameText.setText(listOfChildren.get(position));
+         int index = this.gameManager.getIndexOfChildFromList(listOfChildren.get(position));
+         List<String> pathList = childManager.getFilePathSharedPreferences(this.activity.getApplicationContext());
+         if (index > -1){
+             Glide.with(this.activity.getApplicationContext()).load(pathList.get(index)).circleCrop().into(holder.childProfilePic);
+         }
     }
 
     @Override
