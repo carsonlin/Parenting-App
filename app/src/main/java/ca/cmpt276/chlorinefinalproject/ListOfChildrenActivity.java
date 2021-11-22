@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import Model.ChildListAdapter;
 import Model.ChildManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
@@ -53,8 +53,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             children.addChild(childList.get(i), map, path);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.list_items, childList);
+        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getList());
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }
