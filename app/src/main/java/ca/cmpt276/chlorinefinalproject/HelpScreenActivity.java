@@ -30,6 +30,7 @@ public class HelpScreenActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle(R.string.helpTitle);
     }
 
     private void setupHyperLink() {

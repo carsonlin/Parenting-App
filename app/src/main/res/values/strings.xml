@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Help</string>
+    <string name="app_name">ChlorineFinalProject</string>
     <string name="title_activity_list_of_children">List Of Children</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -85,5 +85,6 @@
          Hyperlink with link movement S.O\n </a></string>
     <string name="flip_override_button_text">Override</string>
     <string name="flip_choose_none_button_text">Choose none</string>
+    <string name="helpTitle">Help</string>
 
 </resources>
