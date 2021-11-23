@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChlorineFinalProject</string>
+    <string name="app_name">Help</string>
     <string name="title_activity_list_of_children">List Of Children</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -63,6 +63,27 @@
     <string name="upload_image">Upload Image</string>
     <string name="child_profile_picture">child profile picture</string>
     <string name="take_photo">Take Photo</string>
+    <string name="help">Help</string>
+    <string name="helpScreenTitle">About Practical Parent!</string>
+    <string name="helpDescription">Our Practical Parent app was designed to efficiently solve household disputes between children.
+        Currently supporting a variety of features including a child list, stop watch, coin flip, and task manager.</string>
+    <string name="citationDescription">For video/website tutorials and copyright use, click the following</string>
+    <string name="citationTitle">Citations:</string>
+    <string name="developerNameTitle">Developed By:</string>
+    <string name="developerNames">Johnny Mai, Jack Manuel, Cuthbert Martin Lwinga, Carson Lin</string>
+    <string name="citationLinks">
+        <a href="https://www.youtube.com/watch?v=qO3FFuBrT2E">
+         On Activity Result Deprecated Video\n</a>
+        <a href="https://www.youtube.com/watch?v=E6vE8fqQPTE">
+         Custom ListView Adapter Video\n</a>
+        <a href="https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative">
+         On Activity Result Deprecated S.O\n</a>
+        <a href="https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-list">
+            Comma separated string Parsing S.O\n</a>
+        <a href="https://stackoverflow.com/questions/2361497/how-to-create-edittext-accepts-alphabets-only-in-android/35954993">
+         EditText only allowing letters S.O\n</a>
+        <a href="https://stackoverflow.com/questions/68575866/to-run-a-simple-link-with-linkmovementmethod-in-android">
+         Hyperlink with link movement S.O\n </a></string>
     <string name="flip_override_button_text">Override</string>
     <string name="flip_choose_none_button_text">Choose none</string>
 
