@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
+// Extension of ArrayAdapter class that enables the ListView of the children
 public class ChildListAdapter extends ArrayAdapter<Child> {
     private final Context context;
     private final int resource;

@@ -24,7 +24,6 @@ public class ChildManager {
         listOfChildren = new ArrayList<>();
     }
 
-    //singleton support
     public static ChildManager getInstance(){
         if(instance == null){
             instance = new ChildManager();
@@ -40,8 +39,11 @@ public class ChildManager {
     }
 
     public void deleteChild(int index){
+        TaskManager taskManager = TaskManager.getInstance();
+
         if(index >= 0 && index < listOfChildren.size()){
             listOfChildren.remove(index);
+            taskManager.updateTasksOnChildDelete(index, listOfChildren.size());
         }
     }
 
@@ -59,14 +61,19 @@ public class ChildManager {
     }
 
     public Child getChild(int index){
-        if(index >= 0 && index < listOfChildren.size()){
-            return listOfChildren.get(index);
-        }
-        return null;
+        return listOfChildren.get(index);
     }
 
-    public ArrayList<Child> getList(){
+    public ArrayList<Child> getChildren(){
         return listOfChildren;
+    }
+
+    public Boolean hasChildren(){
+        return !listOfChildren.isEmpty();
+    }
+
+    public int getNumberOfChildren(){
+        return listOfChildren.size();
     }
 
     public void clearChildren(){

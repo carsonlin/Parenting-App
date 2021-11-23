@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -15,9 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import Model.Task;
+import Model.TaskManager;
 
+// Activity to add a new task
 public class AddTaskActivity extends AppCompatActivity {
+    TaskManager taskManager = TaskManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +36,11 @@ public class AddTaskActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Add Task");
+        ab.setTitle(R.string.add_task);
     }
 
     private void renameViews(){
-        TextView taskName = findViewById(R.id.taskNameTextView);
+        TextView taskName = findViewById(R.id.childName);
         taskName.setText(R.string.task_name);
 
         Button deleteButton = findViewById(R.id.deleteButton);
@@ -47,20 +49,26 @@ public class AddTaskActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setText(R.string.save);
 
+        Button uploadButton = findViewById(R.id.uploadImage);
+        uploadButton.setVisibility(View.INVISIBLE);
+
+        Button takePhotoButton = findViewById(R.id.takePhoto);
+        takePhotoButton.setVisibility(View.INVISIBLE);
+
         EditText newTaskEditText = findViewById(R.id.editChildName);
         newTaskEditText.setInputType(InputType.TYPE_CLASS_TEXT);
     }
 
     private void setupSaveButton(){
-
         Button saveButton = findViewById(R.id.saveButton);
 
         saveButton.setOnClickListener(view -> {
-
             EditText newTaskEditText = findViewById(R.id.editChildName);
             String newTaskName = newTaskEditText.getText().toString();
 
-            // CREATE NEW TASK OBJECT WITH THIS NAME!
+            Task newTask = new Task(newTaskName);
+            taskManager.addTask(newTask);
+            taskManager.saveToSharedPreferences(this);
 
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
             finish();

@@ -7,6 +7,8 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+import Model.TaskManager;
+
 // Handles notifications for TimerActivity
 public class App extends Application {
 

@@ -17,6 +17,7 @@ import java.util.List;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
+// Recycler view adapter to list the coin flip history
 public class RecyclerViewCoinFlipHistory extends RecyclerView.Adapter<RecyclerViewCoinFlipHistory.MyViewHolder> {
     private final GameManager gameManager;
     private final ChildManager childManager;

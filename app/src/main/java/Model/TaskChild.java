@@ -1,9 +1,10 @@
 package Model;
 
+//simple class of two Strings that is used in the ListView adapter
 public class TaskChild {
 
-    private String taskName;
-    private String childName;
+    private final String taskName;
+    private final String childName;
 
     public TaskChild(String taskName, String childName) {
         this.taskName = taskName;
@@ -14,15 +15,7 @@ public class TaskChild {
         return taskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
     public String getChildName() {
         return childName;
-    }
-
-    public void setChildName(String childName) {
-        this.childName = childName;
     }
 }

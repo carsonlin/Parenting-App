@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import Model.ChildManager;
+import Model.TaskManager;
 
 // Main Ui for the app
 public class MainActivity extends AppCompatActivity {
@@ -20,11 +21,15 @@ public class MainActivity extends AppCompatActivity {
         setupButton(R.id.timerButton, TimerActivity.class);
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
         setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
+        setupButton(R.id.helpScreenButton, HelpScreenActivity.class);
 
         // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
         childManager.updateChildManager(this);
-        setupButton(R.id.helpScreenButton, HelpScreenActivity.class);
+
+        // To initialize task manager with objects from shared preferences
+        TaskManager taskManager = TaskManager.getInstance();
+        taskManager.loadFromSharedPreferences(this);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){

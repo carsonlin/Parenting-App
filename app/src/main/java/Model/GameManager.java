@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+//Manages the coin flips and their history
 public class GameManager {
     public static final String GAME_HISTORY = "gameHistory";
     public static final String PREFERENCES = "PREFERENCES";

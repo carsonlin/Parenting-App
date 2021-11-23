@@ -15,12 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import Model.ChildListAdapter;
 import Model.ChildManager;
+import Model.TaskManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
 // Activity to display currently configured list of children
 public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
-
     private ChildManager children;
 
     @Override
@@ -36,7 +36,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getList());
+        ChildListAdapter adapter = new ChildListAdapter(this, R.layout.adapter_view_layout_children, children.getChildren());
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
     }
@@ -73,6 +73,11 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             children.clearChildren();
             children.clearChildrenSharedPreferences(this);
             populateListView();
+
+            TaskManager taskManager = TaskManager.getInstance();
+            taskManager.updateTasksOnChildDelete(0, 0);
+            taskManager.saveToSharedPreferences(this);
+
             return true;
         }
         else if (item.getItemId() == R.id.home){

@@ -9,9 +9,9 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityHelpScreenBinding;
+
 //Help screen showing citations (supporting hyperlinks), developer list and features implemented
 public class HelpScreenActivity extends AppCompatActivity {
-    private ActivityHelpScreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class HelpScreenActivity extends AppCompatActivity {
     }
 
     private void setUpToolBar(){
-        binding = ActivityHelpScreenBinding.inflate(getLayoutInflater());
+        ca.cmpt276.chlorinefinalproject.databinding.ActivityHelpScreenBinding binding = ActivityHelpScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);

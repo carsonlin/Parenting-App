@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import Model.Child;
 import Model.ChildManager;
+import Model.TaskManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
 // Activity used to edit, delete, or add children.
@@ -98,6 +99,10 @@ public class EditChildActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             childManager.deleteChild(position);
             childManager.saveChildrenSharedPreferences(this);
+
+            TaskManager taskManager = TaskManager.getInstance();
+            taskManager.saveToSharedPreferences(this);
+
             finish();
         });
     }
@@ -115,6 +120,12 @@ public class EditChildActivity extends AppCompatActivity {
                 if (isAddActivity){
                     path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.addChild(text, imageBitmap, path);
+
+                    if (childManager.getNumberOfChildren() == 1){ // this assigns all the tasks without children when the first child is added
+                        TaskManager taskManager = TaskManager.getInstance();
+                        taskManager.setAllTaskIndexZero();
+                        taskManager.saveToSharedPreferences(this);
+                    }
                 }
                 else {
                     Child child = childManager.getChild(position);
