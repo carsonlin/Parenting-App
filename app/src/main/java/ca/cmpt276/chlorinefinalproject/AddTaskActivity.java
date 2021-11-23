@@ -17,6 +17,7 @@ import android.widget.Toast;
 import Model.Task;
 import Model.TaskManager;
 
+// Activity to add a new task
 public class AddTaskActivity extends AppCompatActivity {
     TaskManager taskManager = TaskManager.getInstance();
 

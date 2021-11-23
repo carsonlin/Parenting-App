@@ -1,6 +1,6 @@
 package Model;
 
-//task model class that holds Name of task and supports task completion (updating next child)
+//task model class that holds the name of task and supports task completion (updating next child)
 public class Task {
     public static final int NO_CHILD = -1;
     private String taskName;

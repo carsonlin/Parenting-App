@@ -21,7 +21,6 @@ import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding
 // Activity to display currently configured list of children
 public class ListOfChildrenActivity extends AppCompatActivity {
     private ActivityListOfChildrenBinding binding;
-
     private ChildManager children;
 
     @Override

@@ -14,7 +14,7 @@ import java.util.Random;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
-
+//Class that manages the coin for the coin flip
 public class Coin {
     private static final int LOWER_BOUND = 20;
     private static final int UPPER_BOUND = 40;
@@ -64,13 +64,11 @@ public class Coin {
     }
 
     public boolean outcome() {
-
         boolean headtemp = head;
         for (int i = 20; i < stop; i += 2) {
             headtemp = !headtemp;
         }
         return headtemp;
-
     }
 
     public long animationDuration() {
@@ -86,8 +84,7 @@ public class Coin {
         interacted = true;
         animating = true;
         if (!this.abortAnimation) {
-            ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + 90));
-            // arbitrary 100, was a sweet spot
+            ObjectAnimator animation = ObjectAnimator.ofFloat(coin, "rotationX", rotation, (rotation + COIN_CHANGE_ANGLE));
             animation.setDuration(DURATION);
             animation.addListener(new AnimatorListenerAdapter() {
                 @Override

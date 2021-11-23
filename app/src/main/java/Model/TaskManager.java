@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-//TaskManager class that holds a list of tasks (may not be needed)
+//TaskManager class that holds a list of tasks. Class object can be saved in SharedPreferences with GSON library
 public class TaskManager {
     public static final String TASKS = "TASKS";
     public static final String TASK_MANAGER = "TASK_MANAGER";
@@ -18,7 +18,6 @@ public class TaskManager {
         tasks = new ArrayList<>();
     }
 
-    //singleton support
     public static TaskManager getInstance(){
         if(instance == null){
             instance = new TaskManager();

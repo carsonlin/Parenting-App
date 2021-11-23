@@ -22,6 +22,7 @@ import Model.ChildManager;
 import Model.Task;
 import Model.TaskManager;
 
+// Activity to view task. From here you can edit the name of the task, or mark the task as complete
 public class ViewTaskActivity extends AppCompatActivity {
     public static final String TASK_INDEX = "Task selected";
     int taskIndex;

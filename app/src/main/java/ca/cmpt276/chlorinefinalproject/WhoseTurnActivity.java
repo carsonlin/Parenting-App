@@ -20,6 +20,7 @@ import Model.TaskChild;
 import Model.TaskListAdapter;
 import Model.TaskManager;
 
+// Activity that shows the list of tasks and the child who's turn it is
 public class WhoseTurnActivity extends AppCompatActivity {
     TaskManager taskManager = TaskManager.getInstance();
     ChildManager childManager = ChildManager.getInstance();

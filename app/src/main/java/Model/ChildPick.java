@@ -1,5 +1,6 @@
 package Model;
 
+//Stores the name of a child and a boolean representing a heads or tails pick
 public class ChildPick {
     private String name;
     private boolean heads;

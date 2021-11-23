@@ -24,7 +24,6 @@ public class ChildManager {
         listOfChildren = new ArrayList<>();
     }
 
-    //singleton support
     public static ChildManager getInstance(){
         if(instance == null){
             instance = new ChildManager();

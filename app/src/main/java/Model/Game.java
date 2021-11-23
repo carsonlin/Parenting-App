@@ -3,6 +3,7 @@ package Model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+//Class that stores the result of a flip. Used in the flip history
 public class Game {
     private ChildPick child;
     private LocalDateTime time;

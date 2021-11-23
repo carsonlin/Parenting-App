@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
+// Extension of ArrayAdapter class that enables the ListView with two columns
 public class TaskListAdapter extends ArrayAdapter<TaskChild> {
 
     private final Context context;
@@ -25,7 +25,6 @@ public class TaskListAdapter extends ArrayAdapter<TaskChild> {
         TextView taskName;
     }
 
-
     public TaskListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<TaskChild> objects) {
         super(context, resource, objects);
         this.resource = resource;
@@ -35,7 +34,6 @@ public class TaskListAdapter extends ArrayAdapter<TaskChild> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         String childName = getItem(position).getChildName();
         String taskName = getItem(position).getTaskName();
 
