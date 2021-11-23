@@ -2,6 +2,7 @@ package Model;
 
 //task model class that holds Name of task and supports task completion (updating next child)
 public class Task {
+    public static final int NO_CHILD = -1;
     private String taskName;
     private int childIndex;
 
@@ -14,8 +15,13 @@ public class Task {
             this.childIndex = 0;
         }
         else {
-            this.childIndex = -1;
+            setNoChild();
         }
+    }
+
+    public Task(String taskName, int childIndex){
+        this.taskName = taskName;
+        this.childIndex = childIndex;
     }
 
     public void setTaskName(String taskName){
@@ -36,6 +42,14 @@ public class Task {
 
     public void setChildIndex(int index){
         childIndex = index;
+    }
+
+    public void setNoChild(){
+        setChildIndex(NO_CHILD);
+    }
+
+    public boolean hasChild(){
+        return childIndex != NO_CHILD;
     }
 
     public void completeTask(){

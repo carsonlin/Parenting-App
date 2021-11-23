@@ -77,6 +77,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
 
             TaskManager taskManager = TaskManager.getInstance();
             taskManager.updateTasksOnChildDelete(0, 0);
+            taskManager.saveToSharedPreferences(this);
 
             return true;
         }

@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -22,7 +21,6 @@ import Model.TaskListAdapter;
 import Model.TaskManager;
 
 public class WhoseTurnActivity extends AppCompatActivity {
-
     TaskManager taskManager = TaskManager.getInstance();
     ChildManager childManager = ChildManager.getInstance();
 
@@ -60,28 +58,26 @@ public class WhoseTurnActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else if (id == R.id.clearChildren){
-            // delete all tasks. not sure if we even need to implement this tbh
+            taskManager.deleteAllTasks();
+            taskManager.saveToSharedPreferences(this);
+            setupListView();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void setupListView(){
-
         ArrayList<Task> tasks = taskManager.getTasks();
         ArrayList<TaskChild> taskChildrenList = new ArrayList<>();
-
         ArrayList<Child> children = childManager.getChildren();
 
         for (Task task : tasks){
-
-            if (task.getChildIndex() != -1){
+            if (task.hasChild()){
                 taskChildrenList.add(new TaskChild(task.getTaskName(), children.get(task.getChildIndex()).getName()));
             }
             else{
                 taskChildrenList.add(new TaskChild(task.getTaskName(), ""));
             }
         }
-
         TaskListAdapter adapter = new TaskListAdapter(this, R.layout.adapter_view_layout_tasks, taskChildrenList);
 
         ListView list = findViewById(R.id.taskListView);
@@ -91,8 +87,6 @@ public class WhoseTurnActivity extends AppCompatActivity {
     private void setupClickGameOnList(){
         ListView list = findViewById(R.id.taskListView);
         list.setOnItemClickListener((parent, viewClicked, position, id) -> {
-
-            Log.i("TEST", "CLICKED ON " + position);
             Intent intent = ViewTaskActivity.makeIntent(WhoseTurnActivity.this, position);
             startActivity(intent);
         });

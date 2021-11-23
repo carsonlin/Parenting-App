@@ -29,6 +29,7 @@
     <string name="loonie">Loonie</string>
     <string name="minutes">minutes</string>
     <string name="add_child">Add Child</string>
+    <string name="add_task">Add Task</string>
     <string name="clear_children">Clear Children</string>
     <string name="invalid_timer_duration">Invalid Timer Duration</string>
     <string name="timer_running_notification_message">Timer running!</string>

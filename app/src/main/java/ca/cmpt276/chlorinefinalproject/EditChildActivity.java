@@ -99,6 +99,10 @@ public class EditChildActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             childManager.deleteChild(position);
             childManager.saveChildrenSharedPreferences(this);
+
+            TaskManager taskManager = TaskManager.getInstance();
+            taskManager.saveToSharedPreferences(this);
+
             finish();
         });
     }
@@ -117,9 +121,10 @@ public class EditChildActivity extends AppCompatActivity {
                     path = saveToInternalStorage(imageBitmap, randomIdentifier() + ".jpg");
                     childManager.addChild(text, imageBitmap, path);
 
-                    if (childManager.getNumberOfChildren() == 1){ // this assigns all the task without children when the first child is added
+                    if (childManager.getNumberOfChildren() == 1){ // this assigns all the tasks without children when the first child is added
                         TaskManager taskManager = TaskManager.getInstance();
                         taskManager.setAllTaskIndexZero();
+                        taskManager.saveToSharedPreferences(this);
                     }
                 }
                 else {

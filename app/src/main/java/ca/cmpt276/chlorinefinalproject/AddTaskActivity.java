@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -15,14 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import Model.ChildManager;
 import Model.Task;
 import Model.TaskManager;
 
 public class AddTaskActivity extends AppCompatActivity {
-
     TaskManager taskManager = TaskManager.getInstance();
 
     @Override
@@ -40,7 +35,7 @@ public class AddTaskActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Add Task");
+        ab.setTitle(R.string.add_task);
     }
 
     private void renameViews(){
@@ -64,16 +59,15 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void setupSaveButton(){
-
         Button saveButton = findViewById(R.id.saveButton);
 
         saveButton.setOnClickListener(view -> {
-
             EditText newTaskEditText = findViewById(R.id.editChildName);
             String newTaskName = newTaskEditText.getText().toString();
 
             Task newTask = new Task(newTaskName);
             taskManager.addTask(newTask);
+            taskManager.saveToSharedPreferences(this);
 
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
             finish();

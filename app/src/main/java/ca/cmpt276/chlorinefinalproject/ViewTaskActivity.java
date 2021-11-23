@@ -7,9 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +23,6 @@ import Model.Task;
 import Model.TaskManager;
 
 public class ViewTaskActivity extends AppCompatActivity {
-
     public static final String TASK_INDEX = "Task selected";
     int taskIndex;
     Boolean editMode = false;
@@ -72,13 +69,14 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         button.setOnClickListener(view -> {
             task.completeTask();
+            taskManager.saveToSharedPreferences(this);
             finish();
         });
     }
 
     private void setupChildImage(){
         ImageView childImage = findViewById(R.id.childImage);
-        if (task.getChildIndex() != -1){
+        if (task.hasChild()){
             Glide.with(getApplicationContext()).load(childManager.getChild(task.getChildIndex()).getImage()).into(childImage);
         }
     }
@@ -91,6 +89,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             if (editMode){
                 String newTaskName = editText.getText().toString();
                 task.setTaskName(newTaskName);
+                taskManager.saveToSharedPreferences(this);
             }
             toggleEditMode();
         });
@@ -126,7 +125,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         TextView childNameView = findViewById(R.id.childName);
         taskDescView.setText(task.getTaskName());
 
-        if (task.getChildIndex() != -1) {
+        if (task.hasChild()) {
             childNameView.setText(childManager.getChild(task.getChildIndex()).getName());
         }
         else {
@@ -148,9 +147,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
         else if (id == R.id.delete_button){
             taskManager.removeTask(taskIndex);
+            taskManager.saveToSharedPreferences(this);
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

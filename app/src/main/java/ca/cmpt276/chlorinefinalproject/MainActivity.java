@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import Model.ChildManager;
+import Model.TaskManager;
 
 // Main Ui for the app
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
         childManager.updateChildManager(this);
+
+        // To initialize task manager with objects from shared preferences
+        TaskManager taskManager = TaskManager.getInstance();
+        taskManager.loadFromSharedPreferences(this);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){
