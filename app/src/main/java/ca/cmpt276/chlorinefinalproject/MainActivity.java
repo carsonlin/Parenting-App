@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
         childManager.updateChildManager(this);
+        setupButton(R.id.helpScreenButton, HelpScreenActivity.class);
     }
 
     public void setupButton(int buttonId, Class<?> classToStart){

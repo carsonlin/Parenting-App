@@ -74,6 +74,18 @@
             android:background="@drawable/button_background"
             android:text="@string/configure_children" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/helpScreenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/help" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
