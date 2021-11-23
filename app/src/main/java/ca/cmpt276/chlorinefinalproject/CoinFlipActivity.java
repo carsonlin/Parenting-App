@@ -55,12 +55,10 @@ public class CoinFlipActivity extends AppCompatActivity {
             coin.flip();
             boolean head = coin.outcome();
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            head?R.string.text_heads:R.string.text_tails, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+            handler.postDelayed(() -> {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        head?R.string.text_heads:R.string.text_tails, Toast.LENGTH_SHORT);
+                toast.show();
             },  coin.animationDuration());
         });
     }
@@ -120,11 +118,10 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     public void goToMainActivity(boolean childEmpty){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
         if(!childEmpty){
-            intent = new Intent(getApplicationContext(),CoinFlipChooseActivity.class);
+            Intent intent = new Intent(getApplicationContext(),CoinFlipChooseActivity.class);
+            startActivity(intent);
         }
-        startActivity(intent);
+        finish();
     }
 }
