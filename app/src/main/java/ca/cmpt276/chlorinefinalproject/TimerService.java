@@ -32,8 +32,9 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long remainingTime = intent.getLongExtra(TimerActivity.REMAINING_TIME, 0);
+        double timerRate = intent.getDoubleExtra(TimerActivity.TIMER_RATE, 1);
         sendNotification(getString(R.string.timer_running_notification_message), CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
-        startTimer(remainingTime);
+        startTimer(remainingTime, timerRate);
         isRunning = true;
 
         return START_NOT_STICKY;
@@ -77,11 +78,13 @@ public class TimerService extends Service {
         sendBroadcast(intent);
     }
 
-    private void startTimer(long durationInMillis){
-        timer = new CountDownTimer(durationInMillis, COUNT_DOWN_INTERVAL) {
+    private void startTimer(long durationInMillis, double timerSpeedRate){
+        long duration = (long) (durationInMillis / timerSpeedRate);
+        int interval = (int) (COUNT_DOWN_INTERVAL / timerSpeedRate);
+        timer = new CountDownTimer(duration, interval) {
             @Override
             public void onTick(long millisUntilFinished) {
-                sendRemainingMs(millisUntilFinished);
+                sendRemainingMs((long) (millisUntilFinished * timerSpeedRate));
             }
 
             @Override
