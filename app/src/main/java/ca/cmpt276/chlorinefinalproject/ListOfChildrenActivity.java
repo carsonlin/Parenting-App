@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import Model.ChildListAdapter;
 import Model.ChildManager;
 import Model.TaskManager;
+import Model.TurnHistoryManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityListOfChildrenBinding;
 
 // Activity to display currently configured list of children
@@ -77,6 +78,9 @@ public class ListOfChildrenActivity extends AppCompatActivity {
             TaskManager taskManager = TaskManager.getInstance();
             taskManager.updateTasksOnChildDelete(0, 0);
             taskManager.saveToSharedPreferences(this);
+
+            TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
+            turnManager.updateTurnHistoryOnChildDelete(0, 0);
 
             return true;
         }

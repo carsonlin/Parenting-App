@@ -18,9 +18,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import Model.ChildManager;
 import Model.Task;
 import Model.TaskManager;
+import Model.TurnHistory;
+import Model.TurnHistoryManager;
 
 // Activity to view task. From here you can edit the name of the task, or mark the task as complete
 public class ViewTaskActivity extends AppCompatActivity {
@@ -29,6 +34,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     Boolean editMode = false;
     TaskManager taskManager = TaskManager.getInstance();
     ChildManager childManager = ChildManager.getInstance();
+    TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
     Task task;
 
     @Override
@@ -42,6 +48,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         setEditMode(false);
         populateTextViews();
         setupChildImage();
+        setupViewHistoryButton();
     }
 
     public static Intent makeIntent(Context context, int taskSelected){
@@ -69,8 +76,16 @@ public class ViewTaskActivity extends AppCompatActivity {
         Button button = findViewById(R.id.taskCompleteButton);
 
         button.setOnClickListener(view -> {
+
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            String formattedDateTime = now.format(format);
+
+            turnManager.addTurn(new TurnHistory(task.getTaskName(), formattedDateTime, task.getChildIndex()));
+
             task.completeTask();
             taskManager.saveToSharedPreferences(this);
+
             finish();
         });
     }
@@ -94,6 +109,16 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
             toggleEditMode();
         });
+    }
+
+    private void setupViewHistoryButton(){
+        Button button = findViewById(R.id.historyButton);
+
+        button.setOnClickListener(view -> {
+            Intent intent = WhoseTurnHistoryActivity.makeIntent(ViewTaskActivity.this, taskIndex);
+            startActivity(intent);
+        });
+
     }
 
     private void setEditMode(Boolean edit){
