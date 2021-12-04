@@ -72,7 +72,7 @@ public class TimerActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         timerRateText = findViewById(R.id.timer_rate_text);
-        timerRateText.setText(getString(R.string.timer_rate_textview, 100));
+        timerRateText.setText(getString(R.string.timer_rate_textview, timerRate * 100));
 
         setupToolbar();
 
@@ -168,6 +168,7 @@ public class TimerActivity extends AppCompatActivity {
             PopupMenu popup = new PopupMenu(this, findViewById(R.id.timer_rate));
             int[] rates = getResources().getIntArray(R.array.timer_rates);
 
+            // Populate menu items
             for (int rate : rates){
                 popup.getMenu().add(rate + "%");
             }
@@ -175,17 +176,20 @@ public class TimerActivity extends AppCompatActivity {
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    // Grabs menu string and converts the percentage to a double
+                    // Grab numerical value from menu title
                     String str = menuItem.getTitle().toString();
                     int rate = Integer.parseInt(str.substring(0, str.length() - 1));
                     timerRate = (double) rate / 100;
                     timerRateText.setText(getString(R.string.timer_rate_textview, rate));
 
-                    // TODO: Check if timer is running and restart with new rate
+                    // restart timer service with new rate
+                    if (TimerService.isRunning()){
+                        stopTimerService();
+                        startTimerService(timeLeftInMillis, timerRate);
+                    }
                     return false;
                 }
             });
-
             popup.show();
         }
         return super.onOptionsItemSelected(item);
