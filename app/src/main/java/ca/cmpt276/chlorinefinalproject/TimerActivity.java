@@ -40,7 +40,7 @@ public class TimerActivity extends AppCompatActivity {
     private boolean isTimerPaused = false;
     private long timerDurationInMillis;
     private long timeLeftInMillis;
-    private double timerRate = 1.00;
+    private double timerSpeedRate = 1.00;
 
     private SharedPreferences sharedPref;
 
@@ -51,6 +51,7 @@ public class TimerActivity extends AppCompatActivity {
 
         sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
         timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
+
 
         View layout = findViewById(R.id.timer_layout);
         layout.setBackgroundResource(R.drawable.sleeping_dog);
@@ -72,7 +73,7 @@ public class TimerActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         timerRateText = findViewById(R.id.timer_rate_text);
-        timerRateText.setText(getString(R.string.timer_rate_textview, timerRate * 100));
+        timerRateText.setText(getString(R.string.timer_rate_textview, timerSpeedRate * 100));
 
         setupToolbar();
 
@@ -95,10 +96,10 @@ public class TimerActivity extends AppCompatActivity {
         }
     };
 
-    public void startTimerService(long timeInMs, double rate){
+    public void startTimerService(long timeInMs, double timerSpeedRate){
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra(REMAINING_TIME, timeInMs);
-        serviceIntent.putExtra(TIMER_RATE, rate);
+        serviceIntent.putExtra(TIMER_RATE, timerSpeedRate);
         startService(serviceIntent);
         isTimerPaused = false;
     }
@@ -166,29 +167,26 @@ public class TimerActivity extends AppCompatActivity {
         }
         else if(id == R.id.timer_rate){
             PopupMenu popup = new PopupMenu(this, findViewById(R.id.timer_rate));
-            int[] rates = getResources().getIntArray(R.array.timer_rates);
+            int[] timerRates = getResources().getIntArray(R.array.timer_rates);
 
             // Populate menu items
-            for (int rate : rates){
+            for (int rate : timerRates){
                 popup.getMenu().add(rate + "%");
             }
 
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    // Grab numerical value from menu title
-                    String str = menuItem.getTitle().toString();
-                    int rate = Integer.parseInt(str.substring(0, str.length() - 1));
-                    timerRate = (double) rate / 100;
-                    timerRateText.setText(getString(R.string.timer_rate_textview, rate));
+            popup.setOnMenuItemClickListener(menuItem -> {
+                // Grab numerical value from menu title
+                String str = menuItem.getTitle().toString();
+                int percent = Integer.parseInt(str.substring(0, str.length() - 1));
+                timerSpeedRate = (double) percent / 100;
+                timerRateText.setText(getString(R.string.timer_rate_textview, percent));
 
-                    // restart timer service with new rate
-                    if (TimerService.isRunning()){
-                        stopTimerService();
-                        startTimerService(timeLeftInMillis, timerRate);
-                    }
-                    return false;
+                // restart timer service with new rate
+                if (TimerService.isRunning()){
+                    stopTimerService();
+                    startTimerService(timeLeftInMillis, timerSpeedRate);
                 }
+                return false;
             });
             popup.show();
         }
@@ -265,7 +263,7 @@ public class TimerActivity extends AppCompatActivity {
         startBtn.setOnClickListener(view -> {
             if (timerDurationInMillis > 0){
                 setComponentVisibility(true);
-                startTimerService(timerDurationInMillis, timerRate);
+                startTimerService(timerDurationInMillis, timerSpeedRate);
 
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
@@ -283,7 +281,7 @@ public class TimerActivity extends AppCompatActivity {
             if (timeLeftInMillis != 0) {
                 if (isTimerPaused) {
                     layout.setBackgroundResource(R.drawable.sleeping_dog);
-                    startTimerService(timeLeftInMillis, timerRate);
+                    startTimerService(timeLeftInMillis, timerSpeedRate);
                     pauseBtn.setText(R.string.timer_pause_button_text);
                 }
                 else {

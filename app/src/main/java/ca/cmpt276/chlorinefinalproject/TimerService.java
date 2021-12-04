@@ -78,13 +78,13 @@ public class TimerService extends Service {
         sendBroadcast(intent);
     }
 
-    private void startTimer(long durationInMillis, double rate){
-        long duration = (long) (durationInMillis / rate);
-        int interval = (int) (COUNT_DOWN_INTERVAL / rate);
+    private void startTimer(long durationInMillis, double timerSpeedRate){
+        long duration = (long) (durationInMillis / timerSpeedRate);
+        int interval = (int) (COUNT_DOWN_INTERVAL / timerSpeedRate);
         timer = new CountDownTimer(duration, interval) {
             @Override
             public void onTick(long millisUntilFinished) {
-                sendRemainingMs((long) (millisUntilFinished * rate));
+                sendRemainingMs((long) (millisUntilFinished * timerSpeedRate));
             }
 
             @Override
