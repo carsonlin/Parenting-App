@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import Model.Child;
 import Model.ChildManager;
 import Model.ChildPick;
 import Model.Coin;
@@ -97,17 +98,17 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void backButtonPressedBehaviour(){
-            if(!coin.isAnimating() && coin.isInteracted()) {
-                ChildPick childPickInstance = new ChildPick(child, isHead);
-                Game game = new Game(childPickInstance);
-                game.setHead(coin.isHead());
-                gameManager.addGame(game);
-                gameManager.saveGameToSharedPreference();
-            }
-            coin.setAbortAnimation(true);
-            ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(CoinFlipActivity.this);
-            goToMainActivity(children.isEmpty());
-            finish();
+        if(!coin.isAnimating() && coin.isInteracted()) {
+            ChildPick childPickInstance = new ChildPick(child, isHead);
+            Game game = new Game(childPickInstance);
+            game.setHead(coin.isHead());
+            gameManager.addGame(game);
+            gameManager.saveGameToSharedPreference();
+        }
+        coin.setAbortAnimation(true);
+        ArrayList<String> children = (ArrayList<String>) childManager.getChildNameSharedPreferences(CoinFlipActivity.this);
+        goToMainActivity(children.isEmpty());
+        finish();
     }
 
     private void setUpActionBar(){

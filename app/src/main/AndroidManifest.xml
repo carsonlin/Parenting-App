@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChlorineFinalProject">
         <activity
+            android:name=".TakeBreathActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddTaskActivity"
             android:exported="false" />
         <activity
@@ -26,8 +29,9 @@
         <activity
             android:name=".HelpScreenActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+
         <service
             android:name=".TimerService"
             android:exported="false" />
@@ -36,36 +40,36 @@
             android:name=".CoinFlipHistoryActivity"
             android:exported="false"
             android:label="@string/title_activity_coin_flip_history"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CoinFlipChooseActivity"
             android:exported="true"
             android:label="@string/title_activity_coin_flip_choose"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CoinFlipActivity"
             android:exported="true"
             android:label="@string/title_activity_coin_flip"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TimerActivity"
             android:exported="true"
             android:label="@string/title_activity_timer"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditChildActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_or_delete_child"
             android:parentActivityName=".ListOfChildrenActivity"
-            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
         <activity
             android:name=".ListOfChildrenActivity"
             android:exported="true"
             android:label="@string/title_activity_list_of_children"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ChlorineFinalProject.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

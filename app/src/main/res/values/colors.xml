@@ -11,6 +11,13 @@
     <color name="light_orange">#f58a42</color>
     <color name="yellow">#edb124</color>
     <color name="dark_yellow">#c48c12</color>
-
-
+    <!-- animation colors-->
+    <color name="colorPrimary">@android:color/white</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorAccent">#607ff2</color>
+    <color name="windowBackground">#F3F3F3</color>
+    <color name="textColor">#333333</color>
+    <color name="light_blue">#8ED1FC</color>
+    <color name="blue">#4c51c6</color>
+    <color name="night_blue">#607ff2</color>
 </resources>
