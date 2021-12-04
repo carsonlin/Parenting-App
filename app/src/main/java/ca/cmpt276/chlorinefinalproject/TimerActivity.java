@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -28,14 +30,17 @@ public class TimerActivity extends AppCompatActivity {
     public static final int NUM_MILLIS_IN_SECOND = 1000;
     public static final int NUM_SECONDS_IN_MINUTE = 60;
     public static final String REMAINING_TIME = "remainingTime";
+    public static final String TIMER_RATE = "timerRate";
     public static final String INTENT_FILTER = "time";
     public static final String ORIGINAL_TIME = "originalTime";
     public static final String PAUSE_TIME = "pauseTime";
     public static final String TIMER_PREFS = "timerSharedPref";
     private TextView timerText;
+    private TextView timerRateText;
     private boolean isTimerPaused = false;
     private long timerDurationInMillis;
     private long timeLeftInMillis;
+    private double timerRate = 1.00;
 
     private SharedPreferences sharedPref;
 
@@ -66,6 +71,8 @@ public class TimerActivity extends AppCompatActivity {
 
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
+        timerRateText = findViewById(R.id.timer_rate_text);
+        timerRateText.setText(getString(R.string.timer_rate_textview, 100));
 
         setupToolbar();
 
@@ -88,9 +95,10 @@ public class TimerActivity extends AppCompatActivity {
         }
     };
 
-    public void startTimerService(long timeInMs){
+    public void startTimerService(long timeInMs, double rate){
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra(REMAINING_TIME, timeInMs);
+        serviceIntent.putExtra(TIMER_RATE, rate);
         startService(serviceIntent);
         isTimerPaused = false;
     }
@@ -145,10 +153,40 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_timeractivity, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
             finish();
+        }
+        else if(id == R.id.timer_rate){
+            PopupMenu popup = new PopupMenu(this, findViewById(R.id.timer_rate));
+            int[] rates = getResources().getIntArray(R.array.timer_rates);
+
+            for (int rate : rates){
+                popup.getMenu().add(rate + "%");
+            }
+
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    // Grabs menu string and converts the percentage to a double
+                    String str = menuItem.getTitle().toString();
+                    int rate = Integer.parseInt(str.substring(0, str.length() - 1));
+                    timerRate = (double) rate / 100;
+                    timerRateText.setText(getString(R.string.timer_rate_textview, rate));
+
+                    // TODO: Check if timer is running and restart with new rate
+                    return false;
+                }
+            });
+
+            popup.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -223,7 +261,7 @@ public class TimerActivity extends AppCompatActivity {
         startBtn.setOnClickListener(view -> {
             if (timerDurationInMillis > 0){
                 setComponentVisibility(true);
-                startTimerService(timerDurationInMillis);
+                startTimerService(timerDurationInMillis, timerRate);
 
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
@@ -241,7 +279,7 @@ public class TimerActivity extends AppCompatActivity {
             if (timeLeftInMillis != 0) {
                 if (isTimerPaused) {
                     layout.setBackgroundResource(R.drawable.sleeping_dog);
-                    startTimerService(timeLeftInMillis);
+                    startTimerService(timeLeftInMillis, timerRate);
                     pauseBtn.setText(R.string.timer_pause_button_text);
                 }
                 else {
