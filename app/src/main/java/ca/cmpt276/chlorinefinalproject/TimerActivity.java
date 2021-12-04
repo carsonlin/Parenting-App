@@ -35,12 +35,13 @@ public class TimerActivity extends AppCompatActivity {
     public static final String ORIGINAL_TIME = "originalTime";
     public static final String PAUSE_TIME = "pauseTime";
     public static final String TIMER_PREFS = "timerSharedPref";
+    public static final float DEFAULT_TIMER_RATE = 1.00F;
     private TextView timerText;
     private TextView timerRateText;
     private boolean isTimerPaused = false;
     private long timerDurationInMillis;
     private long timeLeftInMillis;
-    private double timerSpeedRate = 1.00;
+    private float timerSpeedRate;
 
     private SharedPreferences sharedPref;
 
@@ -51,7 +52,7 @@ public class TimerActivity extends AppCompatActivity {
 
         sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
         timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
-
+        timerSpeedRate = sharedPref.getFloat(TIMER_RATE, MODE_PRIVATE);
 
         View layout = findViewById(R.id.timer_layout);
         layout.setBackgroundResource(R.drawable.sleeping_dog);
@@ -59,21 +60,24 @@ public class TimerActivity extends AppCompatActivity {
         setComponentVisibility(true);
 
         if (!TimerService.isRunning()){
+            // Timer paused
             if (timeLeftInMillis != 0){
                 isTimerPaused = true;
                 Button pauseBtn = findViewById(R.id.timer_pause_button);
                 pauseBtn.setText(R.string.timer_resume_button_text);
             }
+            // Timer not started
             else{
                 layout.setBackgroundResource(0);
                 setComponentVisibility(false);
+                timerSpeedRate = DEFAULT_TIMER_RATE;
             }
         }
 
         timerText = findViewById(R.id.timer_text_view);
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         timerRateText = findViewById(R.id.timer_rate_text);
-        timerRateText.setText(getString(R.string.timer_rate_textview, timerSpeedRate * 100));
+        timerRateText.setText(getString(R.string.timer_rate_textview, (int)(timerSpeedRate * 100)));
 
         setupToolbar();
 
@@ -96,7 +100,7 @@ public class TimerActivity extends AppCompatActivity {
         }
     };
 
-    public void startTimerService(long timeInMs, double timerSpeedRate){
+    public void startTimerService(long timeInMs, float timerSpeedRate){
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra(REMAINING_TIME, timeInMs);
         serviceIntent.putExtra(TIMER_RATE, timerSpeedRate);
@@ -178,8 +182,12 @@ public class TimerActivity extends AppCompatActivity {
                 // Grab numerical value from menu title
                 String str = menuItem.getTitle().toString();
                 int percent = Integer.parseInt(str.substring(0, str.length() - 1));
-                timerSpeedRate = (double) percent / 100;
+                timerSpeedRate = (float) percent / 100;
                 timerRateText.setText(getString(R.string.timer_rate_textview, percent));
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putFloat(TIMER_RATE, timerSpeedRate);
+                editor.apply();
 
                 // restart timer service with new rate
                 if (TimerService.isRunning()){
@@ -267,6 +275,7 @@ public class TimerActivity extends AppCompatActivity {
 
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putLong(ORIGINAL_TIME, timerDurationInMillis);
+                editor.putFloat(TIMER_RATE, timerSpeedRate);
                 editor.apply();
 
                 layout.setBackgroundResource(R.drawable.sleeping_dog);
@@ -287,6 +296,7 @@ public class TimerActivity extends AppCompatActivity {
                 else {
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putLong(PAUSE_TIME, timeLeftInMillis);
+                    editor.putFloat(TIMER_RATE, timerSpeedRate);
                     editor.apply();
 
                     stopTimerService();
@@ -301,6 +311,7 @@ public class TimerActivity extends AppCompatActivity {
 
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putLong(PAUSE_TIME, 0);
+            editor.putFloat(TIMER_RATE, DEFAULT_TIMER_RATE);
             editor.apply();
 
             timerDurationInMillis = sharedPref.getLong(ORIGINAL_TIME, 0);
@@ -308,6 +319,7 @@ public class TimerActivity extends AppCompatActivity {
             long minutes = getMinutesFromMillis(timerDurationInMillis);
             long seconds = getSecondsFromMillis(timerDurationInMillis);
             timerText.setText(getString(R.string.timer_textview, minutes, seconds));
+            timerRateText.setText(getString(R.string.timer_rate_textview, (int)(timerSpeedRate * 100)));
 
             layout.setBackgroundResource(0);
 
@@ -318,6 +330,7 @@ public class TimerActivity extends AppCompatActivity {
         stopTimerService();
         timerText.setText(getString(R.string.timer_textview, 0, 0));
         isTimerPaused = false;
+        timerSpeedRate = DEFAULT_TIMER_RATE;
         setComponentVisibility(false);
         Button pauseButton = findViewById(R.id.timer_pause_button);
         pauseButton.setText(R.string.timer_pause_button_text);

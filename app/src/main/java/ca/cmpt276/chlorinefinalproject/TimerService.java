@@ -32,7 +32,7 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long remainingTime = intent.getLongExtra(TimerActivity.REMAINING_TIME, 0);
-        double timerRate = intent.getDoubleExtra(TimerActivity.TIMER_RATE, 1);
+        float timerRate = intent.getFloatExtra(TimerActivity.TIMER_RATE, 1);
         sendNotification(getString(R.string.timer_running_notification_message), CHANNEL_ID_ACTIVE, ACTIVE_TIMER_NOTIF_ID);
         startTimer(remainingTime, timerRate);
         isRunning = true;
@@ -78,7 +78,7 @@ public class TimerService extends Service {
         sendBroadcast(intent);
     }
 
-    private void startTimer(long durationInMillis, double timerSpeedRate){
+    private void startTimer(long durationInMillis, float timerSpeedRate){
         long duration = (long) (durationInMillis / timerSpeedRate);
         int interval = (int) (COUNT_DOWN_INTERVAL / timerSpeedRate);
         timer = new CountDownTimer(duration, interval) {
