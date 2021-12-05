@@ -15,6 +15,9 @@ import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
+import Model.AdapterManager;
 import Model.ChildManager;
 import Model.RecyclerViewCoinFlipHistory;
 import Model.RecyclerViewTurnHistory;
@@ -29,6 +32,8 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
     TaskManager taskManager = TaskManager.getInstance();
     private String taskName;
     private RecyclerView recyclerView;
+    RecyclerViewTurnHistory adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,9 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.taskHistoryRecycler);
         setAdapters();
         extractDataFromIntent();
+
+        AdapterManager adapterManager = AdapterManager.getInstance();
+        adapterManager.updateDataSet(turnManager.getSingleTaskHistory(taskName));
     }
 
 
@@ -61,13 +69,6 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
         int taskIndex = intent.getIntExtra(ViewTaskActivity.TASK_INDEX, -1);
         taskName = taskManager.getTask(taskIndex).getTaskName();
 
-        Log.d("IDK", "This is the task name passed to the recycler view " + taskName);
-        Log.d("IDK", "Length of turnmanager list? " + turnManager.getSingleTaskHistory(taskName).size());
-
-        for (TurnHistory turnHistory : turnManager.getSingleTaskHistory(taskName)){
-            Log.d("IDK", "this is the turnhistory name " + turnHistory.getTaskName() + " " + turnHistory.getChildIndex());
-        }
-
     }
 
     @Override
@@ -80,11 +81,9 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
     }
 
     public void setAdapters(){
-        //Log.d("IDK", "" + taskName.equals("oregano"))
-        RecyclerViewTurnHistory adapter = new RecyclerViewTurnHistory(childManager, turnManager.getSingleTaskHistory(taskName), getApplicationContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(AdapterManager.getInstance().getAdapter());
     }
 }

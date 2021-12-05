@@ -1,11 +1,17 @@
 package Model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class TurnHistoryManager {
 
+    private static final String TURNS = "TURN HIST";
+    private static final String TURN_MANAGER = "TURN MANAGER";
     private final ArrayList<TurnHistory> turns;
     private static TurnHistoryManager instance;
 
@@ -24,13 +30,6 @@ public class TurnHistoryManager {
         turns.add(turnHistory);
     }
 
-    public void removeTurn(int index){
-        turns.remove(index);
-    }
-
-    public TurnHistory getTurnHistory(int index){
-        return turns.get(index);
-    }
 
     public void updateTurnHistoryOnChildDelete(int indexDeleted, int newNumberOfChildren){
         for (TurnHistory turnHistory : turns){
@@ -62,15 +61,35 @@ public class TurnHistoryManager {
         return singleTaskHist;
     }
 
-    public int getHistorySizeForTask(String taskName){
-        int count = 0;
+    public void renameTask(String oldName, String newName){
         for (TurnHistory turnHistory : turns){
-            if (turnHistory.getTaskName().equals(taskName)){
-                count++;
+            if (turnHistory.getTaskName().equals(oldName)){ //this is sussy, maybe uniquely identify by datetime?
+                turnHistory.setTaskName(newName);
             }
         }
-        return count;
     }
 
+    public void saveToSharedPreferences(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(TURNS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
+        Gson gson = new Gson();
+        String json = gson.toJson(TurnHistoryManager.getInstance());
+        editor.putString(TURN_MANAGER, json);
+        editor.apply();
+    }
+
+    public void loadFromSharedPreferences(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(TURNS, Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPref.getString(TURN_MANAGER, "");
+
+        if (!json.equals("")){
+            instance = gson.fromJson(json, TurnHistoryManager.class);
+        }
+        else{
+            instance = new TurnHistoryManager();
+        }
+    }
 }

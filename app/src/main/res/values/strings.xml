@@ -87,5 +87,6 @@
     <string name="flip_override_button_text">Override</string>
     <string name="flip_choose_none_button_text">Choose none</string>
     <string name="helpTitle">Help</string>
+    <string name="child_deleted">Child was deleted!</string>
 
 </resources>

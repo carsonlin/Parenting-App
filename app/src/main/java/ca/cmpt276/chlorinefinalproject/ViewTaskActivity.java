@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import Model.AdapterManager;
 import Model.ChildManager;
 import Model.Task;
 import Model.TaskManager;
@@ -49,6 +50,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         populateTextViews();
         setupChildImage();
         setupViewHistoryButton();
+
     }
 
     public static Intent makeIntent(Context context, int taskSelected){
@@ -82,6 +84,9 @@ public class ViewTaskActivity extends AppCompatActivity {
             String formattedDateTime = now.format(format);
 
             turnManager.addTurn(new TurnHistory(task.getTaskName(), formattedDateTime, task.getChildIndex()));
+            turnManager.saveToSharedPreferences(this);
+
+            AdapterManager.getInstance().updateDataSet(turnManager.getSingleTaskHistory(task.getTaskName()));
 
             task.completeTask();
             taskManager.saveToSharedPreferences(this);
@@ -104,6 +109,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             if (editMode){
                 String newTaskName = editText.getText().toString();
+
+                turnManager.renameTask(task.getTaskName(), newTaskName);
+                AdapterManager.getInstance().updateDataSet(turnManager.getSingleTaskHistory(newTaskName));
+
                 task.setTaskName(newTaskName);
                 taskManager.saveToSharedPreferences(this);
             }

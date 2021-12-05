@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
@@ -27,10 +28,6 @@ public class RecyclerViewTurnHistory extends RecyclerView.Adapter<RecyclerViewTu
         this.childManager = childManager;
         this.taskHist = taskHist;
         this.context = context;
-
-        for (TurnHistory turnHistory : taskHist){
-            Log.d("RECYCLER", "RecyclerView TurnHistory objects loaded " + turnHistory.getTaskName());
-        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -57,10 +54,8 @@ public class RecyclerViewTurnHistory extends RecyclerView.Adapter<RecyclerViewTu
     public void onBindViewHolder(@NonNull RecyclerViewTurnHistory.MyViewHolder holder, int position) {
         TurnHistory currentItem = taskHist.get(position);
 
-        Log.d("RECYCLER", "Setting up currentItem - it has index: " + currentItem.getChildIndex());
-
         if (currentItem.hasNoChild()){
-            holder.childName.setText("Child was deleted lol");
+            holder.childName.setText(R.string.delete_child);
             holder.turnDateTime.setText(currentItem.datetime);
         }
         else{
