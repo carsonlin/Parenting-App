@@ -11,29 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
 import Model.AdapterManager;
-import Model.ChildManager;
-import Model.RecyclerViewCoinFlipHistory;
-import Model.RecyclerViewTurnHistory;
-import Model.Task;
 import Model.TaskManager;
-import Model.TurnHistory;
 import Model.TurnHistoryManager;
 
+//Activity for seeing the turn history a certain task
 public class WhoseTurnHistoryActivity extends AppCompatActivity {
-    TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
-    ChildManager childManager = ChildManager.getInstance();
-    TaskManager taskManager = TaskManager.getInstance();
+    private final TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
     private String taskName;
     private RecyclerView recyclerView;
-    RecyclerViewTurnHistory adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,27 +37,25 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
         adapterManager.updateDataSet(turnManager.getSingleTaskHistory(taskName));
     }
 
-
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Turn History");
+        ab.setTitle(R.string.turn_history);
     }
 
-    public static Intent makeIntent(Context context, int taskSelected){
+    public static Intent makeIntent(Context context, int taskSelected){ //these two methods are from Dr. Fraser's Youtube tutorial
         Intent intent = new Intent(context, WhoseTurnHistoryActivity.class);
         intent.putExtra(ViewTaskActivity.TASK_INDEX, taskSelected);
         return intent;
     }
 
-    private void extractDataFromIntent() { //these two methods are from Dr. Fraser's Youtube tutorial
+    private void extractDataFromIntent() {
         Intent intent = getIntent();
         int taskIndex = intent.getIntExtra(ViewTaskActivity.TASK_INDEX, -1);
         taskName = taskManager.getTask(taskIndex).getTaskName();
-
     }
 
     @Override
@@ -80,7 +67,7 @@ public class WhoseTurnHistoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAdapters(){
+    private void setAdapters(){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

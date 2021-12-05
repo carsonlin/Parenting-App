@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -31,12 +32,12 @@ import Model.TurnHistoryManager;
 // Activity to view task. From here you can edit the name of the task, or mark the task as complete
 public class ViewTaskActivity extends AppCompatActivity {
     public static final String TASK_INDEX = "Task selected";
-    int taskIndex;
-    Boolean editMode = false;
-    TaskManager taskManager = TaskManager.getInstance();
-    ChildManager childManager = ChildManager.getInstance();
-    TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
-    Task task;
+    private int taskIndex;
+    private Boolean editMode = false;
+    private final TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
+    private final TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         populateTextViews();
         setupChildImage();
         setupViewHistoryButton();
-
     }
 
     public static Intent makeIntent(Context context, int taskSelected){
@@ -110,6 +110,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             if (editMode){
                 String newTaskName = editText.getText().toString();
 
+                if (taskManager.hasName(newTaskName)){
+                    Toast.makeText(this, R.string.duplicate_task_name, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 turnManager.renameTask(task.getTaskName(), newTaskName);
                 AdapterManager.getInstance().updateDataSet(turnManager.getSingleTaskHistory(newTaskName));
 
@@ -155,7 +160,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         editMode = !editMode;
     }
 
-    public void populateTextViews(){
+    private void populateTextViews(){
         TextView taskDescView = findViewById(R.id.taskDesc);
         TextView childNameView = findViewById(R.id.childName);
         taskDescView.setText(task.getTaskName());
@@ -182,6 +187,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
         else if (id == R.id.delete_button){
             taskManager.removeTask(taskIndex);
+            turnManager.saveToSharedPreferences(this);
             taskManager.saveToSharedPreferences(this);
             finish();
         }

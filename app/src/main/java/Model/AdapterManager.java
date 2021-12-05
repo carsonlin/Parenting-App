@@ -6,9 +6,11 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// Manages the RecyclerView adapter for the task turn history.
+// Holds a reference to a single adapter that has its data set change
 public class AdapterManager {
 
-    public RecyclerViewTurnHistory adapter;
+    private RecyclerViewTurnHistory adapter;
     private static AdapterManager instance;
     private final ArrayList<TurnHistory> data = new ArrayList<>();
 
@@ -37,5 +39,4 @@ public class AdapterManager {
         this.data.addAll(hist);
         adapter.notifyDataSetChanged();
     }
-
 }

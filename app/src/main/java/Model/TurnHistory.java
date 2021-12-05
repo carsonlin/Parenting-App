@@ -1,10 +1,11 @@
 package Model;
 
+// hold the information for a child turn for a task
 public class TurnHistory {
 
-    public String taskName;
-    public String datetime;
-    public int childIndex;
+    private String taskName;
+    private final String datetime;
+    private int childIndex;
 
     public TurnHistory(String taskName, String datetime, int childIndex) {
         this.datetime = datetime;
@@ -14,10 +15,6 @@ public class TurnHistory {
 
     public String getDatetime() {
         return datetime;
-    }
-
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
     }
 
     public int getChildIndex() {

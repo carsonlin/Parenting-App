@@ -2,12 +2,12 @@ package Model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+// manages a list of TurnHistory objects. Singleton
 public class TurnHistoryManager {
 
     private static final String TURNS = "TURN HIST";
@@ -30,10 +30,8 @@ public class TurnHistoryManager {
         turns.add(turnHistory);
     }
 
-
     public void updateTurnHistoryOnChildDelete(int indexDeleted, int newNumberOfChildren){
         for (TurnHistory turnHistory : turns){
-
             if (turnHistory.getChildIndex() == indexDeleted){
                 turnHistory.setNoChild();
             }
@@ -41,7 +39,6 @@ public class TurnHistoryManager {
                 turnHistory.setNoChild();
             }
             else if (turnHistory.getChildIndex() > indexDeleted){
-                Log.d("TURN UPDATE", "decrementing index from " + turnHistory.getChildIndex() + " to " + (turnHistory.getChildIndex() - 1));
                 turnHistory.decrementChildIndex();
             }
             else if (turnHistory.getChildIndex() == indexDeleted && turnHistory.getChildIndex() == newNumberOfChildren){
@@ -54,7 +51,7 @@ public class TurnHistoryManager {
         ArrayList<TurnHistory> singleTaskHist = new ArrayList<>();
 
         for (TurnHistory turnHistory : turns){
-            if (turnHistory.getTaskName().equals(taskName)){ //this is sussy, maybe uniquely identify by datetime?
+            if (turnHistory.getTaskName().equals(taskName)){
                 singleTaskHist.add(turnHistory);
             }
         }
@@ -63,7 +60,7 @@ public class TurnHistoryManager {
 
     public void renameTask(String oldName, String newName){
         for (TurnHistory turnHistory : turns){
-            if (turnHistory.getTaskName().equals(oldName)){ //this is sussy, maybe uniquely identify by datetime?
+            if (turnHistory.getTaskName().equals(oldName)){
                 turnHistory.setTaskName(newName);
             }
         }
@@ -91,5 +88,13 @@ public class TurnHistoryManager {
         else{
             instance = new TurnHistoryManager();
         }
+    }
+
+    public void deleteAllTurns() {
+        turns.clear();
+    }
+
+    public void deleteTurns(String nameOfTask) {
+        turns.removeIf(turnHistory -> turnHistory.getTaskName().equals(nameOfTask));
     }
 }

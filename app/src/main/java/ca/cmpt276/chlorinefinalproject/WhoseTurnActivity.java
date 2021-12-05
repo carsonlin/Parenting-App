@@ -24,9 +24,9 @@ import Model.TurnHistoryManager;
 
 // Activity that shows the list of tasks and the child who's turn it is
 public class WhoseTurnActivity extends AppCompatActivity {
-    TaskManager taskManager = TaskManager.getInstance();
-    ChildManager childManager = ChildManager.getInstance();
-    TurnHistoryManager turnHistoryManager = TurnHistoryManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
+    private final TurnHistoryManager turnHistoryManager = TurnHistoryManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
         else if (id == R.id.clearChildren){
             taskManager.deleteAllTasks();
             taskManager.saveToSharedPreferences(this);
+            turnHistoryManager.saveToSharedPreferences(this);
             setupListView();
         }
         return super.onOptionsItemSelected(item);
