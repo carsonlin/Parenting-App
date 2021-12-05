@@ -54,6 +54,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setupListView();
+        turnHistoryManager.loadFromSharedPreferences(this);
     }
 
     @Override

@@ -81,6 +81,7 @@ public class ListOfChildrenActivity extends AppCompatActivity {
 
             TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
             turnManager.updateTurnHistoryOnChildDelete(0, 0);
+            turnManager.saveToSharedPreferences(this);
 
             return true;
         }
