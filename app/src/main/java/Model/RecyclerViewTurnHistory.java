@@ -55,7 +55,7 @@ public class RecyclerViewTurnHistory extends RecyclerView.Adapter<RecyclerViewTu
         TurnHistory currentItem = taskHist.get(position);
 
         if (currentItem.hasNoChild()){
-            holder.childName.setText(R.string.delete_child);
+            holder.childName.setText(R.string.deleted_child);
             holder.turnDateTime.setText(currentItem.getDatetime());
         }
         else{

@@ -116,6 +116,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 }
 
                 turnManager.renameTask(task.getTaskName(), newTaskName);
+                turnManager.saveToSharedPreferences(this);
                 AdapterManager.getInstance().updateDataSet(turnManager.getSingleTaskHistory(newTaskName));
 
                 task.setTaskName(newTaskName);
