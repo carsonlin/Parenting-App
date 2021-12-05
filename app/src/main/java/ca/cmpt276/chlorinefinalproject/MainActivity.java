@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setupButton(R.id.childrenConfigButton, ListOfChildrenActivity.class);
         setupButton(R.id.whoseTurnButton, WhoseTurnActivity.class);
         setupButton(R.id.helpScreenButton, HelpScreenActivity.class);
-
+        setupButton(R.id.takeBreathButton, TakeBreathActivity.class);
         // To initialize child manager with objects from shared preferences
         ChildManager childManager = ChildManager.getInstance();
         childManager.updateChildManager(this);
