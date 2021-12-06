@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -50,21 +51,18 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
-        timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
-        timerSpeedRate = sharedPref.getFloat(TIMER_RATE, MODE_PRIVATE);
-
         View layout = findViewById(R.id.timer_layout);
         layout.setBackgroundResource(R.drawable.sleeping_dog);
+        extractFieldsFromSharedPrefs();
 
         setComponentVisibility(true);
-
         if (!TimerService.isRunning()){
             // Timer paused
             if (timeLeftInMillis != 0){
                 isTimerPaused = true;
                 Button pauseBtn = findViewById(R.id.timer_pause_button);
                 pauseBtn.setText(R.string.timer_resume_button_text);
+                updateProgressBar();
             }
             // Timer not started
             else{
@@ -73,30 +71,31 @@ public class TimerActivity extends AppCompatActivity {
                 timerSpeedRate = DEFAULT_TIMER_RATE;
             }
         }
-
-        timerText = findViewById(R.id.timer_text_view);
-        timerText.setText(getString(R.string.timer_textview, 0, 0));
-        timerRateText = findViewById(R.id.timer_rate_text);
-        timerRateText.setText(getString(R.string.timer_rate_textview, (int)(timerSpeedRate * 100)));
-
         setupToolbar();
-
-        timerText.setText(getString(R.string.timer_textview, getMinutesFromMillis(timeLeftInMillis), getSecondsFromMillis(timeLeftInMillis)));
         setUpTimerButtons();
         setUpInputRadioButtons();
         setUpCustomInput();
+        setUpTextViews();
 
         IntentFilter filter = new IntentFilter(INTENT_FILTER);
         this.registerReceiver(br, filter);
     }
 
+    private void extractFieldsFromSharedPrefs() {
+        sharedPref = this.getSharedPreferences(TIMER_PREFS, MODE_PRIVATE);
+        timeLeftInMillis = sharedPref.getLong(PAUSE_TIME, MODE_PRIVATE);
+        timerSpeedRate = sharedPref.getFloat(TIMER_RATE, MODE_PRIVATE);
+        timerDurationInMillis = sharedPref.getLong(ORIGINAL_TIME, MODE_PRIVATE);
+    }
+
     BroadcastReceiver br = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            timeLeftInMillis = intent.getLongExtra(REMAINING_TIME, 0);
+            timeLeftInMillis = intent.getLongExtra(REMAINING_TIME, MODE_PRIVATE);
             long minutes = getMinutesFromMillis(timeLeftInMillis);
             long seconds = getSecondsFromMillis(timeLeftInMillis);
             timerText.setText(getString(R.string.timer_textview, minutes, seconds));
+            updateProgressBar();
         }
     };
 
@@ -170,15 +169,15 @@ public class TimerActivity extends AppCompatActivity {
             finish();
         }
         else if(id == R.id.timer_rate){
-            PopupMenu popup = new PopupMenu(this, findViewById(R.id.timer_rate));
+            PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.timer_rate));
             int[] timerRates = getResources().getIntArray(R.array.timer_rates);
 
             // Populate menu items
             for (int rate : timerRates){
-                popup.getMenu().add(rate + "%");
+                popupMenu.getMenu().add(rate + "%");
             }
 
-            popup.setOnMenuItemClickListener(menuItem -> {
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
                 // Grab numerical value from menu title
                 String str = menuItem.getTitle().toString();
                 int percent = Integer.parseInt(str.substring(0, str.length() - 1));
@@ -196,9 +195,16 @@ public class TimerActivity extends AppCompatActivity {
                 }
                 return false;
             });
-            popup.show();
+            popupMenu.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUpTextViews() {
+        timerText = findViewById(R.id.timer_text_view);
+        timerRateText = findViewById(R.id.timer_rate_text);
+        timerRateText.setText(getString(R.string.timer_rate_textview, (int)(timerSpeedRate * 100)));
+        timerText.setText(getString(R.string.timer_textview, getMinutesFromMillis(timeLeftInMillis), getSecondsFromMillis(timeLeftInMillis)));
     }
 
     private void setUpCustomInput() {
@@ -348,18 +354,30 @@ public class TimerActivity extends AppCompatActivity {
         return (int) (ms / NUM_MILLIS_IN_SECOND) - (getMinutesFromMillis(ms) * NUM_SECONDS_IN_MINUTE);
     }
 
+    private int getTimerProgress(){
+        return (int) (((timerDurationInMillis - timeLeftInMillis) * 100) / timerDurationInMillis);
+    }
+
+    private void updateProgressBar(){
+        ProgressBar progressBar = findViewById(R.id.timer_progressbar);
+        int timerProgress = getTimerProgress();
+        progressBar.setProgress(timerProgress);
+    }
+
     private void setComponentVisibility(boolean isTimerRunning) {
         // Timer is currently running, display pause and reset buttons
         if (isTimerRunning){
             findViewById(R.id.timer_duration_inputs).setVisibility(View.INVISIBLE);
             findViewById(R.id.timer_start_button).setVisibility(View.INVISIBLE);
             findViewById(R.id.timer_button_group).setVisibility(View.VISIBLE);
+            findViewById(R.id.timer_progressbar).setVisibility(View.VISIBLE);
         }
         // Timer is not running, display duration inputs and start button
         else{
             findViewById(R.id.timer_duration_inputs).setVisibility(View.VISIBLE);
             findViewById(R.id.timer_start_button).setVisibility(View.VISIBLE);
             findViewById(R.id.timer_button_group).setVisibility(View.INVISIBLE);
+            findViewById(R.id.timer_progressbar).setVisibility(View.INVISIBLE);
         }
     }
 }
