@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
@@ -27,6 +29,9 @@ public class TakeBreathActivity extends AppCompatActivity {
     private final long TEN_SECONDS_IN_MILLISECONDS = 10000;
     private final long SEVEN_SECONDS = 7;
     private TakeBreath takeBreath;
+    private static final String PREFERENCES = "appPrefs";
+    private static final String NUMBER_OF_BREATHS_KEY = "numOfBreaths";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,9 @@ public class TakeBreathActivity extends AppCompatActivity {
         setUpToolBar();
         setUpBreathCounter();
         updateButtonFunctionality();
+        numberOfBreaths = getNumberOfBreathsSharedPref(this);
+        TextView numOfBreathsTextView = findViewById(R.id.numberOfBreathsValue);
+        numOfBreathsTextView.setText(String.valueOf(numberOfBreaths));
     }
 
     private void setUpToolBar(){
@@ -274,5 +282,18 @@ public class TakeBreathActivity extends AppCompatActivity {
             button2.setText(R.string.beginButtonText);
             updateButtonFunctionality();
         });
+    }
+
+    private void updateNumberOfBreathsSharedPref(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(NUMBER_OF_BREATHS_KEY).apply();
+        editor.putInt(NUMBER_OF_BREATHS_KEY, numberOfBreaths).apply();
+    }
+
+    private int getNumberOfBreathsSharedPref(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        int temp = 0;
+        return prefs.getInt(NUMBER_OF_BREATHS_KEY, temp);
     }
 }
