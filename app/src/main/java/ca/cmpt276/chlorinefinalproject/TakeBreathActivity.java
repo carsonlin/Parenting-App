@@ -22,6 +22,8 @@ import Model.TakeBreath;
 
 //activity for Take Breath
 public class TakeBreathActivity extends AppCompatActivity {
+    public static final String MAX_BREATH_COUNT = "10";
+    public static final String MIN_BREATH_COUNT = "1";
     private int numberOfBreaths;
     private boolean threeSecondsPassed = false;
     private boolean tenSecondsPassed = false;
@@ -69,7 +71,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             int minus = Integer.parseInt(breathCountEditText.getText().toString()) - 1;
             numberOfBreaths = minus;
             if (minus < 1){
-                breathCountEditText.setText("1");
+                breathCountEditText.setText(MIN_BREATH_COUNT);
             }
             else{
                 breathCountEditText.setText(String.valueOf(minus));
@@ -82,7 +84,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             numberOfBreaths = addition;
 
             if (addition > 10){
-                breathCountEditText.setText("10");
+                breathCountEditText.setText(MAX_BREATH_COUNT);
             }
             else{
                 breathCountEditText.setText(String.valueOf(addition));
@@ -263,12 +265,10 @@ public class TakeBreathActivity extends AppCompatActivity {
         Button button = findViewById(R.id.inhaleExhaleButton);
         takeBreath.suspendAnimation();
         button.setOnClickListener(view -> {
-            Button button2 = findViewById(R.id.inhaleExhaleButton);
             Button startbutton = findViewById(R.id.startButton);
             EditText breathCountEditText = findViewById(R.id.editTextNumberBreaths);
             TextView textviewBreathsMessage = findViewById(R.id.breathsMessage);
             TextView textViewHelpMessage = findViewById(R.id.helpMessage);
-            TextView NbreathsTextView = findViewById(R.id.breathsMessage);
             TextView textViewHelpText = findViewById(R.id.help_message_text);
             View pickBreaths = findViewById(R.id.dropDownBreaths);
             pickBreaths.setVisibility(View.VISIBLE);
@@ -279,8 +279,8 @@ public class TakeBreathActivity extends AppCompatActivity {
             textViewHelpText.setVisibility(View.GONE);
             numberOfBreaths = 1;
             breathCountEditText.setText("1");
-            NbreathsTextView.setText(String.format(getString(R.string.breathsMessage),numberOfBreaths));
-            button2.setText(R.string.beginButtonText);
+            textviewBreathsMessage.setText(String.format(getString(R.string.breathsMessage),numberOfBreaths));
+            button.setText(R.string.beginButtonText);
             updateButtonFunctionality();
         });
     }
