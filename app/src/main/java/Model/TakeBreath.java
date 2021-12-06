@@ -42,14 +42,9 @@ public class TakeBreath {
 
         float log1=(float)(Math.log(MAX_VOLUME-8)/Math.log(MAX_VOLUME));
         float log2=(float)(Math.log(MAX_VOLUME-2)/Math.log(MAX_VOLUME));
-
         mp.setVolume(log1,log1);
-
-
         mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.better_exhale);
         mpBreathing.setVolume(log2,log2);
-
-
 
         mp.setLooping(true);
         setAnimate(false);

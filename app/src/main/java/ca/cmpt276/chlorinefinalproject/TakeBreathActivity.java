@@ -235,6 +235,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                                 stateDescriber.setText(" Good job ");
                             }
                         }
+                        
                     } else if ((secondsButtonreleased >= 10)) {
                         // Release button for animation
                         takeBreath.setLoop(false);
