@@ -49,7 +49,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         else
             setBreathanimationView();
 
-
         takeBreathbutton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -223,12 +222,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                     if ((secondsButtonreleased >= 3) && (secondsButtonreleased < 10)) {
 
                         takeBreath.getTakeBreathbutton().setText(" IN ");
-/*
-                        if (!takeBreath.isAnimating()) {
 
-                            takeBreath.setExhale();
-
-                        }*/
 
                         if (takeBreath.getBreathingout()) {
 
@@ -237,9 +231,9 @@ public class TakeBreathActivity extends AppCompatActivity {
                             int currentBreathcount = takeBreath.getBreaths();
                             if (currentBreathcount < takeBreath.getBreathGoal()) {
                                 takeBreath.setBreaths(currentBreathcount + 1);
-                            } else if (currentBreathcount == takeBreath.getBreathGoal())
-                                takeBreath.playCalmingmusic(); //  should congratualte user
-
+                            } else if (currentBreathcount == takeBreath.getBreathGoal()) {
+                                stateDescriber.setText(" Good job ");
+                            }
                         }
                     } else if ((secondsButtonreleased >= 10)) {
                         // Release button for animation
