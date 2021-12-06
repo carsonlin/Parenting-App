@@ -41,6 +41,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         setUpBreathCounter();
         updateButtonFunctionality();
         numberOfBreaths = getNumberOfBreathsSharedPref(this);
+        numberOfBreaths = numberOfBreaths<1?1:numberOfBreaths;
         TextView numOfBreathsTextView = findViewById(R.id.numberOfBreathsValue);
         numOfBreathsTextView.setText(String.valueOf(numberOfBreaths));
     }
