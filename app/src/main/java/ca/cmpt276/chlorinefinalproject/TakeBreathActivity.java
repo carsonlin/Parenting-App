@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
+
 import Model.TakeBreath;
 
 public class TakeBreathActivity extends AppCompatActivity {
@@ -57,7 +59,11 @@ public class TakeBreathActivity extends AppCompatActivity {
 
                         takeBreath.setButtonheld(true);
                         takeBreath.setAnimate(false);
-                        trackButtonHeldTime();
+                        try {
+                            trackButtonHeldTime();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         return true;
                     case MotionEvent.ACTION_UP:
                         // Button is No longer down
@@ -86,7 +92,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         takeBreath.setLengthheight(takeBreathbutton.getHeight());
     }
 
-    private void trackButtonHeldTime() {
+    private void trackButtonHeldTime() throws IOException {
 
         takeBreath.setInhale();
         Glide.with(getApplicationContext()).load(R.drawable.circle).into(animate1);
@@ -106,8 +112,11 @@ public class TakeBreathActivity extends AppCompatActivity {
 
                         if (!takeBreath.isAnimating()) {
                             {
-                                System.out.println(" -- inhale -- ");
-                                takeBreath.setInhale();
+                                try {
+                                    takeBreath.setInhale();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
@@ -124,12 +133,20 @@ public class TakeBreathActivity extends AppCompatActivity {
 
                     } else if ((secondsButtonheld >= 3) && (secondsButtonheld < 10)) {
 
-                        trackButtonReleasedTime();
+                        try {
+                            trackButtonReleasedTime();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                     } else {
 
                         takeBreath.suspendAnimation();
-                        trackButtonReleasedTime();
+                        try {
+                            trackButtonReleasedTime();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -186,7 +203,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     }
 
-    private void trackButtonReleasedTime() {
+    private void trackButtonReleasedTime() throws IOException {
 
         takeBreath.setExhale();
         stateDescriber.setText(" Exhale ");
@@ -206,12 +223,12 @@ public class TakeBreathActivity extends AppCompatActivity {
                     if ((secondsButtonreleased >= 3) && (secondsButtonreleased < 10)) {
 
                         takeBreath.getTakeBreathbutton().setText(" IN ");
-
+/*
                         if (!takeBreath.isAnimating()) {
 
                             takeBreath.setExhale();
 
-                        }
+                        }*/
 
                         if (takeBreath.getBreathingout()) {
 
@@ -227,6 +244,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                     } else if ((secondsButtonreleased >= 10)) {
                         // Release button for animation
                         takeBreath.setLoop(false);
+                        takeBreath.stopCalmingmusic();
 
                     }
 

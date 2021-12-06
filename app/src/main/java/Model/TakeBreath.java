@@ -10,11 +10,14 @@ import android.media.MediaPlayer;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.IOException;
+
 import ca.cmpt276.chlorinefinalproject.R;
 
 public class TakeBreath {
 
     public static final int ANIMTAION_TIME = 6000;
+    private static final int MAX_VOLUME = 10;
     private MediaPlayer mp;
     private MediaPlayer mpBreathing;
     private Boolean isAnimate;
@@ -37,14 +40,13 @@ public class TakeBreath {
     public TakeBreath(Activity activity) {
         mp = MediaPlayer.create(activity.getApplicationContext(), R.raw.in_the_light);
 
-        int maxVolume = 10;
-        float log1=(float)(Math.log(maxVolume-8)/Math.log(maxVolume));
-        float log2=(float)(Math.log(maxVolume-2)/Math.log(maxVolume));
+        float log1=(float)(Math.log(MAX_VOLUME-8)/Math.log(MAX_VOLUME));
+        float log2=(float)(Math.log(MAX_VOLUME-2)/Math.log(MAX_VOLUME));
 
         mp.setVolume(log1,log1);
 
 
-        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.exhale);
+        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.better_exhale);
         mpBreathing.setVolume(log2,log2);
 
 
@@ -172,13 +174,23 @@ public class TakeBreath {
         mp.stop();
     }
 
-    public void setInhale(){
+    public void setInhale() throws IOException {
+        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.better_inhale);
+
+        mpBreathing.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mpBreathing.start();
+            }
+        });
+
         stopAllanimation();
         setAnimate(true);
         setLoop(true);
         takeBreathbutton.setText(" IN ");
         playCalmingmusic();
-        mpBreathing.start();
+        float log2=(float)(Math.log(MAX_VOLUME-8)/Math.log(MAX_VOLUME));
+        mpBreathing.setVolume(log2,log2);
         pulseOutloop(ANIMTAION_TIME);
 
     }
@@ -192,14 +204,25 @@ public class TakeBreath {
 
 
 
-    public void setExhale(){
+    public void setExhale() throws IOException {
 
-        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.exhale);
+        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.better_exhale);
+
+        mpBreathing.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mpBreathing.start();
+            }
+        });
+
         stopAllanimation();
         setAnimate(true);
         setLoop(true);
         takeBreathbutton.setText(" OUT ");
         //stopCalmingmusic();
+        float log2=(float)(Math.log(MAX_VOLUME-8)/Math.log(MAX_VOLUME));
+        mpBreathing.setVolume(log2,log2);
+
         mpBreathing.start();
         pulseInloop(ANIMTAION_TIME);
 
