@@ -1,9 +1,7 @@
 package ca.cmpt276.chlorinefinalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -12,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
@@ -22,94 +22,87 @@ import Model.TakeBreath;
 public class TakeBreathActivity extends AppCompatActivity {
 
     public static final String BREATHS = "breaths";
-    private Button takeBreathbutton;
-    private Button navigateTobreathButton;
-    private EditText breathCounteditText;
+    private Button takeBreathButton;
+    private Button navigateToBreathButton;
+    private EditText breathCountEditText;
     private View card_view_pickBreaths;
     private TextView stateDescriber;
     private ImageView minus;
     private ImageView plus;
     private ImageView animate1;
     private ImageView animate2;
-    private int secondsButtonheld = 0;
-    private int secondsButtonreleased = 0;
+    private int secondsButtonHeld = 0;
+    private int secondsButtonReleased = 0;
     private TakeBreath takeBreath;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
 
         takeBreath = new TakeBreath(TakeBreathActivity.this);
-        setUpui();
-        setBreathgoalViewinteractions();
+        setUpUI();
+        setBreathGoalViewInteractions();
 
-        if (isBreathgoalView())
+        if (isBreathGoalView())
             setBreathGoalView();
         else
-            setBreathanimationView();
+            setBreathAnimationView();
 
+        takeBreathButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Do something, Button is held
 
-        takeBreathbutton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Do something, Button is held
-
-                        takeBreath.setButtonheld(true);
-                        takeBreath.setAnimate(false);
-                        try {
-                            trackButtonHeldTime();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        // Button is No longer down
-                        takeBreath.setButtonheld(false);
-                        return true;
-                }
-                return false;
+                    takeBreath.setButtonHeld(true);
+                    takeBreath.setAnimate(false);
+                    try {
+                        trackButtonHeldTime();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    // Button is No longer down
+                    takeBreath.setButtonHeld(false);
+                    return true;
             }
+            return false;
         });
-
     }
 
-    private void setUpui() {
-        takeBreathbutton = findViewById(R.id.takeBreathbutton);
+    private void setUpUI() {
+        takeBreathButton = findViewById(R.id.takeBreathbutton);
         minus = findViewById(R.id.minusImage);
         plus = findViewById(R.id.plusImage);
-        breathCounteditText = findViewById(R.id.editTextNumberBreaths);
+        breathCountEditText = findViewById(R.id.editTextNumberBreaths);
         card_view_pickBreaths = findViewById(R.id.card_view_pickBreaths);
         stateDescriber = findViewById(R.id.stateDescriber);
         animate1 = findViewById(R.id.imgAnimation1);
         animate2 = findViewById(R.id.imgAnimation2);
-        navigateTobreathButton = findViewById(R.id.startButton);
-        takeBreath.setTakeBreathbutton(takeBreathbutton);
+        navigateToBreathButton = findViewById(R.id.startButton);
+        takeBreath.setTakeBreathButton(takeBreathButton);
         takeBreath.setAnimation1(animate1);
         takeBreath.setAnimation2(animate2);
-        takeBreath.setLengthheight(takeBreathbutton.getHeight());
+        takeBreath.setLengthHeight(takeBreathButton.getHeight());
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void trackButtonHeldTime() throws IOException {
-
         takeBreath.setInhale();
         Glide.with(getApplicationContext()).load(R.drawable.circle).into(animate1);
         Glide.with(getApplicationContext()).load(R.drawable.circle).into(animate2);
-        takeBreathbutton.setBackground(getDrawable(R.drawable.circle));
+        takeBreathButton.setBackground(getDrawable(R.drawable.circle));
         stateDescriber.setText(" Take a deep Breath ");
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                takeBreath.setBreathingOut(false);
+                secondsButtonHeld += 1;
 
-                takeBreath.setBreathingout(false);
-                secondsButtonheld += 1;
-
-                if (takeBreath.getButtonheld()) {
-
-                    if ((secondsButtonheld >= 3) && (secondsButtonheld < 10)) {
-
+                if (takeBreath.getButtonHeld()) {
+                    if ((secondsButtonHeld >= 3) && (secondsButtonHeld < 10)) {
                         if (!takeBreath.isAnimating()) {
                             {
                                 try {
@@ -120,195 +113,154 @@ public class TakeBreathActivity extends AppCompatActivity {
                             }
                         }
 
-                    } else if ((secondsButtonheld >= 10)) {
+                    } else if ((secondsButtonHeld >= 10)) {
                         // Release button for animation
                         takeBreath.suspendAnimation();
                     }
 
                 } else {
-
-                    if ((secondsButtonheld < 3)) {
-
+                    if ((secondsButtonHeld < 3)) {
                         takeBreath.retractCircle();
-
-                    } else if ((secondsButtonheld >= 3) && (secondsButtonheld < 10)) {
-
+                    }
+                    else if (secondsButtonHeld < 10) {
                         try {
                             trackButtonReleasedTime();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     } else {
-
                         takeBreath.suspendAnimation();
                         try {
                             trackButtonReleasedTime();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
-
-                    secondsButtonheld = 0;
+                    secondsButtonHeld = 0;
                 }
+                System.out.println(" seconds held " + secondsButtonHeld);
 
-                System.out.println(" seconds held " + secondsButtonheld);
-
-                if (takeBreath.getButtonheld())
+                if (takeBreath.getButtonHeld())
                     handler.postDelayed(this, 1000);
 
             }
         }, 1000);
     }
 
-    private void setBreathgoalViewinteractions() {
-
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int minus = Integer.valueOf(breathCounteditText.getText().toString()) - 1;
-
-                if (minus < 1)
-                    breathCounteditText.setText("1");
-                else
-                    breathCounteditText.setText(String.valueOf(minus));
-
+    private void setBreathGoalViewInteractions() {
+        minus.setOnClickListener(view -> {
+            int minus = Integer.parseInt(breathCountEditText.getText().toString()) - 1;
+            if (minus < 1){
+                breathCountEditText.setText("1");
+            }
+            else{
+                breathCountEditText.setText(String.valueOf(minus));
             }
         });
 
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int addition = Integer.valueOf(breathCounteditText.getText().toString()) + 1;
-
-                if (addition > 10)
-                    breathCounteditText.setText("10");
-                else
-                    breathCounteditText.setText(String.valueOf(addition));
-
+        plus.setOnClickListener(view -> {
+            int addition = Integer.parseInt(breathCountEditText.getText().toString()) + 1;
+            if (addition > 10){
+                breathCountEditText.setText("10");
+            }
+            else{
+                breathCountEditText.setText(String.valueOf(addition));
             }
         });
 
-
-        navigateTobreathButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("clicked");
-                navigateTobreath();
-            }
+        navigateToBreathButton.setOnClickListener(view -> {
+            System.out.println("clicked");
+            navigateToBreath();
         });
-
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void trackButtonReleasedTime() throws IOException {
-
         takeBreath.setExhale();
         stateDescriber.setText(" Exhale ");
-        takeBreath.setBreathingout(true);
+        takeBreath.setBreathingOut(true);
         Glide.with(getApplicationContext()).load(R.drawable.green_circle).into(animate1);
         Glide.with(getApplicationContext()).load(R.drawable.green_circle).into(animate2);
-        takeBreathbutton.setBackground(getDrawable(R.drawable.green_circle));
+        takeBreathButton.setBackground(getDrawable(R.drawable.green_circle));
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                secondsButtonReleased += 1;
 
-                secondsButtonreleased += 1;
+                if (!takeBreath.getButtonHeld()) {
+                    if ((secondsButtonReleased >= 3) && (secondsButtonReleased < 10)) {
+                        takeBreath.getTakeBreathButton().setText(" IN ");
 
-                if (!takeBreath.getButtonheld()) {
-
-                    if ((secondsButtonreleased >= 3) && (secondsButtonreleased < 10)) {
-
-                        takeBreath.getTakeBreathbutton().setText(" IN ");
-/*
-                        if (!takeBreath.isAnimating()) {
-
-                            takeBreath.setExhale();
-
-                        }*/
-
-                        if (takeBreath.getBreathingout()) {
-
-                            takeBreath.setBreathingout(true);
+                        if (takeBreath.getBreathingOut()) {
+                            takeBreath.setBreathingOut(true);
                             // Release button for animation and change state
                             int currentBreathcount = takeBreath.getBreaths();
                             if (currentBreathcount < takeBreath.getBreathGoal()) {
                                 takeBreath.setBreaths(currentBreathcount + 1);
-                            } else if (currentBreathcount == takeBreath.getBreathGoal())
-                                takeBreath.playCalmingmusic(); //  should congratualte user
-
+                            }
+                            else if (currentBreathcount == takeBreath.getBreathGoal()){
+                                takeBreath.playCalmingMusic(); //  should congratualte user
+                            }
                         }
-                    } else if ((secondsButtonreleased >= 10)) {
+                    }
+                    else if ((secondsButtonReleased >= 10)) {
                         // Release button for animation
                         takeBreath.setLoop(false);
-                        takeBreath.stopCalmingmusic();
-
+                        takeBreath.stopCalmingMusic();
                     }
-
-                } else {
-                    secondsButtonreleased = 0;
+                }
+                else {
+                    secondsButtonReleased = 0;
                 }
 
-                if (!takeBreath.getButtonheld() && takeBreath.isAnimating())
+                if (!takeBreath.getButtonHeld() && takeBreath.isAnimating())
                     handler.postDelayed(this, 1000);
-
             }
         }, 1000);
     }
 
     private void setBreathGoalView() {
-
-        hideAllui();
-        navigateTobreathButton.setVisibility(View.VISIBLE);
+        hideAllUI();
+        navigateToBreathButton.setVisibility(View.VISIBLE);
         card_view_pickBreaths.setVisibility(View.VISIBLE);
         stateDescriber.setVisibility(View.VISIBLE);
         plus.setVisibility(View.VISIBLE);
         minus.setVisibility(View.VISIBLE);
-
     }
 
-    private void setBreathanimationView() {
-
-        hideAllui();
+    private void setBreathAnimationView() {
+        hideAllUI();
         stateDescriber.setVisibility(View.VISIBLE);
-        takeBreathbutton.setVisibility(View.VISIBLE);
+        takeBreathButton.setVisibility(View.VISIBLE);
         animate1.setVisibility(View.VISIBLE);
         animate2.setVisibility(View.VISIBLE);
-
     }
 
-    private void hideAllui() {
-
-        navigateTobreathButton.setVisibility(View.GONE);
+    private void hideAllUI() {
+        navigateToBreathButton.setVisibility(View.GONE);
         card_view_pickBreaths.setVisibility(View.GONE);
         stateDescriber.setVisibility(View.GONE);
         plus.setVisibility(View.GONE);
         minus.setVisibility(View.GONE);
-        takeBreathbutton.setVisibility(View.GONE);
+        takeBreathButton.setVisibility(View.GONE);
         animate1.setVisibility(View.GONE);
         animate2.setVisibility(View.GONE);
-
     }
 
-    private boolean isBreathgoalView() {
+    private boolean isBreathGoalView() {
         Intent intent = getIntent();
-        if (intent.getStringExtra(BREATHS) == null)
-            return true;
-
-        return false;
+        return intent.getStringExtra(BREATHS) == null;
     }
 
     private void extractIntentExtras() {
         Intent intent = getIntent();
-        takeBreath.setBreathGoal(Integer.valueOf(intent.getStringExtra(BREATHS)));
+        takeBreath.setBreathGoal(Integer.parseInt(intent.getStringExtra(BREATHS)));
     }
 
-    private void navigateTobreath() {
+    private void navigateToBreath() {
         Intent intent = new Intent(getBaseContext(), TakeBreathActivity.class);
-        intent.putExtra(BREATHS, breathCounteditText.getText().toString());
+        intent.putExtra(BREATHS, breathCountEditText.getText().toString());
         startActivity(intent);
         finish();
     }
