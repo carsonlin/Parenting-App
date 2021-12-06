@@ -90,7 +90,7 @@
     <string name="take_breath_main_button">Take Breath</string>
     <string name="beginButtonText">Begin</string>
     <string name="number_of_breaths">Number Of Breaths:</string>
-    <string name="breathsMessage">Let\'s take N breaths together</string>
+    <string name="breathsMessage">Let\'s take %1$d breaths together</string>
     <string name="inhaleButtonText">In</string>
     <string name="exhaleButtonText">Out</string>
     <string name="help_Message">Help Message:</string>
