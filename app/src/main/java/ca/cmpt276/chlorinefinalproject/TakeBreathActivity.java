@@ -2,10 +2,6 @@ package ca.cmpt276.chlorinefinalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -13,49 +9,39 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import Model.TakeBreath;
 
 public class TakeBreathActivity extends AppCompatActivity {
 
-
-    public static final int ANIMTAION_TIME = 6000;
-    private boolean statusAnimation = false;
     private Button takeBreathbutton;
-    private ImageView animation1;
-    private ImageView animation2;
-    private Boolean isIdle = true;
     private int secondsButtonheld = 0;
+    private int secondsButtonreleased = 0;
+    private TakeBreath takeBreath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
 
+        takeBreath = new TakeBreath(TakeBreathActivity.this);
         takeBreathbutton = findViewById(R.id.takeBreathbutton);
-        animation1 = findViewById(R.id.imgAnimation1);
-        animation2 = findViewById(R.id.imgAnimation1);
-
-        //pulseOut(5000, false);
-        pulseOutloop(5000,false);
-
+        takeBreath.setTakeBreathbutton(findViewById(R.id.takeBreathbutton));
+        takeBreath.setAnimation1(findViewById(R.id.imgAnimation1));
+        takeBreath.setAnimation2(findViewById(R.id.imgAnimation2));
         takeBreathbutton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        // Do something
-                        isIdle = false;
-                        final long delay= pulseWaittime(ANIMTAION_TIME,false);
-                        pulseAnimationout(ANIMTAION_TIME,false);
-                        trackButtonheldTime();
+                        // Do something, Button is held
+
+                        takeBreath.setButtonheld(true);
+                        takeBreath.setAnimate(false);
+                        trackButtonHeldTime();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        // No longer down
-                        isIdle = true;
-/*
-                        if (secondsButtonheld>=10)
-                            pulseAnimationin(ANIMTAION_TIME,false);
-*/
+                        // Button is No longer down
+                        takeBreath.setButtonheld(false);
                         return true;
                 }
                 return false;
@@ -64,130 +50,117 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     }
 
-    private void trackButtonheldTime() {
+    private void trackButtonHeldTime() {
+
+        takeBreath.setInhale();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run() {
 
-                if (isIdle) {
-                    System.out.println("???????????????????????????????????");
+                takeBreath.setBreathingout(false);
+                secondsButtonheld+=1;
 
-                    if((secondsButtonheld>=3)&&(secondsButtonheld<10)){
-                        pulseAnimationin(ANIMTAION_TIME,false);
-                    }
+                if (takeBreath.getButtonheld()){
 
-                }else{
+                    if ((secondsButtonheld>=3)&&(secondsButtonheld<10)){
 
-                    if ((secondsButtonheld>=3)){
-                        takeBreathbutton.setText(" OUT ");
+                        if (!takeBreath.isAnimating()){
+                            {
+                                System.out.println(" -- inhale -- ");
+                                takeBreath.setInhale();
+                            }
+                        }
+
                     }else if ((secondsButtonheld>=10)){
-                        takeBreathbutton.setText(" OUT ");
+                        // Release button for animation
+                        takeBreath.suspendAnimation();
                     }
 
-                    secondsButtonheld+=1;
+
+
                 }
-            System.out.println(" seconds held "+secondsButtonheld);
-                if (!isIdle)
-                handler.postDelayed(this,1000);
+                else{
+
+
+                    if ((secondsButtonheld<3)){
+
+                        System.out.println(" -- not enough -- ");
+
+                        takeBreath.retractCircle();
+
+                    }else if ((secondsButtonheld>=3)&&(secondsButtonheld<10)){
+
+                        //takeBreath.setAnimate(false);
+                        System.out.println(" -- btn -- ");
+                        trackButtonReleasedTime();
+
+                    }else{
+                        System.out.println(" -- too long -- ");
+                        takeBreath.suspendAnimation();
+                        trackButtonReleasedTime();
+
+
+                    }
+
+                    secondsButtonheld = 0;
+                }
+
+                System.out.println(" seconds held "+secondsButtonheld);
+
+                if (takeBreath.getButtonheld())
+                    handler.postDelayed(this,1000);
 
             }
             },  1000);
     }
 
-    private void pulseAnimationout(long animtaionTime, boolean liveAnimtation) {
+    private void trackButtonReleasedTime() {
+        takeBreath.setExhale();
+        takeBreath.setBreathingout(true);
         Handler handler = new Handler();
-        long delayTime = pulseWaittime(animtaionTime, liveAnimtation);
-        pulseOut(animtaionTime, liveAnimtation);
         handler.postDelayed(new Runnable(){
             public void run() {
-                //if (isIdle) {
-                pulseOut(animtaionTime, liveAnimtation);
-                    handler.postDelayed(this, delayTime);
-                //}
+
+                secondsButtonreleased+=1;
+
+                if (!takeBreath.getButtonheld()){
+
+                    if ((secondsButtonreleased>=3)&&(secondsButtonreleased<10)){
+
+                        takeBreath.getTakeBreathbutton().setText(" IN ");
+                        if (!takeBreath.isAnimating()){
+                            takeBreath.setExhale();
+
+                        }
+
+                        if (takeBreath.getBreathingout()) {
+                            takeBreath.setBreathingout(true);
+                            // Release button for animation and change state
+                            int currentBreathcount = takeBreath.getBreaths();
+                            if (currentBreathcount < 10) {
+                                takeBreath.setBreaths(currentBreathcount + 1);
+                            } else if (currentBreathcount == 1)
+                                takeBreath.playCalmingmusic(); //  should congratualte user
+
+                        }
+                    }else if ((secondsButtonreleased>=10)){
+                        // Release button for animation
+                        takeBreath.setLoop(false);
+
+                    }
+
+                }else {
+                    secondsButtonreleased = 0;
+                }
+
+
+                System.out.println(" seconds released "+secondsButtonreleased);
+
+                if (!takeBreath.getButtonheld()&&takeBreath.isAnimating())
+                    handler.postDelayed(this,1000);
+
             }
-        },  delayTime);
-    }
-
-    private void pulseAnimationin(long animtaionTime,boolean liveAnimtation) {
-        Handler handler = new Handler();
-        long delayTime = pulseWaittime(animtaionTime, liveAnimtation);
-        pulseIn(animtaionTime, liveAnimtation);
-        handler.postDelayed(new Runnable(){
-            public void run() {
-               // if (isIdle) {
-                pulseIn(animtaionTime, liveAnimtation);
-                handler.postDelayed(this, animtaionTime);
-                //}
-            }
-        },  delayTime);
-    }
-
-    private void pulseIn(long animtaionTime,boolean liveAnimtation){
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", 3f,1f);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", 3f,1f);
-        PropertyValuesHolder pvhYa = PropertyValuesHolder.ofFloat("alpha", 0f,1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(animation1, pvhX, pvhY,pvhYa);
-        animator.setDuration(animtaionTime);
-        animator.start();
-        if (liveAnimtation) {
-            PropertyValuesHolder pvhX2 = PropertyValuesHolder.ofFloat("scaleX", 3f, 1f);
-            PropertyValuesHolder pvhY2 = PropertyValuesHolder.ofFloat("scaleY", 3f, 1f);
-            PropertyValuesHolder pvhYa2 = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
-            ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(animation2, pvhX2, pvhY2, pvhYa2);
-            animator2.setDuration((long) (animtaionTime*0.8));
-            animator2.setStartDelay(animtaionTime);
-            animator2.start();
-        }
-    }
-
-    private void pulseOut(long animtaionTime,boolean liveAnimtation){
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", 1f,3f);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", 1f,3f);
-        PropertyValuesHolder pvhYa = PropertyValuesHolder.ofFloat("alpha", 1f,0f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(animation1, pvhX, pvhY,pvhYa);
-        animator.setDuration(animtaionTime);
-        animator.start();
-        //if (liveAnimtation) {
-            PropertyValuesHolder pvhX2 = PropertyValuesHolder.ofFloat("scaleX", 1f, 3f);
-            PropertyValuesHolder pvhY2 = PropertyValuesHolder.ofFloat("scaleY", 1f, 3f);
-            PropertyValuesHolder pvhYa2 = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
-            ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(animation2, pvhX2, pvhY2, pvhYa2);
-            animator2.setDuration((long) (animtaionTime * 0.8));
-            animator2.setStartDelay(animtaionTime);
-            animator2.start();
-        //}
-
-    }
-
-    private void pulseOutloop(long animtaionTime,boolean liveAnimtation){
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", 1f,3f);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", 1f,3f);
-        PropertyValuesHolder pvhYa = PropertyValuesHolder.ofFloat("alpha", 1f,0f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(animation1, pvhX, pvhY,pvhYa);
-        animator.setDuration(animtaionTime);
-        animator.start();
-        //if (liveAnimtation) {
-        PropertyValuesHolder pvhX2 = PropertyValuesHolder.ofFloat("scaleX", 1f, 3f);
-        PropertyValuesHolder pvhY2 = PropertyValuesHolder.ofFloat("scaleY", 1f, 3f);
-        PropertyValuesHolder pvhYa2 = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
-        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(animation2, pvhX2, pvhY2, pvhYa2);
-        animator2.setDuration((long) (animtaionTime * 0.8));
-        animator2.setStartDelay(animtaionTime);
-        animator2.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                pulseOutloop(animtaionTime,liveAnimtation);
-            }
-        });
-        animator2.start();
-        //}
-
-    }
-
-    private long pulseWaittime(long animtaionTime,boolean liveAnimtation){
-        animtaionTime+=(liveAnimtation?0:(animtaionTime*0.8));
-        return animtaionTime;
-
+        },  1000);
     }
 
 
