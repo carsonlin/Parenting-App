@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class TakeBreath {
 
     public static final int ANIMTAION_TIME = 6000;
     private MediaPlayer mp;
+    private MediaPlayer mpBreathing;
     private Boolean isAnimate;
     private Boolean isLoop;
     private Boolean isBreathingout;
@@ -25,6 +27,8 @@ public class TakeBreath {
     private ImageView animation2;
     private int secondsButtonheld = 0;
     private int breaths;
+    private int breathGoal;
+    private int dimentions;
     private ObjectAnimator animator1Exhale;
     private ObjectAnimator animator2Exhale;
     private ObjectAnimator animator1Inhale;
@@ -32,10 +36,24 @@ public class TakeBreath {
 
     public TakeBreath(Activity activity) {
         mp = MediaPlayer.create(activity.getApplicationContext(), R.raw.in_the_light);
+
+        int maxVolume = 10;
+        float log1=(float)(Math.log(maxVolume-8)/Math.log(maxVolume));
+        float log2=(float)(Math.log(maxVolume-2)/Math.log(maxVolume));
+
+        mp.setVolume(log1,log1);
+
+
+        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.exhale);
+        mpBreathing.setVolume(log2,log2);
+
+
+
         mp.setLooping(true);
         setAnimate(false);
         setLoop(false);
         setBreathingout(false);
+        this.activity = activity;
     }
 
     // Setters
@@ -83,8 +101,15 @@ public class TakeBreath {
     public void setBreathingout(Boolean breathingout) {
         isBreathingout = breathingout;
     }
+
+    public void setBreathGoal(int breathGoal) {
+        this.breathGoal = breathGoal;
+    }
 // Getters
 
+    public void setLengthheight(int height) {
+        this.dimentions = height;
+    }
 
     public static int getAnimtaionTime() {
         return ANIMTAION_TIME;
@@ -133,6 +158,10 @@ public class TakeBreath {
     public Boolean getBreathingout() {
         return isBreathingout;
     }
+
+    public int getBreathGoal() {
+        return breathGoal;
+    }
 // Other functions
 
     public void playCalmingmusic(){
@@ -144,12 +173,12 @@ public class TakeBreath {
     }
 
     public void setInhale(){
-
         stopAllanimation();
         setAnimate(true);
         setLoop(true);
         takeBreathbutton.setText(" IN ");
         playCalmingmusic();
+        mpBreathing.start();
         pulseOutloop(ANIMTAION_TIME);
 
     }
@@ -165,11 +194,13 @@ public class TakeBreath {
 
     public void setExhale(){
 
+        mpBreathing = MediaPlayer.create(activity.getApplicationContext(), R.raw.exhale);
         stopAllanimation();
         setAnimate(true);
         setLoop(true);
         takeBreathbutton.setText(" OUT ");
-        stopCalmingmusic();
+        //stopCalmingmusic();
+        mpBreathing.start();
         pulseInloop(ANIMTAION_TIME);
 
     }
@@ -228,22 +259,42 @@ public class TakeBreath {
 
     }
 
-    public void stopAllanimation(){
+    public void stopAllanimation() {
 
         setAnimate(false);
         setLoop(false);
 
-        if (animator1Inhale!=null)
+        if (animator1Inhale != null)
             animator1Inhale.cancel();
 
-        if (animator2Inhale!=null)
+        if (animator2Inhale != null)
             animator2Inhale.cancel();
 
-        if (animator1Exhale!=null)
+
+        if (animator1Exhale != null)
             animator1Exhale.cancel();
 
-        if (animator2Exhale!=null)
+        if (animator2Exhale != null)
             animator2Exhale.cancel();
+
+        resetAnimation();
+    }
+    private void resetAnimation(){
+
+        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", animation1.getScaleX(),1f);
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", animation1.getScaleY(),1f);
+        PropertyValuesHolder pvhYa = PropertyValuesHolder.ofFloat("alpha", animation1.getAlpha(),1f);
+        animator1Exhale = ObjectAnimator.ofPropertyValuesHolder(animation1, pvhX, pvhY,pvhYa);
+        animator1Exhale.setDuration(0);
+        animator1Exhale.start();
+
+        PropertyValuesHolder pvhX2 = PropertyValuesHolder.ofFloat("scaleX", animation2.getScaleX(),1f);
+        PropertyValuesHolder pvhY2 = PropertyValuesHolder.ofFloat("scaleY", animation2.getScaleY(),1f);
+        PropertyValuesHolder pvhYa2 = PropertyValuesHolder.ofFloat("alpha", animation2.getAlpha(),1f);
+        animator2Exhale = ObjectAnimator.ofPropertyValuesHolder(animation2, pvhX, pvhY,pvhYa);
+        animator2Exhale.setDuration(0);
+        animator2Exhale.start();
+
 
     }
 
@@ -268,7 +319,9 @@ public class TakeBreath {
                     pulseInloop(animtaionTime);
 
             }
+
         });
+
         animator2Exhale.start();
 
     }
@@ -295,9 +348,22 @@ public class TakeBreath {
 
             }
         });
+
+        animator2Inhale.setInterpolator(new TimeInterpolator() {
+            @Override
+            public float getInterpolation(float v) {
+
+                System.out.println(v);
+
+                return 0;
+            }
+        });
+
         animator2Inhale.start();
 
+
     }
+
 
 
 }

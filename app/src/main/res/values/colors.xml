@@ -18,6 +18,8 @@
     <color name="windowBackground">#F3F3F3</color>
     <color name="textColor">#333333</color>
     <color name="light_blue">#8ED1FC</color>
+    <color name="green">#3cd345</color>
+    <color name="dark_green">#00D100</color>
     <color name="blue">#4c51c6</color>
     <color name="night_blue">#607ff2</color>
 </resources>
