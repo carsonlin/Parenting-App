@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
@@ -23,6 +25,8 @@ public class TakeBreathActivity extends AppCompatActivity {
     private final long ONE_SECOND_IN_MILLISECONDS = 1000;
     private final long TEN_SECONDS_IN_MILLISECONDS = 10000;
     private final long SEVEN_SECONDS = 7;
+    private static final String PREFERENCES = "appPrefs";
+    private static final String NUMBER_OF_BREATHS_KEY = "numOfBreaths";
 
 
     @Override
@@ -32,12 +36,14 @@ public class TakeBreathActivity extends AppCompatActivity {
         setUpToolBar();
         setUpSpinner();
         updateButtonFunctionality();
+        numberOfBreaths = getNumberOfBreathsSharedPref(this);
+        TextView numOfBreathsTextView = findViewById(R.id.numberOfBreathsValue);
+        numOfBreathsTextView.setText(String.valueOf(numberOfBreaths));
     }
 
     private void setUpToolBar(){
         ca.cmpt276.chlorinefinalproject.databinding.ActivityTakeBreathBinding binding = ca.cmpt276.chlorinefinalproject.databinding.ActivityTakeBreathBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
         assert ab != null;
@@ -60,6 +66,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                 }
                 String breathsChoice = items[position];
                 numberOfBreaths = Integer.parseInt(breathsChoice);
+                updateNumberOfBreathsSharedPref(TakeBreathActivity.this);
                 numOfBreathsTextView.setText(breathsChoice);
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -96,6 +103,9 @@ public class TakeBreathActivity extends AppCompatActivity {
         TextView textViewHelpMessage = findViewById(R.id.helpMessage);
         Spinner dropdown = findViewById(R.id.dropDownBreaths);
         dropdown.setSelection(0);
+        numberOfBreaths = getNumberOfBreathsSharedPref(this);
+        TextView numOfBreathsTextView = findViewById(R.id.numberOfBreathsValue);
+        numOfBreathsTextView.setText(String.valueOf(numberOfBreaths));
         dropdown.setVisibility(View.VISIBLE);
         textViewHelpMessage.setVisibility(View.GONE);
         button.setOnClickListener(view -> {
@@ -172,6 +182,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                     timer.cancel();
                     if(threeSecondsPassed){
                         numberOfBreaths--;
+                        updateNumberOfBreathsSharedPref(this);
                         if(numberOfBreaths != 0){
                             threeSecondsPassed = false;
                             tenSecondsPassed = false;
@@ -216,5 +227,18 @@ public class TakeBreathActivity extends AppCompatActivity {
             button.setText(R.string.beginButtonText);
             updateButtonFunctionality();
         });
+    }
+
+    private void updateNumberOfBreathsSharedPref(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(NUMBER_OF_BREATHS_KEY).apply();
+        editor.putInt(NUMBER_OF_BREATHS_KEY, numberOfBreaths).apply();
+    }
+
+    private int getNumberOfBreathsSharedPref(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        int temp = 0;
+        return prefs.getInt(NUMBER_OF_BREATHS_KEY, temp);
     }
 }
