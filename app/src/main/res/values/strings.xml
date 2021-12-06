@@ -12,6 +12,7 @@
     <string name="title_activity_edit_or_delete_child">Edit Or Delete Child</string>
     <string name="child_name">Child Name:</string>
     <string name="delete_child">Delete Child</string>
+    <string name="deleted_child">Deleted Child</string>
     <string name="save_changes">Save Changes</string>
     <string name="practical_parent">Practical Parent</string>
     <string name="coin_flip">Coin Flip</string>
@@ -60,6 +61,7 @@
     <string name="saved">Saved!</string>
     <string name="current_turn">Current Turn:</string>
     <string name="turn_complete">Turn complete!</string>
+    <string name="turn_history">Turn History</string>
     <string name="edit_task_name">edit task name</string>
     <string name="image_of_the_child">image of the child</string>
     <string name="upload_image">Upload Image</string>
@@ -89,5 +91,6 @@
     <string name="flip_override_button_text">Override</string>
     <string name="flip_choose_none_button_text">Choose none</string>
     <string name="helpTitle">Help</string>
+    <string name="duplicate_task_name">Already a task with that name!</string>
 
 </resources>

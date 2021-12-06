@@ -47,6 +47,9 @@ public class TaskManager {
 
     public void deleteAllTasks(){
         tasks.clear();
+
+        TurnHistoryManager turnHistoryManager = TurnHistoryManager.getInstance();
+        turnHistoryManager.deleteAllTurns();
     }
 
     public void addTask(Task task){
@@ -54,6 +57,8 @@ public class TaskManager {
     }
 
     public void removeTask(int index){
+        TurnHistoryManager turnHistoryManager = TurnHistoryManager.getInstance();
+        turnHistoryManager.deleteTurns(tasks.get(index).getTaskName());
         tasks.remove(index);
     }
 
@@ -87,5 +92,14 @@ public class TaskManager {
         else{
             instance = new TaskManager();
         }
+    }
+
+    public boolean hasName(String newTaskName) {
+        for (Task task : tasks){
+            if (task.getTaskName().equals(newTaskName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

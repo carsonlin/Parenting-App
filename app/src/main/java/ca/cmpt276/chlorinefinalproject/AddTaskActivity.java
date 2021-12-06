@@ -66,6 +66,11 @@ public class AddTaskActivity extends AppCompatActivity {
             EditText newTaskEditText = findViewById(R.id.editChildName);
             String newTaskName = newTaskEditText.getText().toString();
 
+            if (taskManager.hasName(newTaskName)){
+                Toast.makeText(this, R.string.duplicate_task_name, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Task newTask = new Task(newTaskName);
             taskManager.addTask(newTask);
             taskManager.saveToSharedPreferences(this);

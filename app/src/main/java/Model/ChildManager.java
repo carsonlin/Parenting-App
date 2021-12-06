@@ -40,10 +40,12 @@ public class ChildManager {
 
     public void deleteChild(int index){
         TaskManager taskManager = TaskManager.getInstance();
+        TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
 
         if(index >= 0 && index < listOfChildren.size()){
             listOfChildren.remove(index);
             taskManager.updateTasksOnChildDelete(index, listOfChildren.size());
+            turnManager.updateTurnHistoryOnChildDelete(index, listOfChildren.size());
         }
     }
 

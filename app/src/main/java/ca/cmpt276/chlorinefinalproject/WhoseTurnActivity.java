@@ -13,17 +13,20 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Model.AdapterManager;
 import Model.Child;
 import Model.ChildManager;
 import Model.Task;
 import Model.TaskChild;
 import Model.TaskListAdapter;
 import Model.TaskManager;
+import Model.TurnHistoryManager;
 
 // Activity that shows the list of tasks and the child who's turn it is
 public class WhoseTurnActivity extends AppCompatActivity {
-    TaskManager taskManager = TaskManager.getInstance();
-    ChildManager childManager = ChildManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
+    private final TurnHistoryManager turnHistoryManager = TurnHistoryManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,11 @@ public class WhoseTurnActivity extends AppCompatActivity {
         setupToolbar();
         setupListView();
         setupClickGameOnList();
+
+        turnHistoryManager.loadFromSharedPreferences(this);
+
+        AdapterManager adapterManager = AdapterManager.getInstance();
+        adapterManager.setAdapter(childManager, getApplicationContext());
     }
 
     private void setupToolbar() {
@@ -46,6 +54,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setupListView();
+        turnHistoryManager.loadFromSharedPreferences(this);
     }
 
     @Override
@@ -61,6 +70,7 @@ public class WhoseTurnActivity extends AppCompatActivity {
         else if (id == R.id.clearChildren){
             taskManager.deleteAllTasks();
             taskManager.saveToSharedPreferences(this);
+            turnHistoryManager.saveToSharedPreferences(this);
             setupListView();
         }
         return super.onOptionsItemSelected(item);
