@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -20,10 +21,11 @@ import java.io.IOException;
 
 import ca.cmpt276.chlorinefinalproject.R;
 
+// Class handling animations for TakeBreathActivity button
 public class TakeBreath {
     public static final int ANIMATION_TIME = 10000;
     private static final int MAX_VOLUME = 10;
-    private MediaPlayer mp = new MediaPlayer();
+    private final MediaPlayer mp = new MediaPlayer();
     private MediaPlayer mpBreathing;
     private Boolean isAnimate;
     private Boolean isLoop;
@@ -44,7 +46,6 @@ public class TakeBreath {
     }
 
     // Setters
-
     public void setAnimate(Boolean animate) {
         isAnimate = animate;
     }
@@ -73,8 +74,7 @@ public class TakeBreath {
         isBreathingOut = breathingout;
     }
 
-// Getters
-
+    // Getters
     public Boolean isLoop() {
         return isLoop;
     }
@@ -117,6 +117,7 @@ public class TakeBreath {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void setInhale() {
         Glide.with(getActivity().getApplicationContext()).load(R.drawable.circle).into(animation1);
         Glide.with(getActivity().getApplicationContext()).load(R.drawable.circle).into(animation2);
@@ -132,6 +133,7 @@ public class TakeBreath {
         pulseOutLoop(ANIMATION_TIME);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void setExhale() {
         Glide.with(getActivity().getApplicationContext()).load(R.drawable.green_circle).into(animation1);
         Glide.with(getActivity().getApplicationContext()).load(R.drawable.green_circle).into(animation2);
@@ -173,11 +175,13 @@ public class TakeBreath {
         setAnimate(false);
         setLoop(false);
 
-        if (animator1Exhale != null)
+        if (animator1Exhale != null){
             animator1Exhale.cancel();
+        }
 
-        if (animator2Exhale != null)
+        if (animator2Exhale != null){
             animator2Exhale.cancel();
+        }
 
         resetAnimation();
     }
@@ -217,11 +221,8 @@ public class TakeBreath {
                 if (isLoop())
                     pulseInLoop(animationTime);
             }
-
         });
-
         animator2Exhale.start();
-
     }
 
     private void pulseOutLoop(long animationTime) {
@@ -241,8 +242,9 @@ public class TakeBreath {
         animator2Exhale.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (isLoop())
+                if (isLoop()){
                     pulseOutLoop(animationTime);
+                }
             }
         });
         animator2Exhale.start();
