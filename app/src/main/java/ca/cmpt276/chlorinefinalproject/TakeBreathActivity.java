@@ -39,11 +39,13 @@ public class TakeBreathActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
+
+
+        numberOfBreaths = getNumberOfBreathsSharedPref(this);
+        numberOfBreaths = numberOfBreaths<1?1:numberOfBreaths;
         setUpToolBar();
         setUpBreathCounter();
         updateButtonFunctionality();
-        numberOfBreaths = getNumberOfBreathsSharedPref(this);
-        numberOfBreaths = numberOfBreaths<1?1:numberOfBreaths;
         TextView numOfBreathsTextView = findViewById(R.id.numberOfBreathsValue);
         numOfBreathsTextView.setText(String.valueOf(numberOfBreaths));
     }
@@ -65,8 +67,9 @@ public class TakeBreathActivity extends AppCompatActivity {
         TextView NbreathsTextView = findViewById(R.id.breathsMessage);
         ImageView minusimg = findViewById(R.id.minusImage);
         ImageView plusimg = findViewById(R.id.plusImage);
-        numberOfBreaths = 1;
         NbreathsTextView.setText(String.format(getString(R.string.breathsMessage),numberOfBreaths));
+        breathCountEditText.setText(String.valueOf(numberOfBreaths));
+
         minusimg.setOnClickListener(view -> {
             int minus = Integer.parseInt(breathCountEditText.getText().toString()) - 1;
             numberOfBreaths = minus;
