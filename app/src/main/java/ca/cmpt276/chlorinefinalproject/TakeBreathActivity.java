@@ -267,11 +267,12 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     private void setUpGoodJobButton(){
         Button button = findViewById(R.id.inhaleExhaleButton);
+        TextView textviewBreathsMessage = findViewById(R.id.breathsMessage);
+        textviewBreathsMessage.setText("");
         takeBreath.suspendAnimation();
         button.setOnClickListener(view -> {
             Button startbutton = findViewById(R.id.startButton);
             EditText breathCountEditText = findViewById(R.id.editTextNumberBreaths);
-            TextView textviewBreathsMessage = findViewById(R.id.breathsMessage);
             TextView textViewHelpMessage = findViewById(R.id.helpMessage);
             TextView textViewHelpText = findViewById(R.id.help_message_text);
             View pickBreaths = findViewById(R.id.dropDownBreaths);
