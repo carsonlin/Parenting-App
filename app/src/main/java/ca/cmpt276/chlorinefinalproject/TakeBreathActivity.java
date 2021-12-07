@@ -213,6 +213,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         TextView textViewHelpText = findViewById(R.id.help_message_text);
         if (threeSecondsPassed) {
             numberOfBreaths--;
+            updateNumberOfBreathsSharedPref(this);
             if (numberOfBreaths != 0) {
                 threeSecondsPassed = false;
                 tenSecondsPassed = false;
