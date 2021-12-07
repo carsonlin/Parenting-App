@@ -22,8 +22,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="345dp"
-        android:layout_height="282dp"
+        android:layout_width="332dp"
+        android:layout_height="331dp"
         android:layout_marginTop="200dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +73,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_background"
             android:text="@string/configure_children" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/takeBreathButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/take_breath_main_button" />
 
         <Space
             android:layout_width="match_parent"

@@ -92,5 +92,19 @@
     <string name="flip_choose_none_button_text">Choose none</string>
     <string name="helpTitle">Help</string>
     <string name="duplicate_task_name">Already a task with that name!</string>
+    <string name="take_breath_main_button">Take Breath</string>
+    <string name="beginButtonText">Begin</string>
+    <string name="number_of_breaths">Number Of Breaths:</string>
+    <string name="breathsMessage">Let\'s take %1$d breaths together</string>
+    <string name="inhaleButtonText">In</string>
+    <string name="exhaleButtonText">Out</string>
+    <string name="help_Message">Help Message:</string>
+    <string name="breath_in_ten_second_message">Release button and breath out</string>
+    <string name="breath_in_message">Hold button and breath in</string>
+    <string name="breath_out_message">Hold button and breath out</string>
+    <string name="goodJobButtonText">Good Job</string>
+    <string name="good_job_help_text">Press button to start exercise again</string>
+    <string name="minimum_breath_count">1</string>
+    <string name="maximum_breath_count">10</string>
 
 </resources>
