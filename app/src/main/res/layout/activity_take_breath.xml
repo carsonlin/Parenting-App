@@ -6,18 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".TakeBreathActivity">
 
-    <!--
-    <Button
-        android:id="@+id/inhaleExhaleButton"
-        android:layout_width="108dp"
-        android:layout_height="63dp"
-        android:text="@string/beginButtonText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
-        app:layout_constraintVertical_bias="0.807" />-->
+
     <ImageView
         android:id="@+id/imgAnimation2"
         android:layout_width="150dp"
@@ -86,7 +75,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="1"
+                android:text="@string/minimum_breath_count"
                 android:gravity="center"
                 android:textSize="80dp"
                 android:background="#00000000"
@@ -140,31 +129,6 @@
             app:layout_constraintVertical_bias="0.674" />
     </androidx.cardview.widget.CardView>
 
-    <!--
-
-        <Spinner
-            android:id="@+id/dropDownBreaths"
-            android:layout_width="87dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="152dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.ChlorineFinalProject.AppBarOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </com.google.android.material.appbar.AppBarLayout>
-    -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
