@@ -21,6 +21,9 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".WhoseTurnHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddTaskActivity"
             android:exported="false" />
         <activity

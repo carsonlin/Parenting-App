@@ -28,6 +28,7 @@ import java.io.IOException;
 import Model.Child;
 import Model.ChildManager;
 import Model.TaskManager;
+import Model.TurnHistoryManager;
 import ca.cmpt276.chlorinefinalproject.databinding.ActivityEditOrDeleteChildBinding;
 
 // Activity used to edit, delete, or add children.
@@ -102,6 +103,9 @@ public class EditChildActivity extends AppCompatActivity {
 
             TaskManager taskManager = TaskManager.getInstance();
             taskManager.saveToSharedPreferences(this);
+
+            TurnHistoryManager turnManager = TurnHistoryManager.getInstance();
+            turnManager.saveToSharedPreferences(this);
 
             finish();
         });

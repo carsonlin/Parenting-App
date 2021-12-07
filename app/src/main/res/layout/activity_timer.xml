@@ -8,6 +8,7 @@
     tools:context=".TimerActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.ChlorineFinalProject.AppBarOverlay"
@@ -22,6 +23,20 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/timer_progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/timer_progressbar"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout4"
+        app:layout_constraintVertical_bias="0.35000002"
+        tools:progress="60" />
+
     <TextView
         android:id="@+id/timer_text_view"
         android:layout_width="wrap_content"
@@ -33,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.829" />
 
     <Button
         android:id="@+id/timer_start_button"
@@ -107,9 +122,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <RadioGroup
             android:id="@+id/timer_duration_radiogroup"
@@ -123,12 +139,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="@string/minutes"
             android:importantForAutofill="no"
             android:inputType="number"
             android:visibility="invisible"
-            android:hint="@string/minutes"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/timer_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timer_rate_textview"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
