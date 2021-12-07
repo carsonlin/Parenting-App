@@ -1,4 +1,4 @@
-Scrum Master - Cuthbert Martin Lwinga
-Repo Manager - Jack Manuel
-Product Owner - Johnny Mai
-Team Member - Carson Lin
+Scrum Master - Jack Manue
+Repo Manager - Cuthbert Martin Lwinga
+Product Owner - Carson Lin
+Team Member - Johnny Mai
