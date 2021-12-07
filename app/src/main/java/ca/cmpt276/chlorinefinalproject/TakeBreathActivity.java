@@ -40,7 +40,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
 
-
         numberOfBreaths = getNumberOfBreathsSharedPref(this);
         numberOfBreaths = numberOfBreaths<1?1:numberOfBreaths;
         setUpToolBar();
