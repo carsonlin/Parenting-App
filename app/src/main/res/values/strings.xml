@@ -87,7 +87,9 @@
         <a href="https://stackoverflow.com/questions/2361497/how-to-create-edittext-accepts-alphabets-only-in-android/35954993">
          EditText only allowing letters S.O\n</a>
         <a href="https://stackoverflow.com/questions/68575866/to-run-a-simple-link-with-linkmovementmethod-in-android">
-         Hyperlink with link movement S.O\n </a></string>
+         Hyperlink with link movement S.O\n </a>
+        <a href="https://www.youtube.com/watch?v=YsHHXg1vbcc">
+         Timer visual progressbar xml formatting\n </a></string>
     <string name="flip_override_button_text">Override</string>
     <string name="flip_choose_none_button_text">Choose none</string>
     <string name="helpTitle">Help</string>
